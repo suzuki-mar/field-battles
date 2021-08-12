@@ -1,0 +1,19 @@
+title: Location
+type: object
+properties:
+  lon:
+    type: number
+    description: |-
+      現在Playerがいる経度
+      詳細は https://ja.wikipedia.org/wiki/%E7%B5%8C%E5%BA%A6
+      を参照
+    format: float
+    example: '35.6895014, -35.6895014'
+  lat:
+    type: number
+    description: |-
+      現在Playerがいる緯度 
+      詳細は https://ja.wikipedia.org/wiki/%E7%B7%AF%E5%BA%A6
+      を参照
+    format: float
+    example: '35.6895014, -35.6895014'

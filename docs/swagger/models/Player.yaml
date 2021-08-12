@@ -1,0 +1,57 @@
+title: Player
+type: object
+description: |
+  | 登録する | sign_up |  新規ユーザーを登録してSNSに参加できるようにする |
+  | アイテムの交換 | exchange_items |  生存者同士でイベントリ内にあるアイテムを交換する  |
+  | 居場所を移動する  | move_whereabouts |  ユーザーが現在いる場所から移動をする|
+  | 感染を報告する | report_infection | 他のユーザーが感染していることを報告して、そのユーザーが多数報告されている場合はゾンビ状態になる  |
+  | レポートの作成 | creating_report |  感染状況などをレポートにまとめる  |
+examples:
+  - id: string
+    name: string
+    age: 18
+    current _lat: '35.6895014, -35.6895014'
+properties:
+  id:
+    type: string
+  name:
+    type: string
+  age:
+    type: integer
+    format: int32
+    minimum: 18
+    maximum: 65
+    description: 成人でかつ高齢者じゃない責任をとれる健康な年齢
+  status:
+    type: string
+    description: |-
+      プレイヤーの状態 
+      生存しているかどうかがわかる
+    enum:
+      - survivor
+      - zombie
+      - deaths
+      - newcomer
+  inventory:
+    $ref: ./Inventory.yaml
+  counting_to_starvation:
+    type: integer
+    format: int32
+    minimum: 0
+    description: 値が０になると飢えて死亡する
+    default: 3
+  counting_to_become_zombie:
+    type: integer
+    description: 値が０になるとゾンビになる
+    format: int32
+    default: 5
+    minimum: 0
+  current_location:
+    $ref: ./Location.yaml
+required:
+  - id
+  - name
+  - age
+  - status
+  - counting_to_starvation
+  - counting_to_become_zombie

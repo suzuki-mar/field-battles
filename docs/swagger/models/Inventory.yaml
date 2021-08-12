@@ -1,0 +1,17 @@
+title: Inventory
+type: object
+properties:
+  id:
+    type: string
+  player_id:
+    type: integer
+  items:
+    type: array
+    items:
+      type: object
+      properties:
+        stock_count:
+          type: integer
+          description: アイテムの所持数
+        item:
+          $ref: ./Item.yaml

@@ -1,0 +1,163 @@
+openapi: 3.1.0
+info:
+  title: zombie_sns
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /players:
+    parameters: []
+    post:
+      summary: Players SignUp
+      operationId: post-users-userId
+      responses:
+        '200':
+          description: 正しく作成できた場合
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Player.yaml
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: number
+                  minimum: 18
+                  maximum: 65
+                inventory:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      enum:
+                        - fiji_water
+                        - campbell_soup
+                        - first_aid_pouch
+                        - ak47
+                    count:
+                      type: number
+        description: ''
+  '/players/{player_id}/inventory':
+    put:
+      summary: ExchangeItems
+      operationId: put-players-inventory
+      responses:
+        '200':
+          description: 交換に成功した
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exchanged_items:
+                    type: object
+                    properties:
+                      count:
+                        type: number
+                      item:
+                        $ref: ../models/Item.yaml
+      description: していした生存者とアイテムを交換する
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                exchang_target_player_id:
+                  type: number
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      count:
+                        type: number
+                      item:
+                        $ref: ../models/Item.yaml
+      parameters: []
+    parameters:
+      - schema:
+          type: string
+        name: player_id
+        in: path
+        required: true
+  /players/current_location:
+    put:
+      summary: Player Move Whereabouts
+      operationId: put-players-current_location
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    player_id:
+                      type: integer
+                    location:
+                      $ref: ../models/Location.yaml
+  '/players/{player_id}/status':
+    parameters:
+      - schema:
+          type: string
+        name: player_id
+        in: path
+        required: true
+    put:
+      summary: Report Infection
+      operationId: put-players-player_id-status
+      responses:
+        '200':
+          description: 報告に成功した場合
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reporting_target_player_id:
+                    type: number
+                  counting_to_become_zombie:
+                    type: number
+      description: ''
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ' reporting_target_player_id':
+                  type: number
+  /report:
+    post:
+      summary: Creating Report
+      operationId: post-report
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  zombie_percentage:
+                    type: number
+                    format: float
+                    description: サインアップした人の中でゾンビになった割合
+                  survivor_percentage:
+                    type: number
+                    description: サインアップした人の中でゾンビになった割合
+                  average_amount_of_each_item_possessed:
+                    type: number
+                    description: 各アイテムの全生存者が持っている個数の平均
+                  points_wasted:
+                    type: integer
+                    description: ゾンビになったり、死亡したりしたひとが持っていたアイテムのポイント
+      description: ''
