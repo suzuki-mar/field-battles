@@ -23,8 +23,8 @@
 #
 FactoryBot.define do
   factory :item_stock do
-    stock_count {Faker::Number.between(from: 1, to: 10)}    
-    association :player, factory: :player 
+    stock_count { Faker::Number.between(from: 1, to: 10) }
+    association :player, factory: :player
     association :item, factory: :item
   end
 end

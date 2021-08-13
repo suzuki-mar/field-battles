@@ -22,7 +22,7 @@ Style/Lambda:
 Rails/FilePath: 
   Enabled: false
 
-Rspec/FilePath: 
+RSpec/FilePath: 
   Enabled: false
 
 Metrics/BlockLength:

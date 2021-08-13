@@ -14,9 +14,9 @@
 #
 FactoryBot.define do
   factory :item do
-    name {DummyData.item_name}
-    effect_value {10}
-    point {8}
-    type {Item.types[:first_aid_kit]}    
+    name { DummyData.item_name }
+    effect_value { 10 }
+    point { 8 }
+    type { Item.types[:first_aid_kit] }
   end
 end

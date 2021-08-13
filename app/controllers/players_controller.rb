@@ -1,16 +1,11 @@
+# frozen_string_literal: true
+
 class PlayersController < ApplicationController
-  def create
-  end
+  def create; end
 
-  def multi_update_current_location
+  def multi_update_current_location; end
 
-  end
+  def multi_update_status; end
 
-  def multi_update_status
-
-  end
-
-  def update_inventory
-
-  end  
+  def update_inventory; end
 end

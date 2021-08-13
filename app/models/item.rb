@@ -13,7 +13,7 @@
 #  updated_at   :datetime         not null
 #
 class Item < ApplicationRecord
-  has_one :item_stock
+  has_one :item_stock, dependent: :destroy
 
-  enum types: { first_aid_kit: 0, drink: 1, weapone: 2}
+  enum types: { first_aid_kit: 0, drink: 1, weapone: 2 }
 end

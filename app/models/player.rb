@@ -16,8 +16,8 @@
 #  updated_at                :datetime         not null
 #
 class Player < ApplicationRecord
-  has_many :item_stocks
-  
-  COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5.freeze
-  enum statuses: { newcomer: 0, survivor: 1, zombie: 2, deaths:3 }
+  has_many :item_stocks, dependent: :destroy
+
+  COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5
+  enum statuses: { newcomer: 0, survivor: 1, zombie: 2, deaths: 3 }
 end
