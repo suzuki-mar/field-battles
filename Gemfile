@@ -36,7 +36,8 @@ group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'factory_bot_rails'
   gem 'pry-byebug'
-  gem 'pry-doc'
+  # pry-docはRails6には対応していないためインストールしていない 対応したらインストールする
+  # gem 'pry-doc'
   gem 'pry-rails'
   gem 'rspec-rails'
   gem 'rubocop', require: false
