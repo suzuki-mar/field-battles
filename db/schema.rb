@@ -10,16 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_013536) do
+ActiveRecord::Schema.define(version: 2021_08_13_064029) do
 
   create_table "item_stocks", force: :cascade do |t|
     t.integer "stock_count", null: false
-    t.integer "items_id"
-    t.integer "players_id"
+    t.integer "item_id"
+    t.integer "player_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["items_id"], name: "index_item_stocks_on_items_id"
-    t.index ["players_id"], name: "index_item_stocks_on_players_id"
+    t.index ["item_id"], name: "index_item_stocks_on_item_id"
+    t.index ["player_id"], name: "index_item_stocks_on_player_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -48,6 +48,6 @@ ActiveRecord::Schema.define(version: 2021_08_13_013536) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "item_stocks", "items", column: "items_id"
-  add_foreign_key "item_stocks", "players", column: "players_id"
+  add_foreign_key "item_stocks", "items"
+  add_foreign_key "item_stocks", "players"
 end
