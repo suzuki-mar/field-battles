@@ -25,9 +25,13 @@ Rails/FilePath:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
-    - 'config/environments/*'
+    - 'config/environments/*'    
+    - lib/tasks/auto_annotate_models.rake 
 
-Metrics/MethodLength:
+Metrics:
   Exclude:
       - 'db/migrate/*'      
+
+Style/AsciiComments:
+  Enabled: false
   
