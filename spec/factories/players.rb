@@ -17,5 +17,16 @@
 #
 FactoryBot.define do
   factory :player do
+    name { Faker::Name.unique.name}
+    age { Faker::Number.between(from: 18, to: 65) }
+    counting_to_become_zombie { Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE }
+    counting_to_starvation {3}
+    current_lat {DummyData.lat}
+    current_lon {DummyData.lon}
+    status {Player.statuses[:newcomer]}
+
+    trait :survivor do
+      status {Player.statuses[:survivor]}
+    end
   end
 end

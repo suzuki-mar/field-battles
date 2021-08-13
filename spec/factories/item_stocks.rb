@@ -8,20 +8,23 @@
 #  stock_count :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  items_id    :integer
-#  players_id  :integer
+#  item_id     :integer
+#  player_id   :integer
 #
 # Indexes
 #
-#  index_item_stocks_on_items_id    (items_id)
-#  index_item_stocks_on_players_id  (players_id)
+#  index_item_stocks_on_item_id    (item_id)
+#  index_item_stocks_on_player_id  (player_id)
 #
 # Foreign Keys
 #
-#  items_id    (items_id => items.id)
-#  players_id  (players_id => players.id)
+#  item_id    (item_id => items.id)
+#  player_id  (player_id => players.id)
 #
 FactoryBot.define do
-  factory :item_stocks do
+  factory :item_stock do
+    stock_count {Faker::Number.between(from: 1, to: 10)}    
+    association :player, factory: :player 
+    association :item, factory: :item
   end
 end

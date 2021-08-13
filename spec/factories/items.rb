@@ -13,6 +13,10 @@
 #  updated_at   :datetime         not null
 #
 FactoryBot.define do
-  factory :items do
+  factory :item do
+    name {DummyData.item_name}
+    effect_value {10}
+    point {8}
+    type {Item.types[:first_aid_kit]}    
   end
 end
