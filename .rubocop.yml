@@ -27,4 +27,7 @@ Metrics/BlockLength:
     - 'spec/**/*'
     - 'config/environments/*'
 
+Metrics/MethodLength:
+  Exclude:
+      - 'db/migrate/*'      
   
