@@ -1,33 +1,47 @@
-
 class ExchangeItems
-    
-
     def execute(requester_id, params)
-        unless Items.survivor?(params[:exchang_partner_player_id]) {
-            return {error_id: ERROR.NOT_SURVIVOR}
-        }
-
+        filed = Filed.new()         
         self.requester_inventory = Inventory.fetch_by_player_id(params[:exchang_target_player_id])
+
+        exchangeable = can_be_exchanged?
+        unless exchangeable[:status] {
+            return {error_id: exchangeable[:error_id]}
+        }
+        
         self.partener_inventory = Inventory.fetch_by_player_id(params[:exchang_target_player_id])
+        
+        requester_items = find_requester_items        
+        partener_items = find_partener_items(requester_items params[:exchang_target_player_id])
 
-        
-        requester_item_points = calc_requester_item_points
-        
-        items_to_exchange = find_partener_items_to_exchange(params[:exchang_target_player_id])
-        
         ActiveRecord::Base.transaction do
-            pass_requester_items()
-            mary.deposit(100)
-        end        
-        
+            Trade.execute(requester_items, partener_items)
+        end                
 
-        points = calc
-
-
+        return {partener_items: partener_items}
     end
 
     private 
     attr_reader :item_params, :requester_id, :requester_inventory, :partener_inventory, :
+
+    def exists_items_to_trade?
+
+    end
+
+    def can_be_exchanged?
+        unless filed.surviving?(params[:exchang_partner_player_id]) {
+            return {status: false, error_id: ERROR.NOT_SURVIVOR}
+        }
+        
+        item_counts = ...
+        exists_items_to_trade = self.requester_inventory.exists_items(item_counts)
+
+        unless exists_items_to_trade? {
+            return {status: false, error_id: ERROR.NO_ITEMS_TO_EXCHANGE}
+        }
+
+        return {status: true}
+    end
+
 
     def calc_requester_item_points
         requester_item_stocks = build_requester_item_stocks
@@ -38,9 +52,13 @@ class ExchangeItems
         self.item_params.map(|param| ItemStock.new(param[:count], param[:item][:id]))
     end
     
-    def find_partener_items_to_exchange
+    def find_partener_items
         item_points = ItemPoint.creates_from_player_id(self.params[:exchang_target_player_id])    
-    end 
+    end
+
+    def find_requester_items
+        item_points = ItemPoint.creates_from_player_id(self.params[:exchang_target_player_id])    
+    end
 
     def pass_requester_items(requester_item_points) 
         
@@ -51,13 +69,7 @@ class ExchangeItems
 
 end
 
-# テストケース
-# 交換するアイテム分のポイントがある場合
-# 交換するアイテム分のポイントがない場合
-# 交換しようとしたユーザーが生存者ではない場合
-
-
-
+# パタメーター
 # {
 #     "exchang_target_player_id": 0,
 #     "items": [
@@ -72,3 +84,13 @@ end
 #       }
 #     ]
 #   }
+
+
+# テストケース
+# 正常ケース
+# 交換するアイテム分のポイントがある場合
+
+# 異常ケース
+# 交換するアイテム分のポイントがパートナーにない場合
+# パートナーが生存していない場合
+# 交換しようとしたアイテムが存在しない場合
