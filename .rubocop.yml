@@ -22,6 +22,9 @@ Style/Lambda:
 Rails/FilePath: 
   Enabled: false
 
+Rspec/FilePath: 
+  Enabled: false
+
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
