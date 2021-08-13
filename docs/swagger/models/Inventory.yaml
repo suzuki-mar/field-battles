@@ -5,13 +5,7 @@ properties:
     type: string
   player_id:
     type: integer
-  items:
+  item_stocks:
     type: array
     items:
-      type: object
-      properties:
-        stock_count:
-          type: integer
-          description: アイテムの所持数
-        item:
-          $ref: ./Item.yaml
+      $ref: ./ItemStock.yaml

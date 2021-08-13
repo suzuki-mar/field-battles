@@ -1,0 +1,15 @@
+title: ItemStock
+type: object
+properties:
+  id:
+    type: string
+  player:
+    $ref: ./Player.yaml
+  item:
+    $ref: ./Item.yaml
+  current_stock_count:
+    type: integer
+    description: アイテムの残り所持数
+required:
+  - player
+description: Playerが所持しているそれぞれのItemの在庫

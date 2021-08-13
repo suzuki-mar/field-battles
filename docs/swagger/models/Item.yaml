@@ -1,14 +1,11 @@
 title: Item
 type: object
-description: |-
-  | 救急箱 | first_aid_kit | ゾンビになるときに回避してくれるアイテム |
-  | 飲み物 | drink | 餓死を防ぐためのアイテム | 
-  | 武器 | weapon | ゾンビを殺すためのアイテム | 
+description: ''
 examples:
   - id: '1'
     type: first_aid_kit
     effect_value: 5
-    point: 10  
+    point: 10
   - id: '1'
     type: drink
     effect_value: 1
@@ -32,6 +29,11 @@ properties:
     description: |-
       アイテムの価値
       この値を基準にトレードをする
+  name:
+    type: string
 required:
+  - id
   - type
+  - effect_value
   - point
+  - name

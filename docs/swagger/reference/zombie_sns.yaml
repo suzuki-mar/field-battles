@@ -72,13 +72,14 @@ paths:
                   type: number
                 items:
                   type: array
+                  description: ''
                   items:
                     type: object
                     properties:
-                      count:
-                        type: number
                       item:
                         $ref: ../models/Item.yaml
+                      count:
+                        type: number
       parameters: []
     parameters:
       - schema:
@@ -104,13 +105,8 @@ paths:
                       type: integer
                     location:
                       $ref: ../models/Location.yaml
-  '/players/{player_id}/status':
-    parameters:
-      - schema:
-          type: string
-        name: player_id
-        in: path
-        required: true
+  /players/status:
+    parameters: []
     put:
       summary: Report Infection
       operationId: put-players-player_id-status
@@ -126,15 +122,22 @@ paths:
                     type: number
                   counting_to_become_zombie:
                     type: number
-      description: ''
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  zombie_player_ids:
+                    type: array
+                    items:
+                      type: number
+      description: 全プレイヤーが感染していないかを確認する
       requestBody:
         content:
           application/json:
             schema:
               type: object
-              properties:
-                ' reporting_target_player_id':
-                  type: number
   /report:
     post:
       summary: Creating Report
