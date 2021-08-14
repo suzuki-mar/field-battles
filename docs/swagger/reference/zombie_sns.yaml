@@ -68,18 +68,17 @@ paths:
             schema:
               type: object
               properties:
-                exchang_target_player_id:
+                partner_player_id:
                   type: number
-                items:
+                requeser_items:
                   type: array
                   description: ''
                   items:
-                    type: object
-                    properties:
-                      item:
-                        $ref: ../models/Item.yaml
-                      count:
-                        type: number
+                    $ref: ../models/ItemStock.yaml
+                partne_items:
+                  type: array
+                  items:
+                    $ref: ../models/ItemStock.yaml
       parameters: []
     parameters:
       - schema:

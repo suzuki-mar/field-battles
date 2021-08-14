@@ -4,25 +4,25 @@ class MoveWhereabouts
   def execute
     fields = Fileds.new
     survivors = fields.fetch_survivors
+
+    survivors.each{|survivor|
+      survivor.assign_next_locations
+      
+      while(true) {
+        next if (fields.can_move?(survivor)) 
+        survivor.assign_next_locations  
+      }        
+    }
+
+    ActiveRecord::Base.transaction do
+      fields.determine_location_to_move!(survivors)
+    end                
+    
+    return true
   end
 end
 
 # テストケース
-# 交換するアイテム分のポイントがある場合
-# 交換するアイテム分のポイントがない場合
-# 交換しようとしたユーザーが生存者ではない場合
-
-# {
-#     "exchang_target_player_id": 0,
-#     "items": [
-#       {
-#         "count": 0,
-#         "item": {
-#           "id": "1",
-#           "type": "first_aid_kit",
-#           "effect_value": 5,
-#           "point": 10
-#         }
-#       }
-#     ]
-#   }
+# 生存者が存在している場合
+# エラーケース
+# 生存者が存在していない場合
