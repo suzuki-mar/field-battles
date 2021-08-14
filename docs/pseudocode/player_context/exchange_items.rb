@@ -5,23 +5,16 @@ class ExchangeItems
             return {status: false, error_id: ERROR.NOT_SURVIVOR}
         }
 
-        self.requester_inventory = Inventory.fetch_by_player(params[:exchang_target_player_id])
-        self.partener_inventory = Inventory.fetch_by_player(params[:exchang_target_player_id])
-
-        requester_item_stocks = build_item_stocks(requestr_params)
-        partener_item_stocks = build_item_stocks(partner_params)
+        #イベントリの読み込み
 
         conditions_status = conditions_of_exchange_have_been_established?(requester_item_stocks, partener_item_stocks)
         unless conditions_status[:status] {
             return {error_id: conditions_status[:error_id]}
         }        
                 
-        ActiveRecord::Base.transaction do
-            self.requester_inventory.pass_items(item_stock, partner)        
-            self.partener_inventory.pass_items(item_stock, requester)        
-        end                
+        #アイテムの交換
 
-        return {exchanged_items: partener_item_stocks}
+        #戻り値
     end
 
     private 
@@ -44,18 +37,4 @@ class ExchangeItems
         return {status: true}
     end
 
-    def build_item_stocks(params)
-        ...
-    end
-    
-
 end
-
-# テストケース
-# 正常ケース
-# 交換するアイテム分のポイントがある場合
-
-# 異常ケース
-# 交換するアイテム分のポイントがパートナーにない場合
-# パートナーが生存していない場合
-# 交換しようとしたアイテムが存在しない場合
