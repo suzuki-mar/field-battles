@@ -70,15 +70,38 @@ paths:
               properties:
                 partner_player_id:
                   type: number
+                  example: 2
                 requeser_items:
                   type: array
                   description: ''
                   items:
-                    $ref: ../models/ItemStock.yaml
-                partne_items:
+                    type: object
+                    properties:
+                      name:
+                        $ref: ../models/ItemName.yaml
+                      count:
+                        type: integer
+                        example: 1
+                partner_items:
                   type: array
                   items:
-                    $ref: ../models/ItemStock.yaml
+                    type: object
+                    properties:
+                      name:
+                        $ref: ../models/ItemName.yaml
+                      count:
+                        type: integer
+                        example: 2
+            examples:
+              example-1:
+                value:
+                  partner_player_id: 2
+                  requeser_items:
+                    - name: Fiji Water
+                      count: 1
+                  partner_items:
+                    - name: Fiji Water
+                      count: 2
       parameters: []
     parameters:
       - schema:

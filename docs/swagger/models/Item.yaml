@@ -2,14 +2,11 @@ title: Item
 type: object
 description: ''
 examples:
-  - id: '1'
+  - id: 0
     type: first_aid_kit
-    effect_value: 5
-    point: 10
-  - id: '1'
-    type: drink
-    effect_value: 1
-    point: 8
+    effect_value: 0
+    point: 0
+    name: Fiji Water
 properties:
   id:
     type: integer
@@ -30,7 +27,7 @@ properties:
       アイテムの価値
       この値を基準にトレードをする
   name:
-    type: string
+    $ref: ./ItemName.yaml
 required:
   - id
   - type

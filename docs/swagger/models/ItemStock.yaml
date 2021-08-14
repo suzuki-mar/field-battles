@@ -1,15 +1,27 @@
 title: ItemStock
 type: object
+description: Playerが所持しているそれぞれのItemの在庫
+examples:
+  - id: 1
+    player_id: 2
+    item:
+      id: '1'
+      type: first_aid_kit
+      effect_value: 5
+      point: 10
+    current_stock_count: 3
 properties:
   id:
-    type: string
-  player:
-    $ref: ./Player.yaml
+    example: 1
+    type: integer
+  player_id:
+    type: number
+    example: 2
   item:
     $ref: ./Item.yaml
-  current_stock_count:
+  stock_count:
     type: integer
     description: アイテムの残り所持数
+    example: 3
 required:
-  - player
-description: Playerが所持しているそれぞれのItemの在庫
+  - player_id
