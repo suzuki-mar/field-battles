@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_13_064029) do
+ActiveRecord::Schema.define(version: 2021_08_14_051020) do
 
   create_table "item_stocks", force: :cascade do |t|
     t.integer "stock_count", null: false
@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 2021_08_13_064029) do
 
   create_table "items", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "type", null: false
+    t.integer "kind", null: false
     t.integer "effect_value", null: false
     t.integer "point", null: false
     t.datetime "created_at", precision: 6, null: false
