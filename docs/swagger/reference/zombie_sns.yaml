@@ -54,13 +54,15 @@ paths:
               schema:
                 type: object
                 properties:
-                  exchanged_items:
-                    type: object
-                    properties:
-                      count:
-                        type: number
-                      item:
-                        $ref: ../models/Item.yaml
+                  status:
+                    type: string
+                    enum:
+                      - success
+                    example: success
+              examples:
+                example-1:
+                  value:
+                    status: success
       description: していした生存者とアイテムを交換する
       requestBody:
         content:

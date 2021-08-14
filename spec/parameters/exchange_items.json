@@ -1,0 +1,15 @@
+{
+  "partner_player_id": 2,
+  "requeser_items": [
+    {
+      "name": "Fiji Water",
+      "count": 4
+    }
+  ],
+  "partner_items": [
+    {
+      "name": "AK47",
+      "count": 7
+    }
+  ]
+}

@@ -4,12 +4,67 @@ require 'rails_helper'
 
 RSpec.describe PlayerContexts::ExchangeItems do
   describe 'execute' do
-    before do
-      item_stock = create(:item_stock)
-      binding.pry
+    let(:survivor) do 
+      player = create(:player, :survivor)
+      Survivor.new(player)
     end
 
-    it 'アイテムの交換ができていること' do
+    let(:params) do 
+      path = Rails.root.join('spec/parameters/exchange_items.json')
+      json = File.open(path).read
+      JSON.parse(json)
+    end
+
+    before do
+      Item.create_initial_items
+      create_requester_inventory(survivor, params)
+      create_partner_inventory(params)
+    end
+
+    subject do 
+      usecase = PlayerContexts::ExchangeItems.new()
+      usecase.execute(survivor, params)
+    end
+
+    context('パラメーターが正しい場合') do 
+      it 'アイテムの交換ができていること' do
+        subject
+  
+        requester_inventory = Inventory.fetch_by_player_id(survivor.id)
+        requester_item_name = params["requeser_items"].first["name"]
+        expect(requester_inventory.stock_count_by_name(requester_item_name)).to eq(0)
+  
+        partner_inventory = Inventory.fetch_by_player_id(params["partner_player_id"])
+        partner_item_name = params["partner_items"].first["name"]
+        expect(partner_inventory.stock_count_by_name(partner_item_name)).to eq(0)
+      end
+
+      it '戻り値が正しいこと' do
+        expect(subject[:sucess]).to eq(true)
+      end
+    end
+
+    xcontext('パラメーターが不正な場合') do 
+      context('交換するアイテム分のポイントがパートナーにない場合')
+      context('パートナーが生存していない場合')
+      context('交換しようとしたアイテムが存在しない場合')
+    end
+  end  
+
+  def create_requester_inventory(survivor, params)
+    inventory = Inventory.fetch_by_player_id(survivor.id)
+
+    params["requeser_items"].each do |params| 
+      inventory.add(params["name"], params["count"])        
+    end
+  end
+
+  def create_partner_inventory(params)
+    player = create(:player, :survivor, id: params[:partner_player_id])      
+    inventory = Inventory.fetch_by_player_id(player.id)
+
+    params["partner_items"].each do |params| 
+      inventory.add(params["name"], params["count"])        
     end
   end
 end
