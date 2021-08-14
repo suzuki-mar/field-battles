@@ -25,12 +25,11 @@ class ItemStock < ApplicationRecord
   belongs_to :item
   belongs_to :player
 
-  def add_stock!(count)    
+  def add_stock!(count)
     update!(stock_count: stock_count + count)
   end
 
-  def reduce_stock!(count)    
+  def reduce_stock!(count)
     update!(stock_count: stock_count - count)
   end
-
 end

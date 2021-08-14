@@ -24,6 +24,14 @@ Rails/FilePath:
 
 RSpec/FilePath: 
   Enabled: false
+RSpec/NamedSubject:
+  Enabled: false  
+RSpec/ContextWording:
+  Enabled: false   
+
+#テストは現時点では書かない場合にxcontextなどをするので、それを許可する 
+RSpec/EmptyExampleGroup: 
+  Enabled: false   
 
 Metrics/BlockLength:
   Exclude:
@@ -37,4 +45,14 @@ Metrics:
 
 Style/AsciiComments:
   Enabled: false
-  
+
+# 一つのテスト内で少数なら一度に確認するのは問題ない
+RSpec/MultipleExpectations:
+  Max: 3
+
+# テストで実行結果を確認するための処理をしているとデフォルトだと厳しすぎる
+RSpec/ExampleLength:
+  Max: 10  
+
+Naming/PredicateName:
+  Enabled: false

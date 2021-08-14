@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Survivor
   delegate :id, :age, to: :player
 
@@ -5,7 +7,7 @@ class Survivor
     @player = player
   end
 
-  private 
-  attr_reader :player
+  private
 
+  attr_reader :player
 end

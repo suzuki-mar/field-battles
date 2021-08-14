@@ -16,14 +16,14 @@ class Item < ApplicationRecord
   has_one :item_stock, dependent: :destroy
 
   enum kinds: { first_aid_kit: 0, drink: 1, weapone: 2 }
-  
-  module Name 
-    FIJI_WATER = "Fiji Water"
-    CAMPBELL_SOUP = "Campbell Soup"
-    FIRST_AID_POUCH = "First Aid Pouch"
-    AK47 = "AK47"
+
+  module Name
+    FIJI_WATER = 'Fiji Water'
+    CAMPBELL_SOUP = 'Campbell Soup'
+    FIRST_AID_POUCH = 'First Aid Pouch'
+    AK47 = 'AK47'
   end
-  
+
   def self.create_initial_items
     create(name: Name::FIJI_WATER, effect_value: 3, point: 14, kind: Item.kinds[:drink])
     create(name: Name::CAMPBELL_SOUP, effect_value: 2, point: 12, kind: Item.kinds[:drink])
