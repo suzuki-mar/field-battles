@@ -15,9 +15,14 @@
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
 #
+
+# 生存者、ゾンビなどがあるため一つのクラスにそれぞれの振る舞いを実装をするとコードが複雑になる
+# 継承を使用すると異なるタイプ同士で予想していない振る舞い担ってしまう可能性もある
+# そのため、ぞれぞれの状態にあわせてSurvivorなどのクラスを作成している
 class Player < ApplicationRecord
   has_many :item_stocks, dependent: :destroy
 
   COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5
-  enum statuses: { newcomer: 0, survivor: 1, zombie: 2, deaths: 3 }
+  # FIX survivorをnoninfectedに変更する
+  enum statuses: { newcomer: 0, survivor: 1, infected: 2, zombie: 3, deaths: 4 }
 end

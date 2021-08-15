@@ -56,3 +56,12 @@ RSpec/ExampleLength:
 
 Naming/PredicateName:
   Enabled: false
+
+# Rspecの中でテスト用のクラスを作成するのは便利なのでチェックしない  
+Lint/ConstantDefinitionInBlock:
+  Exclude:
+      - 'spec/**/*'      
+
+# Rspecの中でテスト用のクラスを作成するのは便利なのでチェックしない  
+RSpec/LeakyConstantDeclaration:
+  Enabled: false

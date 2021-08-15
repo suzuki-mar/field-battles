@@ -28,5 +28,19 @@ FactoryBot.define do
     trait :survivor do
       status { Player.statuses[:survivor] }
     end
+
+    trait :zombie do
+      status { Player.statuses[:zombie] }
+      counting_to_become_zombie { 0 }
+    end
+
+    trait :infected do
+      status { Player.statuses[:infected] }
+    end
+
+    trait :infection_complete do
+      status { Player.statuses[:infected] }
+      counting_to_become_zombie { 0 }
+    end
   end
 end
