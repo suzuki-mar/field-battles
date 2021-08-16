@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Survivor
-  delegate :id, :age, :counting_to_become_zombie, :save, to: :player
+  delegate :id, :age, :counting_to_become_zombie, :current_location :save, to: :player
 
   def initialize(player)
     @player = player
@@ -34,6 +34,18 @@ class Survivor
 
   def fully_infected?
     player.counting_to_become_zombie.zero?
+  end
+
+  def assign_next_locations
+    location = Location.build_distance_to_travel
+    player.assign_attributes(
+      current_lat: player.current_lat + location.lat,
+      current_lon: player.current_lon + location.lon    
+    )
+  end
+
+  def current_location
+    Location.build_current_location(player)
   end
 
   # 不必要にUPDATEのSQLが実行されないように、アップデートの実行は別のタイミングでおこなう

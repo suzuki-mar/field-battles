@@ -67,6 +67,7 @@ group :test do
   gem 'database_cleaner'
   gem 'faker'
   gem 'webdrivers'
+  gem 'rspec-parameterized'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

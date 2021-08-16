@@ -182,4 +182,25 @@ RSpec.describe Survivor, type: :model do
       end
     end
   end
+
+  describe('assign_next_locations') do
+    subject { survivor.assign_next_locations }
+
+    let(:survivor) do      
+      player = create(:player, :survivor)
+      SurvivorForTest.new(player)
+    end
+
+    it '次に移動する場所を設定されていること' do 
+      before_location = {lat: survivor.player.current_lat, lon: survivor.player.current_lon} 
+      subject
+      after_location = {lat: survivor.player.current_lat, lon: survivor.player.current_lon}
+      expect(before_location[:lat]).not_to eq(after_location[:lat])
+      expect(before_location[:lon]).not_to eq(after_location[:lon])
+    end
+  end
+
+  class SurvivorForTest < Survivor
+    attr_reader :player
+  end
 end

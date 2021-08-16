@@ -89,6 +89,68 @@ RSpec.describe Filed, type: :model do
     end
   end
 
+  describe('move_the_survivor') do
+    let(:filed) { FiledForTest.new }
+    let(:player) do 
+      player = create(:player, :survivor)
+      player.current_lon = Filed::LON_RANGE.first
+      player
+    end
+    let(:survivor) { Survivor.new(player) }
+
+    before do
+      filed.survivors = [survivor]
+    end
+
+    subject do
+      filed.move_the_survivors
+    end
+
+    it '移動していること' do
+      subject
+      expect(survivor.current_location.lon).to be > Filed::LON_RANGE.first
+
+    end
+  end
+
+  describe('can_move?') do
+
+    let(:filed) { FiledForTest.new }
+    let(:player) do 
+      player = create(:player, :survivor)
+      player.current_lon = lon
+      player
+    end
+    let(:survivor) { Survivor.new(create(:player, :survivor)) }
+
+    before do
+      filed.survivors = [survivor]
+    end
+
+    subject do
+      survivor = Survivor.new(player)
+      filed.can_move?(survivor)
+    end
+
+    context 'フィールドの区域内の移動の場合' do 
+      let(:lon) {Filed::LON_RANGE.first}
+
+      it 'trueが返ること' do 
+        is_expected.to eq(true)
+      end
+
+    end
+
+    context 'フィールドの区域外の移動の場合' do 
+      let(:lon) {Filed::LON_RANGE.first - 1}
+
+      it 'trueが返ること' do 
+        is_expected.to eq(false)
+      end
+    end
+    
+  end
+
   # テストをかんたんにするため
   class FiledForTest < Filed
     attr_accessor :survivors
