@@ -90,8 +90,12 @@ RSpec.describe Filed, type: :model do
   end
 
   describe('move_the_survivor') do
+    subject do
+      filed.move_the_survivors
+    end
+
     let(:filed) { FiledForTest.new }
-    let(:player) do 
+    let(:player) do
       player = create(:player, :survivor)
       player.current_lon = Filed::LON_RANGE.first
       player
@@ -102,21 +106,20 @@ RSpec.describe Filed, type: :model do
       filed.survivors = [survivor]
     end
 
-    subject do
-      filed.move_the_survivors
-    end
-
     it '移動していること' do
       subject
       expect(survivor.current_location.lon).to be > Filed::LON_RANGE.first
-
     end
   end
 
   describe('can_move?') do
+    subject do
+      survivor = Survivor.new(player)
+      filed.can_move?(survivor)
+    end
 
     let(:filed) { FiledForTest.new }
-    let(:player) do 
+    let(:player) do
       player = create(:player, :survivor)
       player.current_lon = lon
       player
@@ -127,28 +130,48 @@ RSpec.describe Filed, type: :model do
       filed.survivors = [survivor]
     end
 
+    context 'フィールドの区域内の移動の場合' do
+      let(:lon) { Filed::LON_RANGE.first }
+
+      it 'trueが返ること' do
+        expect(subject).to eq(true)
+      end
+    end
+
+    context 'フィールドの区域外の移動の場合' do
+      let(:lon) { Filed::LON_RANGE.first - 1 }
+
+      it 'trueが返ること' do
+        expect(subject).to eq(false)
+      end
+    end
+  end
+
+  describe('attack_of_zombies') do
     subject do
-      survivor = Survivor.new(player)
-      filed.can_move?(survivor)
+      filed.attack_of_zombies
     end
 
-    context 'フィールドの区域内の移動の場合' do 
-      let(:lon) {Filed::LON_RANGE.first}
+    let(:filed) { FiledForTest.new }
+    let(:player) do
+      zombie_player = create(:player, :zombie)
 
-      it 'trueが返ること' do 
-        is_expected.to eq(true)
-      end
+      player = create(:player, :survivor)
+      player.current_lon = zombie_player.current_location.lon
+      player.current_lat = zombie_player.current_location.lat
+      player.save
+      player
+    end
+    let(:survivor) { Survivor.new(player) }
 
+    before do
+      filed.survivors = [survivor]
     end
 
-    context 'フィールドの区域外の移動の場合' do 
-      let(:lon) {Filed::LON_RANGE.first - 1}
-
-      it 'trueが返ること' do 
-        is_expected.to eq(false)
-      end
+    it 'ゾンビが襲撃していること' do
+      subject
+      expect(Player.find(survivor.id).status).to eq(Player.statuses[:death])
     end
-    
   end
 
   # テストをかんたんにするため

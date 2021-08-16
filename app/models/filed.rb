@@ -3,8 +3,8 @@
 class Filed
   attr_reader :survivors, :infected_survivors
 
-  LON_RANGE = (-100.0..100.0).freeze
-  LAT_RANGE = (-100.0..100.0).freeze
+  LON_RANGE = (-100.0..100.0)
+  LAT_RANGE = (-100.0..100.0)
 
   def initialize
     @infected_survivors = []
@@ -41,13 +41,22 @@ class Filed
   def move_the_survivors
     survivors.each do |s|
       s.assign_next_locations
-      
-      while(true) do
+
+      loop do
         break if can_move?(s)
+
         s.assign_next_locations
       end
-      
-      s.save      
+
+      s.save
+    end
+  end
+
+  def attack_of_zombies
+    zombie_players = Player.where(status: Player.statuses[:zombie])
+    zombies = zombie_players.map { |p| Zombie.new(p) }
+    zombies.each do |zombie|
+      survivors.each { |s| zombie.raid(s) }
     end
   end
 

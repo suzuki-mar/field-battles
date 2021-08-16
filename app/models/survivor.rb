@@ -1,15 +1,22 @@
 # frozen_string_literal: true
 
 class Survivor
-  delegate :id, :age, :counting_to_become_zombie, :current_location :save, to: :player
+  delegate :id, :age, :counting_to_become_zombie, :save, to: :player
 
   def initialize(player)
     @player = player
-    @turn_into_infected = false
   end
 
   def infected?
     player.status == Player.statuses[:infected]
+  end
+
+  def non_infected?
+    player.status == Player.statuses[:survivor]
+  end
+
+  def alive?
+    non_infected? || infected?
   end
 
   def turn_into_infected?
@@ -40,7 +47,7 @@ class Survivor
     location = Location.build_distance_to_travel
     player.assign_attributes(
       current_lat: player.current_lat + location.lat,
-      current_lon: player.current_lon + location.lon    
+      current_lon: player.current_lon + location.lon
     )
   end
 
@@ -61,5 +68,5 @@ class Survivor
 
   private
 
-  attr_reader :player, :turn_into_infected
+  attr_reader :player
 end

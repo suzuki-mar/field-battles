@@ -19,12 +19,12 @@
 # 生存者、ゾンビなどがあるため一つのクラスにそれぞれの振る舞いを実装をするとコードが複雑になる
 # 継承を使用すると異なるタイプ同士で予想していない振る舞い担ってしまう可能性もある
 # そのため、ぞれぞれの状態にあわせてSurvivorなどのクラスを作成している
-class Player < ApplicationRecord  
+class Player < ApplicationRecord
   has_many :item_stocks, dependent: :destroy
 
   COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5
   # FIX survivorをnoninfectedに変更する
-  enum statuses: { newcomer: 0, survivor: 1, infected: 2, zombie: 3, deaths: 4 }
+  enum statuses: { newcomer: 0, survivor: 1, infected: 2, zombie: 3, death: 4 }
 
   def current_location
     Location.build_current_location(self)
@@ -33,5 +33,4 @@ class Player < ApplicationRecord
   def can_see?(compare)
     current_location.can_sight?(compare.current_location)
   end
-  
 end

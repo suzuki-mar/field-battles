@@ -65,3 +65,7 @@ Lint/ConstantDefinitionInBlock:
 # Rspecの中でテスト用のクラスを作成するのは便利なのでチェックしない  
 RSpec/LeakyConstantDeclaration:
   Enabled: false
+
+# allow_any_instance_ofを使っても問題ない
+RSpec/AnyInstance:
+  Enabled: false  

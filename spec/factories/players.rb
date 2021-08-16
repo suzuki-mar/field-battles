@@ -22,7 +22,7 @@ FactoryBot.define do
     counting_to_become_zombie { Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE }
     counting_to_starvation { 3 }
     current_lat { Location.build_distance_to_travel.lat }
-    current_lon { Location.build_distance_to_travel.lon }    
+    current_lon { Location.build_distance_to_travel.lon }
     status { Player.statuses[:newcomer] }
 
     trait :survivor do
@@ -36,6 +36,10 @@ FactoryBot.define do
 
     trait :infected do
       status { Player.statuses[:infected] }
+    end
+
+    trait :death do
+      status { Player.statuses[:death] }
     end
 
     trait :infection_complete do
