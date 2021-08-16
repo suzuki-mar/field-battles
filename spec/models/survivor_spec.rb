@@ -63,9 +63,26 @@ RSpec.describe Survivor, type: :model do
         survivor.report_infected_players([infected_survivor])
       end
 
-      it '感染している生存者の感染状態が進むこと' do
-        subject
-        expect(infected_survivor.counting_to_become_zombie).to eq(Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE - 1)
+      context '見える距離の場合' do
+        before do
+          allow_any_instance_of(Location).to receive(:can_sight?).and_return(true)
+        end
+
+        it '感染している生存者の感染状態が進むこと' do
+          subject
+          expect(infected_survivor.counting_to_become_zombie).to eq(Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE - 1)
+        end
+      end
+
+      context '見えない距離の場合' do
+        before do
+          allow_any_instance_of(Location).to receive(:can_sight?).and_return(false)
+        end
+
+        it '感染状態は進まないこと' do
+          subject
+          expect(infected_survivor.counting_to_become_zombie).to eq(Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE)
+        end
       end
     end
 

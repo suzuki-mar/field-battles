@@ -69,3 +69,7 @@ RSpec/LeakyConstantDeclaration:
 # allow_any_instance_ofを使っても問題ない
 RSpec/AnyInstance:
   Enabled: false  
+
+# ある程度複雑な条件の場合はデフォルトだと厳しい
+RSpec/NestedGroups:
+  Max: 4

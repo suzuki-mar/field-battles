@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Survivor
-  delegate :id, :age, :counting_to_become_zombie, :save, to: :player
+  delegate :id, :age, :counting_to_become_zombie, :can_see?, :save, to: :player
 
   def initialize(player)
     @player = player
@@ -61,6 +61,7 @@ class Survivor
 
     infecteds.each do |infected|
       next if infected.id == id
+      next unless can_see?(infected)
 
       infected.progress_of_zombie
     end
