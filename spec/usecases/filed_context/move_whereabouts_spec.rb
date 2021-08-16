@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe PlayerContexts::MoveWhereabouts do
+RSpec.describe FiledContext::MoveWhereabouts do
   describe 'execute' do
     subject do
       usecase.execute

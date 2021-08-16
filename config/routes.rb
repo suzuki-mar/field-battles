@@ -7,14 +7,16 @@
 Rails.application.routes.draw do
   resources :players, only: [:create] do
     collection do
-      # エンドポイントだけRestfulにしている
-      put 'current_location', to: 'players#multi_update_current_location'
-      put 'status', to: 'players#multi_update_status'
     end
     member do
       put 'inventory', to: 'players#update_inventory'
     end
   end
 
-  resources :reports, only: [:index]
+  # 全体のプレイヤーに関することなのでplayerではなくfiledにしている
+  namespace :filed do
+    put 'current_location'
+    put 'infection'
+  end
+  resources :filed, only: [:index]
 end

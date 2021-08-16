@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module PlayerContexts
+module FiledContext
   class WorseningOfInfection
     def execute
       filed = Filed.new

@@ -1,9 +1,12 @@
 title: Error
 type: object
 properties:
-  code:
-    type: integer
-    description: システムに定義されているエラーID
-  message:
+  description:
     type: string
-    description: ユーザーに表示するためのエラーメッセージ
+    description: エラー内容の説明
+    example: 指定したユーザーが生存者ではありません
+  error_key:
+    type: string
+    example: PlayerIsZombie
+required:
+  - description

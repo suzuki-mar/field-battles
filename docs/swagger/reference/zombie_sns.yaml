@@ -70,6 +70,17 @@ paths:
                 example-1:
                   value:
                     status: success
+        '400':
+          description: |
+            以下の場合にエラーになる
+            ＊指定したプレイヤーが生存者ではなくゾンビ等の場合
+            ＊交換するアイテム分のポイントが等しくないない場合
+            ＊パートナーが生存していない場合
+            ＊交換しようとしたアイテムが存在しない場合
+          content:
+            application/json:
+              schema:
+                $ref: ''
       description: していした生存者とアイテムを交換する
       requestBody:
         content:
@@ -118,7 +129,7 @@ paths:
         name: player_id
         in: path
         required: true
-  /players/current_location:
+  /filed/current_location:
     put:
       summary: Player Move Whereabouts
       operationId: put-players-current_location
@@ -136,7 +147,8 @@ paths:
                       type: integer
                     location:
                       $ref: ../models/Location.yaml
-  /players/status:
+    parameters: []
+  /filed/infection:
     parameters: []
     put:
       summary: Report Infection
@@ -169,8 +181,8 @@ paths:
           application/json:
             schema:
               type: object
-  /report:
-    post:
+  /filed:
+    get:
       summary: Creating Report
       operationId: post-report
       responses:
@@ -202,3 +214,4 @@ paths:
                     average_amount_of_each_item_possessed: 0
                     points_wasted: 0
       description: ''
+    parameters: []

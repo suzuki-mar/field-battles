@@ -1,11 +1,37 @@
 # frozen_string_literal: true
 
 class PlayersController < ApplicationController
-  def create; end
+  def create
+    usecase_params = params.permit(:name, :age)
+    usecase_params[:inventory] = build_item_params(params.required(:inventory))
 
-  def multi_update_current_location; end
+    usecase = PlayerContexts::RegisterNewSurvivor.new
+    usecase.execute(usecase_params)
+    render json: { success: true }
+  end
 
-  def multi_update_status; end
+  def update_inventory
+    player = Player.find(params[:id])
 
-  def update_inventory; end
+    usecase = PlayerContexts::ExchangeItems.new
+    usecase.execute(player, build_params_of_update_inventory)
+    render json: { success: true }
+  end
+
+  private
+
+  def build_params_of_update_inventory
+    usecase_params = {}
+
+    usecase_params[:requeser_items] = build_item_params(params.required(:requeser_items))
+    usecase_params[:partner_items] =  build_item_params(params.required(:partner_items))
+    usecase_params[:partner_player_id] = params.required(:partner_player_id)
+    usecase_params
+  end
+
+  def build_item_params(params)
+    params.map do |param|
+      { name: param[:name], count: param[:count].to_i }
+    end
+  end
 end

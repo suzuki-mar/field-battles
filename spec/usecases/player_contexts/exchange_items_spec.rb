@@ -15,9 +15,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
     end
 
     let(:params) do
-      path = Rails.root.join('spec/parameters/exchange_items.json')
-      json = File.open(path).read
-      JSON.parse(json)
+      ReadJsonFile.read('spec/parameters/exchange_items.json')
     end
 
     before do
@@ -31,11 +29,11 @@ RSpec.describe PlayerContexts::ExchangeItems do
         subject
 
         requester_inventory = Inventory.fetch_by_player_id(survivor.id)
-        requester_item_name = params['requeser_items'].first['name']
+        requester_item_name = params[:requeser_items].first[:name]
         expect(requester_inventory.stock_count_by_name(requester_item_name)).to eq(0)
 
-        partner_inventory = Inventory.fetch_by_player_id(params['partner_player_id'])
-        partner_item_name = params['partner_items'].first['name']
+        partner_inventory = Inventory.fetch_by_player_id(params[:partner_player_id])
+        partner_item_name = params[:partner_items].first[:name]
         expect(partner_inventory.stock_count_by_name(partner_item_name)).to eq(0)
       end
 
@@ -45,7 +43,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
     end
 
     xcontext('パラメーターが不正な場合') do
-      context('交換するアイテム分のポイントがパートナーにない場合')
+      context('交換するアイテム分のポイントが等しくないない場合')
       context('パートナーが生存していない場合')
       context('交換しようとしたアイテムが存在しない場合')
     end
@@ -54,8 +52,8 @@ RSpec.describe PlayerContexts::ExchangeItems do
   def create_requester_inventory(survivor, params)
     inventory = Inventory.fetch_by_player_id(survivor.id)
 
-    params['requeser_items'].each do |p|
-      inventory.add(p['name'], p['count'])
+    params[:requeser_items].each do |p|
+      inventory.add(p[:name], p[:count])
     end
   end
 
@@ -63,8 +61,8 @@ RSpec.describe PlayerContexts::ExchangeItems do
     player = create(:player, :survivor, id: params[:partner_player_id])
     inventory = Inventory.fetch_by_player_id(player.id)
 
-    params['partner_items'].each do |p|
-      inventory.add(p['name'], p['count'])
+    params[:partner_items].each do |p|
+      inventory.add(p[:name], p[:count])
     end
   end
 end

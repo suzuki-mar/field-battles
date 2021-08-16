@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe PlayerContexts::WorseningOfInfection do
+RSpec.describe FiledContext::WorseningOfInfection do
   describe 'execute' do
     subject do
       usecase.execute
@@ -24,7 +24,7 @@ RSpec.describe PlayerContexts::WorseningOfInfection do
     end
   end
 
-  class WorseningOfInfectionForTest < PlayerContexts::WorseningOfInfection
+  class WorseningOfInfectionForTest < described_class
     attr_reader :filed
   end
 end
