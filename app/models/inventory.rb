@@ -40,6 +40,13 @@ class Inventory
 
       new(player_id, stocks)
     end
+
+    def create_for_newcomers(player_id, stock_params)
+      inventory = new(player_id, [])
+      stock_params.each do |param|
+        inventory.add(param[:name], param[:count])
+      end
+    end
   end
 
   protected
@@ -52,6 +59,8 @@ class Inventory
   private
 
   def has_name_item?(name)
+    return false if stocks.blank?
+
     stocks.includes(:item).any? do |stock|
       stock.item.name == name
     end

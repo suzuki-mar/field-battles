@@ -22,6 +22,8 @@
 #  player_id  (player_id => players.id)
 #
 class ItemStock < ApplicationRecord
+  delegate :name, to: :item
+
   belongs_to :item
   belongs_to :player
 

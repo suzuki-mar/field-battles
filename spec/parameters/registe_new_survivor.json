@@ -1,0 +1,10 @@
+{
+  "name": "鈴木太郎",
+  "age": 18,
+  "inventory": [
+    {
+      "name": "Fiji Water",
+      "count": 1
+    }
+  ]
+}

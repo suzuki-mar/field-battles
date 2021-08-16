@@ -25,22 +25,29 @@ paths:
               properties:
                 name:
                   type: string
+                  example: 鈴木太郎
                 age:
                   type: number
                   minimum: 18
                   maximum: 65
                 inventory:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                      enum:
-                        - fiji_water
-                        - campbell_soup
-                        - first_aid_pouch
-                        - ak47
-                    count:
-                      type: number
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        $ref: ../models/ItemName.yaml
+                      count:
+                        type: integer
+                        example: 1
+            examples:
+              example-2:
+                value:
+                  name: 鈴木太郎
+                  age: 18
+                  inventory:
+                    - name: Fiji Water
+                      count: 1
         description: ''
   '/players/{player_id}/inventory':
     put:

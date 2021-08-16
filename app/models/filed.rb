@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Filed
-  attr_reader :survivors, :infected_survivors
+  attr_reader :survivors
 
   LON_RANGE = (-100.0..100.0)
   LAT_RANGE = (-100.0..100.0)

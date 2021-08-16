@@ -22,6 +22,8 @@
 class Player < ApplicationRecord
   has_many :item_stocks, dependent: :destroy
 
+  before_validation :assign_default_value_if_new_record
+
   COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5
   # FIX survivorをnoninfectedに変更する
   enum statuses: { newcomer: 0, survivor: 1, infected: 2, zombie: 3, death: 4 }
@@ -32,5 +34,15 @@ class Player < ApplicationRecord
 
   def can_see?(compare)
     current_location.can_sight?(compare.current_location)
+  end
+
+  private
+
+  def assign_default_value_if_new_record
+    return unless new_record?
+
+    self.counting_to_become_zombie = COUNT_OF_BEFORE_BECOMING_ZOMBIE if counting_to_become_zombie.nil?
+    self.counting_to_starvation = 3 if counting_to_starvation.nil?
+    self.status = Player.statuses[:newcomer] if status.nil?
   end
 end
