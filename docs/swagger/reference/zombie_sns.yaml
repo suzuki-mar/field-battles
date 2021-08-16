@@ -187,4 +187,11 @@ paths:
                   points_wasted:
                     type: integer
                     description: ゾンビになったり、死亡したりしたひとが持っていたアイテムのポイント
+              examples:
+                example-1:
+                  value:
+                    zombie_percentage: -3.402823669209385e+38
+                    survivor_percentage: 0
+                    average_amount_of_each_item_possessed: 0
+                    points_wasted: 0
       description: ''
