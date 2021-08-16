@@ -17,6 +17,13 @@
 #
 
 RSpec.describe Player, type: :model do
+  describe 'validations' do
+    describe 'age' do
+      it { should validate_presence_of(:age) }
+      it { should validate_presence_of(:age) }
+    end
+  end
+  
   describe 'current_location' do
     let(:player) { create(:player) }
 

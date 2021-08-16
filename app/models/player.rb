@@ -22,6 +22,8 @@
 class Player < ApplicationRecord
   has_many :item_stocks, dependent: :destroy
 
+  validates :age, presence: true
+
   COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5
   # FIX survivorをnoninfectedに変更する
   enum statuses: { newcomer: 0, survivor: 1, infected: 2, zombie: 3, death: 4 }
