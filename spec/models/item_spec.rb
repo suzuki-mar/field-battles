@@ -12,8 +12,27 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-require 'rails_helper'
 
 RSpec.describe Item, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  
+  describe('fetch_all_name_and_point') do 
+    before do 
+      described_class.create_initial_items
+    end
+    
+    subject{described_class.fetch_all_name_and_point}
+
+    it 'すべてのアイテム名とポイントを取得する' do 
+      expected = [
+        {:name=>"Fiji Water", :point=>14},
+        {:name=>"Campbell Soup", :point=>12},
+        {:name=>"First Aid Pouch", :point=>10},
+        {:name=>"AK47", :point=>8}
+      ]
+      
+      is_expected.to eq(expected)
+    end
+  end
+  
+
 end

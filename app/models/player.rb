@@ -28,6 +28,8 @@ class Player < ApplicationRecord
   # FIX survivorをnoninfectedに変更する
   enum statuses: { newcomer: 0, survivor: 1, infected: 2, zombie: 3, death: 4 }
 
+  scope :only_survivor, -> { where(status: [Player.statuses[:survivor], Player.statuses[:infected]]) }  
+
   def current_location
     Location.build_current_location(self)
   end

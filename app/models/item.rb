@@ -24,10 +24,20 @@ class Item < ApplicationRecord
     AK47 = 'AK47'
   end
 
-  def self.create_initial_items
-    create(name: Name::FIJI_WATER, effect_value: 3, point: 14, kind: Item.kinds[:drink])
-    create(name: Name::CAMPBELL_SOUP, effect_value: 2, point: 12, kind: Item.kinds[:drink])
-    create(name: Name::FIRST_AID_POUCH, effect_value: 1, point: 10, kind: Item.kinds[:first_aid_kit])
-    create(name: Name::AK47, effect_value: 1, point: 8, kind: Item.kinds[:weapone])
+  class << self 
+    def fetch_all_name_and_point
+      all.map do |item|
+        {name: item.name, point: item.point}
+      end
+    end
+
+    def create_initial_items
+      create(name: Name::FIJI_WATER, effect_value: 3, point: 14, kind: Item.kinds[:drink])
+      create(name: Name::CAMPBELL_SOUP, effect_value: 2, point: 12, kind: Item.kinds[:drink])
+      create(name: Name::FIRST_AID_POUCH, effect_value: 1, point: 10, kind: Item.kinds[:first_aid_kit])
+      create(name: Name::AK47, effect_value: 1, point: 8, kind: Item.kinds[:weapone])
+    end
   end
+
+  
 end
