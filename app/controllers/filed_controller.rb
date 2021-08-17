@@ -2,7 +2,7 @@
 
 class FiledController < ApplicationController
   def index
-    render json: { message: 'OK' }
+    render json: FiledContext::GenerateReportForCurrentSituation.new.execute
   end
 
   def current_location

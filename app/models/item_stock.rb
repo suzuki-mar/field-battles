@@ -34,4 +34,8 @@ class ItemStock < ApplicationRecord
   def reduce_stock!(count)
     update!(stock_count: stock_count - count)
   end
+
+  def calc_total_point
+    item.point * stock_count
+  end
 end

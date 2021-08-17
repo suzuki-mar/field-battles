@@ -29,7 +29,7 @@ RSpec.describe Filed, type: :model do
     let!(:player) { create(:player, :zombie) }
     let(:filed) { FiledForTest.new }
 
-    before do      
+    before do
       create(:player, :infected)
     end
 

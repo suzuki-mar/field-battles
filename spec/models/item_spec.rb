@@ -14,25 +14,22 @@
 #
 
 RSpec.describe Item, type: :model do
-  
-  describe('fetch_all_name_and_point') do 
-    before do 
+  describe('fetch_all_name_and_point') do
+    subject { described_class.fetch_all_name_and_point }
+
+    before do
       described_class.create_initial_items
     end
-    
-    subject{described_class.fetch_all_name_and_point}
 
-    it 'すべてのアイテム名とポイントを取得する' do 
+    it 'すべてのアイテム名とポイントを取得する' do
       expected = [
-        {:name=>"Fiji Water", :point=>14},
-        {:name=>"Campbell Soup", :point=>12},
-        {:name=>"First Aid Pouch", :point=>10},
-        {:name=>"AK47", :point=>8}
+        { name: 'Fiji Water', point: 14 },
+        { name: 'Campbell Soup', point: 12 },
+        { name: 'First Aid Pouch', point: 10 },
+        { name: 'AK47', point: 8 }
       ]
-      
-      is_expected.to eq(expected)
+
+      expect(subject).to eq(expected)
     end
   end
-  
-
 end

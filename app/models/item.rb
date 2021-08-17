@@ -24,10 +24,10 @@ class Item < ApplicationRecord
     AK47 = 'AK47'
   end
 
-  class << self 
+  class << self
     def fetch_all_name_and_point
       all.map do |item|
-        {name: item.name, point: item.point}
+        { name: item.name, point: item.point }
       end
     end
 
@@ -38,6 +38,4 @@ class Item < ApplicationRecord
       create(name: Name::AK47, effect_value: 1, point: 8, kind: Item.kinds[:weapone])
     end
   end
-
-  
 end

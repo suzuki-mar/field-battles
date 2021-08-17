@@ -26,11 +26,9 @@ class Inventory
     @stocks = ItemStock.where(player_id: player_id)
   end
 
-  
-
   def stock_count_by_name(name)
-    stock = stocks.includes(:item).find do |stock|
-      stock.item.name == name
+    stock = stocks.includes(:item).find do |s|
+      s.item.name == name
     end
 
     return 0 if stock.nil?
@@ -40,7 +38,7 @@ class Inventory
 
   def all_stock_name_and_count
     stocks.map do |s|
-      {name: s.name, count: s.stock_count}
+      { name: s.name, count: s.stock_count }
     end
   end
 
@@ -66,8 +64,8 @@ class Inventory
 
       grouped_stocks = build_grouped_stocks(players, stocks)
 
-      grouped_stocks.map do |player_id, stocks| 
-        self.new(player_id, stocks)
+      grouped_stocks.map do |player_id, ss|
+        new(player_id, ss)
       end
     end
 
@@ -77,8 +75,8 @@ class Inventory
 
       grouped_stocks = build_grouped_stocks(players, stocks)
 
-      grouped_stocks.map do |player_id, stocks| 
-        self.new(player_id, stocks)
+      grouped_stocks.map do |player_id, ss|
+        new(player_id, ss)
       end
     end
   end
@@ -100,16 +98,18 @@ class Inventory
     end
   end
 
-  def self.build_grouped_stocks(players, stocks)
-    grouped_stocks = {}
-    players.map do |p|
-      grouped_stocks[p.id] = []
-    end
+  class << self
+    def build_grouped_stocks(players, stocks)
+      grouped_stocks = {}
+      players.map do |p|
+        grouped_stocks[p.id] = []
+      end
 
-    stocks.each do |stock|
-      grouped_stocks[stock.player_id].push(stock)
+      stocks.each do |stock|
+        grouped_stocks[stock.player_id].push(stock)
+      end
+
+      grouped_stocks
     end
-    
-    grouped_stocks
   end
 end

@@ -4,8 +4,32 @@ RSpec.describe 'Filed', type: :request do
   let(:headers) { { 'ACCEPT' => 'application/json' } }
 
   describe 'GET /' do
+    subject { get '/filed', headers: headers }
+
+    before do
+      Item.create_initial_items
+
+      create(:player, :survivor)
+      create(:player, :zombie)
+
+      item_params = [
+        { name: Item::Name::FIJI_WATER, count: 2 },
+        { name: Item::Name::FIRST_AID_POUCH, count: 3 }
+      ]
+
+      Inventory.create_for_newcomers(Player.first.id, item_params)
+      Inventory.create_for_newcomers(Player.last.id, item_params)
+    end
+
+    it 'レポートの計算ができていること' do
+      subject
+
+      body = JSON.parse(response.body, { symbolize_names: true })
+      expect(body).to have_key(:infected_percentage)
+    end
+
     it 'returns http success' do
-      get '/filed', headers: headers
+      subject
       expect(response).to have_http_status(:success)
     end
   end

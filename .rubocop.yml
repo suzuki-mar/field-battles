@@ -73,3 +73,7 @@ RSpec/AnyInstance:
 # ある程度複雑な条件の場合はデフォルトだと厳しい
 RSpec/NestedGroups:
   Max: 4
+  
+# メソッドを短くすぎると逆に見づらくなるケースもあるためある程度緩和  
+Metrics/MethodLength:
+  Max: 15
