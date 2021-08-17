@@ -16,6 +16,39 @@
 #
 
 RSpec.describe Player, type: :model do
+  describe 'validations' do
+    describe 'age' do
+      it { should validate_presence_of(:age) }
+      it { should allow_value(18).for(:age) }
+      it { should allow_value(65).for(:age) }
+      it { should_not allow_value(17).for(:age) }
+      it { should_not allow_value(66).for(:age) }
+    end
+
+    describe 'counting_to_become_zombie' do      
+      it { should allow_value(5).for(:counting_to_become_zombie) }
+      it { should allow_value(0).for(:counting_to_become_zombie) }
+      it { should_not allow_value(6).for(:counting_to_become_zombie) }
+      it { should_not allow_value(-1).for(:counting_to_become_zombie) }
+    end
+
+    describe 'current_lat' do
+      it { should validate_presence_of(:current_lat) }      
+      it { should allow_value(Filed::LAT_RANGE.end).for(:current_lat) }
+      it { should allow_value(Filed::LAT_RANGE.begin).for(:current_lat) }
+      it { should_not allow_value(Filed::LAT_RANGE.end + 1).for(:current_lat) }
+      it { should_not allow_value(Filed::LAT_RANGE.begin - 1).for(:current_lat) }
+    end
+    describe 'current_lon' do
+      it { should validate_presence_of(:current_lon) }      
+      it { should allow_value(Filed::LON_RANGE.end).for(:current_lon) }
+      it { should allow_value(Filed::LON_RANGE.begin).for(:current_lon) }
+      it { should_not allow_value(Filed::LON_RANGE.end + 1).for(:current_lon) }
+      it { should_not allow_value(Filed::LON_RANGE.begin - 1).for(:current_lon) }
+    end
+
+  end
+  
   describe 'current_location' do
     let(:player) { create(:player) }
 
@@ -29,7 +62,7 @@ RSpec.describe Player, type: :model do
   describe 'can_see?' do
     subject { player.can_see?(target) }
 
-    let(:player) { create(:player) }
+    let(:player) { create(:player, current_lon:0) }
     let(:target) do
       create(:player, current_lon: lon)
     end
@@ -43,7 +76,7 @@ RSpec.describe Player, type: :model do
     end
 
     context '見ることができない場合' do
-      let(:lon) { player.current_lon + 1000 }
+      let(:lon) { player.current_lon + 50 }
 
       it 'falseが返ること' do
         expect(subject).to eq(false)

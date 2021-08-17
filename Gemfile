@@ -70,6 +70,7 @@ group :test do
   gem 'faker'
   gem 'rspec-parameterized'
   gem 'webdrivers'
+  gem 'shoulda-matchers', '~> 5.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
