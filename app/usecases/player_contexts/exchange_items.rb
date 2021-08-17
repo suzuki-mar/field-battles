@@ -4,6 +4,10 @@ module PlayerContexts
   class ExchangeItems
     def execute(requester, params)
       @params = params
+      validator = Usecase::ExchangeItemsValidator.new
+
+      return { success: false, error_keys: validator.error_keys } unless validator.valid?(params)
+
       @requester_inventory = Inventory.fetch_by_player_id(requester.id)
       @partener_inventory = Inventory.fetch_by_player_id(params[:partner_player_id])
 
@@ -17,7 +21,7 @@ module PlayerContexts
 
     private
 
-    attr_reader :requester_inventory, :partener_inventory, :params
+    attr_reader :requester_inventory, :partener_inventory, :params, :item_name_and_points
 
     def requestor_presents_items
       params[:requeser_items].each do |item|

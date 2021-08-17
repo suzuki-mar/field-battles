@@ -24,7 +24,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
       create_partner_inventory(params)
     end
 
-    context('パラメーターが正しい場合') do
+    xcontext('パラメーターが正しい場合') do
       it 'アイテムの交換ができていること' do
         subject
 
@@ -42,10 +42,29 @@ RSpec.describe PlayerContexts::ExchangeItems do
       end
     end
 
-    xcontext('パラメーターが不正な場合') do
-      context('交換するアイテム分のポイントが等しくないない場合')
-      context('パートナーが生存していない場合')
-      context('交換しようとしたアイテムが存在しない場合')
+    context('パラメーターが不正な場合') do
+      context('交換するアイテム分のポイントが等しくないない場合') do
+        before do
+          params[:partner_items].first[:count] = 1
+        end
+
+        it 'エラーを返すこと' do
+          expect(subject[:error_keys].first).to eq(Error::Key::NOT_SAME_POINTS_TO_TRADE)
+        end
+      end
+
+      context('パートナーが生存していない場合') do
+        before do
+          player = Player.find(params[:partner_player_id])
+          player.update(status: Player.statuses[:zombie])
+        end
+
+        it 'エラーを返すこと' do
+          expect(subject[:error_keys].first).to eq(Error::Key::EXCHANGE_PARTNER_NOT_SURVIVOR)
+        end
+      end
+
+      xcontext('交換しようとしたアイテムが存在しない場合')
     end
   end
 

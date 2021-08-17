@@ -38,6 +38,11 @@ class Player < ApplicationRecord
     current_location.can_sight?(compare.current_location)
   end
 
+  def self.survivor?(id)
+    status = find(id).status
+    status == statuses[:survivor] || status == statuses[:infected]
+  end
+
   private
 
   def assign_default_value_if_new_record

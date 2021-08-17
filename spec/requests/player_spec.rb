@@ -57,13 +57,29 @@ RSpec.describe 'Players', type: :request do
         expect(item_stock.stock_count).to eq(0)
       end
 
-      xit 'returns http success' do
+      it 'returns http success' do
         subject
         expect(response).to have_http_status(:success)
       end
     end
 
-    xcontext('パラメーターが間違っている場合')
+    context('パラメーターが間違っている場合') do
+      before do
+        params['requeser_items'].first['count'] = 1
+      end
+
+      it 'エラーキーを返していること' do
+        subject
+        body = JSON.parse(response.body, { symbolize_names: true })
+        expect(body).to have_key(:error_keys)
+      end
+
+      it 'returns http 400' do
+        subject
+        expect(response).to have_http_status(:bad_request)
+      end
+    end
+
     xcontext('idがが間違っている場合')
 
     def create_requester_inventory(params)

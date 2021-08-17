@@ -1,12 +1,4 @@
 title: Error
-type: object
-properties:
-  description:
-    type: string
-    description: エラー内容の説明
-    example: 指定したユーザーが生存者ではありません
-  error_key:
-    type: string
-    example: PlayerIsZombie
-required:
-  - description
+type: array
+items:
+  type: string

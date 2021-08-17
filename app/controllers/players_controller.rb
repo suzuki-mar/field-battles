@@ -14,8 +14,11 @@ class PlayersController < ApplicationController
     player = Player.find(params[:id])
 
     usecase = PlayerContexts::ExchangeItems.new
-    usecase.execute(player, build_params_of_update_inventory)
-    render json: { success: true }
+    result = usecase.execute(player, build_params_of_update_inventory)
+
+    return render json: { error_keys: result[:error_keys] }, status: :bad_request unless result[:sucess]
+
+    render json: { success: true }, status: :ok
   end
 
   private
