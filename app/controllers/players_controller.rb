@@ -7,8 +7,8 @@ class PlayersController < ApplicationController
 
     usecase = PlayerContexts::RegisterNewSurvivor.new
     result = usecase.execute(usecase_params)
-    
-    render json: { success: true, player: PlayerSerializer.new(result[:player]).serializable_hash}
+
+    render json: { success: true, player: PlayerSerializer.new(result[:player]).serializable_hash }
   end
 
   def update_inventory

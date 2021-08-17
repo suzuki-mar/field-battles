@@ -25,9 +25,9 @@ RSpec.describe 'Players', type: :request do
       end
 
       # 時間がないため手抜きのテストになっている
-      it 'レスポンスデータが正しいこと' do 
+      it 'レスポンスデータが正しいこと' do
         subject
-        body = JSON.parse(response.body, { symbolize_names: true })        
+        body = JSON.parse(response.body, { symbolize_names: true })
         expect(body).to have_key(:player)
       end
 

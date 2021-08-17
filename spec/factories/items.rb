@@ -12,7 +12,7 @@
 #
 FactoryBot.define do
   factory :item do
-    name { DummyData.item_name }    
-    point { 8 }    
+    name { DummyData.item_name }
+    point { 8 }
   end
 end

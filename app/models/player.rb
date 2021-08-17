@@ -47,7 +47,7 @@ class Player < ApplicationRecord
   def assign_default_value_if_new_record
     return unless new_record?
 
-    self.counting_to_become_zombie = COUNT_OF_BEFORE_BECOMING_ZOMBIE if counting_to_become_zombie.nil?    
+    self.counting_to_become_zombie = COUNT_OF_BEFORE_BECOMING_ZOMBIE if counting_to_become_zombie.nil?
     self.status = Player.statuses[:newcomer] if status.nil?
   end
 end
