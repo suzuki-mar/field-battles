@@ -4,13 +4,11 @@
 #
 # Table name: items
 #
-#  id           :integer          not null, primary key
-#  effect_value :integer          not null
-#  kind         :integer          not null
-#  name         :string           not null
-#  point        :integer          not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :integer          not null, primary key
+#  name       :string           not null
+#  point      :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 
 RSpec.describe Item, type: :model do

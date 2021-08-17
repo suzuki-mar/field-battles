@@ -48,13 +48,6 @@ properties:
     example: survivor
   inventory:
     $ref: ./Inventory.yaml
-  counting_to_starvation:
-    type: integer
-    format: int32
-    minimum: 0
-    description: 値が０になると飢えて死亡する
-    default: 3
-    example: 3
   counting_to_become_zombie:
     type: integer
     description: 値が０になるとゾンビになる
@@ -68,5 +61,4 @@ required:
   - name
   - age
   - status
-  - counting_to_starvation
   - counting_to_become_zombie

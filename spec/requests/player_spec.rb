@@ -24,6 +24,13 @@ RSpec.describe 'Players', type: :request do
         expect(player.status).to eq(Player.statuses[:survivor])
       end
 
+      # 時間がないため手抜きのテストになっている
+      it 'レスポンスデータが正しいこと' do 
+        subject
+        body = JSON.parse(response.body, { symbolize_names: true })        
+        expect(body).to have_key(:player)
+      end
+
       it 'returns http success' do
         subject
         expect(response).to have_http_status(:success)
