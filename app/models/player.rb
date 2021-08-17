@@ -7,7 +7,6 @@
 #  id                        :integer          not null, primary key
 #  age                       :integer          not null
 #  counting_to_become_zombie :integer          not null
-#  counting_to_starvation    :integer          not null
 #  current_lat               :float            not null
 #  current_lon               :float            not null
 #  name                      :string           not null
@@ -48,8 +47,7 @@ class Player < ApplicationRecord
   def assign_default_value_if_new_record
     return unless new_record?
 
-    self.counting_to_become_zombie = COUNT_OF_BEFORE_BECOMING_ZOMBIE if counting_to_become_zombie.nil?
-    self.counting_to_starvation = 3 if counting_to_starvation.nil?
+    self.counting_to_become_zombie = COUNT_OF_BEFORE_BECOMING_ZOMBIE if counting_to_become_zombie.nil?    
     self.status = Player.statuses[:newcomer] if status.nil?
   end
 end

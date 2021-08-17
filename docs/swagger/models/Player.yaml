@@ -1,7 +1,27 @@
 title: Player
 type: object
 description: ''
-examples: []
+examples:
+  - id: '1'
+    name: 鈴木 健
+    age: 18
+    status: survivor
+    inventory:
+      player_id: 1
+      item_stocks:
+        - id: 1
+          player_id: 2
+          item:
+            id: '1'
+            type: first_aid_kit
+            effect_value: 5
+            point: 10
+          current_stock_count: 3
+    counting_to_starvation: 3
+    counting_to_become_zombie: 5
+    current_location:
+      lon: 35.6895014
+      lat: -35.6895014
 properties:
   id:
     example: '1'
