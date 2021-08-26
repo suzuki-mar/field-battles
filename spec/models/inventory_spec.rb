@@ -5,7 +5,7 @@ RSpec.describe Inventory, type: :model do
   let(:item_name) { Item::Name::FIRST_AID_POUCH }
 
   before do
-    Item.create_initial_items
+    SetUpper.prepare_items
   end
 
   describe('fetch_by_player') do

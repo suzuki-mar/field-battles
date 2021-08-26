@@ -8,7 +8,7 @@ RSpec.describe FiledContext::GenerateReportForCurrentSituation do
     end
 
     before do
-      Item.create_initial_items
+      SetUpper.prepare_items
 
       create_list(:player, 6, :survivor)
       create_list(:player, 3, :zombie)

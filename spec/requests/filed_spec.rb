@@ -7,7 +7,7 @@ RSpec.describe 'Filed', type: :request do
     subject { get '/filed', headers: headers }
 
     before do
-      Item.create_initial_items
+      SetUpper.prepare_filed
 
       create(:player, :survivor)
       create(:player, :zombie)

@@ -14,7 +14,7 @@ RSpec.describe PlayerContexts::RegisterNewSurvivor do
     end
 
     before do
-      Item.create_initial_items
+      SetUpper.prepare_filed
     end
 
     context('パラメーターが正しい場合') do

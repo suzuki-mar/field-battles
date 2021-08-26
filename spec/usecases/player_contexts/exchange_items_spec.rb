@@ -18,13 +18,13 @@ RSpec.describe PlayerContexts::ExchangeItems do
       ReadJsonFile.read('spec/parameters/exchange_items.json')
     end
 
-    before do
-      Item.create_initial_items
+    before do      
+      SetUpper.prepare_filed
       create_requester_inventory(survivor, params)
-      create_partner_inventory(params)
+      create_partner_inventory(params)      
     end
 
-    xcontext('パラメーターが正しい場合') do
+    context('パラメーターが正しい場合') do
       it 'アイテムの交換ができていること' do
         subject
 

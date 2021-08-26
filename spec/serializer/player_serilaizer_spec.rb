@@ -4,7 +4,7 @@ RSpec.describe PlayerSerializer, type: :serializer do
   let(:player) { create(:player) }
 
   before do
-    Item.create_initial_items
+    SetUpper.prepare_items
     inventory = Inventory.fetch_by_player_id(player.id)
     inventory.add(Item::Name::FIJI_WATER, 2)
   end

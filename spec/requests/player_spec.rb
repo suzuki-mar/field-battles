@@ -4,7 +4,7 @@ RSpec.describe 'Players', type: :request do
   let(:headers) { { 'ACCEPT' => 'application/json' } }
 
   before do
-    Item.create_initial_items
+    SetUpper.prepare_items
   end
 
   describe 'POST /' do
@@ -52,7 +52,7 @@ RSpec.describe 'Players', type: :request do
     end
 
     before do
-      Item.create_initial_items
+      SetUpper.prepare_items
       create_requester_inventory(params)
       create_partner_inventory(params)
     end
