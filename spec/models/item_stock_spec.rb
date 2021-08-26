@@ -21,7 +21,6 @@
 #  item_id    (item_id => items.id)
 #  player_id  (player_id => players.id)
 #
-require 'rails_helper'
 
 RSpec.describe ItemStock, type: :model do
   pending "add some examples to (or delete) #{__FILE__}"
