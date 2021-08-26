@@ -15,7 +15,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
     end
 
     let(:params) do
-      ReadJsonFile.read('spec/parameters/exchange_items.json')
+      JsonParserSupport.file('spec/parameters/exchange_items.json')
     end
 
     before do      

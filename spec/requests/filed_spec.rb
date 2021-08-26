@@ -23,15 +23,11 @@ RSpec.describe 'Filed', type: :request do
 
     it 'レポートの計算ができていること' do
       subject
-
-      body = JSON.parse(response.body, { symbolize_names: true })
-      expect(body).to have_key(:infected_percentage)
+      
+      expect(JsonParserSupport.response_body(response)).to have_key(:infected_percentage)
     end
 
-    it 'returns http success' do
-      subject
-      expect(response).to have_http_status(:success)
-    end
+    it_behaves_like "returns http success"
   end
 
   describe 'PUT /current_location' do
@@ -41,10 +37,7 @@ RSpec.describe 'Filed', type: :request do
       create(:player, :survivor, current_lat: 0, current_lon: 0)
     end
 
-    it 'returns http success' do
-      subject
-      expect(response).to have_http_status(:success)
-    end
+    it_behaves_like "returns http success"
 
     it 'ユースケースが実行されていること' do
       subject
@@ -68,9 +61,6 @@ RSpec.describe 'Filed', type: :request do
       expect(Player.exists?(status: Player.statuses[:zombie])).to eq(true)
     end
 
-    it 'returns http success' do
-      subject
-      expect(response).to have_http_status(:success)
-    end
+    it_behaves_like "returns http success"
   end
 end

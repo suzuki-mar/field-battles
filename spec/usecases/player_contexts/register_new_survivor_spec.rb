@@ -8,9 +8,7 @@ RSpec.describe PlayerContexts::RegisterNewSurvivor do
     end
 
     let(:params) do
-      path = Rails.root.join('spec/parameters/registe_new_survivor.json')
-      json = File.open(path).read
-      JSON.parse(json, { symbolize_names: true })
+      JsonParserSupport.file('spec/parameters/registe_new_survivor.json')      
     end
 
     before do

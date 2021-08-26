@@ -13,7 +13,7 @@ RSpec.describe 'Players', type: :request do
     end
 
     let(:params) do
-      ReadJsonFile.read('spec/parameters/registe_new_survivor.json', :not_symbolize)
+      JsonParserSupport.file('spec/parameters/registe_new_survivor.json', :not_symbolize)
     end
 
     context('パラメーターが正しい場合') do
@@ -26,15 +26,11 @@ RSpec.describe 'Players', type: :request do
 
       # 時間がないため手抜きのテストになっている
       it 'レスポンスデータが正しいこと' do
-        subject
-        body = JSON.parse(response.body, { symbolize_names: true })
-        expect(body).to have_key(:player)
+        subject        
+        expect(JsonParserSupport.response_body(response)).to have_key(:player)
       end
 
-      it 'returns http success' do
-        subject
-        expect(response).to have_http_status(:success)
-      end
+      it_behaves_like "returns http success"
     end
   end
 
@@ -48,7 +44,7 @@ RSpec.describe 'Players', type: :request do
     end
 
     let(:params) do
-      ReadJsonFile.read('spec/parameters/exchange_items.json', :not_symbolize)
+      JsonParserSupport.file('spec/parameters/exchange_items.json', :not_symbolize)
     end
 
     before do
@@ -64,10 +60,7 @@ RSpec.describe 'Players', type: :request do
         expect(item_stock.stock_count).to eq(0)
       end
 
-      it 'returns http success' do
-        subject
-        expect(response).to have_http_status(:success)
-      end
+      it_behaves_like "returns http success"
     end
 
     context('パラメーターが間違っている場合') do
@@ -76,15 +69,11 @@ RSpec.describe 'Players', type: :request do
       end
 
       it 'エラーキーを返していること' do
-        subject
-        body = JSON.parse(response.body, { symbolize_names: true })
-        expect(body).to have_key(:error_keys)
+        subject        
+        expect(JsonParserSupport.response_body(response)).to have_key(:error_keys)
       end
 
-      it 'returns http 400' do
-        subject
-        expect(response).to have_http_status(:bad_request)
-      end
+      it_behaves_like "returns http bad request"
     end
 
     xcontext('idがが間違っている場合')
