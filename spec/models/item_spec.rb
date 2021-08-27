@@ -12,6 +12,21 @@
 #
 
 RSpec.describe Item, type: :model do
+  describe('auto_assign_attributes_from_name') do
+
+    let(:item){Item.new(name: Item::Name::AK47)}
+
+    subject do
+      item.valid?
+    end
+
+    it 'アイテム名から値を自動設定する' do 
+      subject
+      expect(item.point).not_to be_nil
+    end
+
+  end
+
   describe('fetch_all_name_and_point') do
     subject { described_class.fetch_all_name_and_point }
 

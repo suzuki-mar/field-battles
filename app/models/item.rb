@@ -11,6 +11,8 @@
 #  updated_at :datetime         not null
 #
 class Item < ApplicationRecord
+  before_validation :assign_attributes_from_name_if_new_record
+
   has_one :item_stock, dependent: :destroy
 
   enum kinds: { first_aid_kit: 0, drink: 1, weapone: 2 }
@@ -30,10 +32,28 @@ class Item < ApplicationRecord
     end
 
     def create_initial_items
-      create(name: Name::FIJI_WATER, point: 14)
-      create(name: Name::CAMPBELL_SOUP, point: 12)
-      create(name: Name::FIRST_AID_POUCH, point: 10)
-      create(name: Name::AK47, point: 8)
+      create(name: Name::FIJI_WATER)
+      create(name: Name::CAMPBELL_SOUP)
+      create(name: Name::FIRST_AID_POUCH)
+      create(name: Name::AK47)
     end
+  end
+
+  private
+  def assign_attributes_from_name_if_new_record
+    return unless new_record?
+
+    case name
+    when Name::AK47
+      self.point = 8
+    when Name::FIJI_WATER
+      self.point = 14
+    when Name::CAMPBELL_SOUP
+      self.point = 12
+    when Name::FIRST_AID_POUCH
+      self.point = 10
+    end
+
+    
   end
 end
