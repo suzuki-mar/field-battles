@@ -13,6 +13,10 @@
 class Item < ApplicationRecord
   before_validation :assign_attributes_from_name_if_new_record
 
+  validates :point, presence: true, numericality: {greater_than_or_equal_to: 1}
+  validates :name, presence: true
+  validate :name, :validate_exists_in_name_list
+
   has_one :item_stock, dependent: :destroy
 
   enum kinds: { first_aid_kit: 0, drink: 1, weapone: 2 }
@@ -40,6 +44,14 @@ class Item < ApplicationRecord
   end
 
   private
+  def validate_exists_in_name_list
+    keys = Item::Name.constants
+    names = keys.map { |key| Item::Name.const_get(key) }
+    return if names.include?(name)
+
+    errors.add(:name, "#{name}は存在しない名前のアイテムです")
+  end
+
   def assign_attributes_from_name_if_new_record
     return unless new_record?
 

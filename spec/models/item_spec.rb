@@ -12,6 +12,20 @@
 #
 
 RSpec.describe Item, type: :model do
+  describe 'validations' do
+    describe 'point' do
+      it { should validate_presence_of(:point) }
+      it { should allow_value(1).for(:point) }
+      it { should_not allow_value(0).for(:point) }
+    end
+
+    describe 'name' do
+      it { should validate_presence_of(:name) }
+      it { should allow_value(described_class::Name::FIRST_AID_POUCH).for(:name) }
+      it {should_not allow_value("Unknown item").for(:name)}
+    end
+  end
+
   describe('auto_assign_attributes_from_name') do
 
     let(:item){Item.new(name: Item::Name::AK47)}
