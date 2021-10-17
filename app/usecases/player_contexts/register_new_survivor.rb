@@ -9,12 +9,12 @@ module PlayerContexts
       )
 
       ActiveRecord::Base.transaction do
-        player.save
+        player.save!
         Inventory.create_for_newcomers(player.id, params[:inventory])
-        player.update(status: Player.statuses[:survivor])
+        player.update!(status: Player.statuses[:survivor])
       end
-
-      { sucess: true, player: player }
+      
+      { success: true, player: player }
     end
 
     private
