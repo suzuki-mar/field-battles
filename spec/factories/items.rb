@@ -5,6 +5,7 @@
 # Table name: items
 #
 #  id         :integer          not null, primary key
+#  kind       :integer          not null
 #  name       :string           not null
 #  point      :integer          not null
 #  created_at :datetime         not null

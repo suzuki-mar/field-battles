@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_17_202415) do
+ActiveRecord::Schema.define(version: 2021_10_17_090331) do
 
   create_table "item_stocks", force: :cascade do |t|
     t.integer "stock_count", null: false
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2021_08_17_202415) do
     t.integer "point", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "kind", null: false
   end
 
   create_table "players", force: :cascade do |t|

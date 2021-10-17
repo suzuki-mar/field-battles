@@ -5,6 +5,7 @@
 # Table name: items
 #
 #  id         :integer          not null, primary key
+#  kind       :integer          not null
 #  name       :string           not null
 #  point      :integer          not null
 #  created_at :datetime         not null
@@ -26,7 +27,7 @@ RSpec.describe Item, type: :model do
     end
   end
 
-  describe('auto_assign_attributes_from_name') do
+  describe 'auto_assign_attributes_from_name' do
 
     let(:item){Item.new(name: Item::Name::AK47)}
 
@@ -41,7 +42,25 @@ RSpec.describe Item, type: :model do
 
   end
 
-  describe('fetch_all_name_and_point') do
+  describe 'create_initial_items' do
+    subject { described_class.create_initial_items }
+
+    it 'すべてのアイテムが作成されていること' do 
+      subject
+      expect(Item.all.count).to eq(Item.build_all_names.count)
+    end
+
+    it '全ての値が設定されていること' do 
+      subject
+      attributes = Item.first.attributes
+      attributes.delete("kinds")
+      everything_has_value = attributes.all?{|key, value| !value.nil?}
+      expect(everything_has_value).to eq(true)
+    end
+
+  end
+
+  describe 'fetch_all_name_and_point' do
     subject { described_class.fetch_all_name_and_point }
 
     before do
