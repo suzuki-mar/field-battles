@@ -41,7 +41,7 @@ paths:
                         type: integer
                         example: 1
             examples:
-              example-2:
+              example:
                 value:
                   name: 鈴木太郎
                   age: 18
