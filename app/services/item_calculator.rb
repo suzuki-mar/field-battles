@@ -20,6 +20,9 @@ class ItemCalculator
 
     count_totals.map do |name, c|
       count = (c.to_f / survivor_count).round
+      
+      binding.pry
+      
       { name: name, count: count }
     end
   end

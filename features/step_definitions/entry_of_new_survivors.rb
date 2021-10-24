@@ -12,7 +12,6 @@ Then("フィールドに新しい生存者を確認できる") do
 end
 
 def build_parameters_for_registing_survivor
-
   {
     name: Faker::Japanese::Name.name,
     age: Faker::Number.between(from: 20, to: 60),
