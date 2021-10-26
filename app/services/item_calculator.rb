@@ -19,12 +19,16 @@ class ItemCalculator
     survivor_count = filed.survivors.count
 
     count_totals.map do |name, c|
-      count = (c.to_f / survivor_count).round
       
-      binding.pry
-      
+      count = if c.to_f.zero?
+        0
+      else 
+        count = (c.to_f / survivor_count).round
+      end
+
       { name: name, count: count }
     end
+
   end
 
   def count_totals_per_items

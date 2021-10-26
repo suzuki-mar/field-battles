@@ -15,8 +15,8 @@ When("フィールドの時間がたくさん流れる") do
   
 end
 
-Then("フィールドにはゾンビや死亡者が存在する") do
-  pp fetch_filed_report
+Then("フィールドにはゾンビや死亡者が存在する") do  
+  expect(existence_of_zombies_or_death?).to eq(true)
 end
 
 def transferring_new_survivor
@@ -32,4 +32,8 @@ def transferring_new_survivor
   }
 
   post('/players', params)  
+end
+
+def existence_of_zombies_or_death?
+  fetch_filed_report[:infected_percentage_including_zombies] > 0.0
 end
