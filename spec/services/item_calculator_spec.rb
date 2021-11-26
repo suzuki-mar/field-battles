@@ -53,7 +53,7 @@ RSpec.describe ItemCalculator do
         { name: 'AK47', count: 0 }
       ]
 
-      expect(subject[:average_count_per]).to eq(expected)
+      expect(subject[:average_count_per]).to match_array(expected)
     end
 
     it '非生存者担ってしまったプレイヤーの総ポイント数' do

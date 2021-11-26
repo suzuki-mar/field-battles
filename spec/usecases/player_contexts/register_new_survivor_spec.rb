@@ -36,11 +36,6 @@ RSpec.describe PlayerContexts::RegisterNewSurvivor do
       end
 
       it '戻り値が正しいこと' do
-        pp subject 
-        
-        binding.pry
-        
-
         expect(subject[:success]).to eq(true)
         expect(subject[:player]).not_to be_nil
       end
