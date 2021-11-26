@@ -7,10 +7,10 @@ RSpec.describe 'Filed', type: :request do
     subject { get '/filed', headers: headers }
 
     before do
-      SetUpper.prepare_filed
+      SetUpper.prepare_items
 
-      create(:player, :survivor)
-      create(:player, :zombie)
+      create_list(:player, 6, :survivor)
+      create_list(:player, 3, :zombie)
 
       item_params = [
         { name: Item::Name::FIJI_WATER, count: 2 },
@@ -21,10 +21,23 @@ RSpec.describe 'Filed', type: :request do
       Inventory.create_for_newcomers(Player.last.id, item_params)
     end
 
-    it 'レポートの計算ができていること' do
+    # 計算自体はサービスクラスに異常している
+    it 'プレイ人口の割合が計算できていること' do
       subject
-      
-      expect(JsonParserSupport.response_body(response)).to have_key(:infected_percentage)
+      json = JSON.parse(response.body, {symbolize_names: true})
+
+      expect(json[:noninfected_percentage]).not_to be_nil
+      expect(json[:infected_percentage]).not_to be_nil
+      expect(json[:infected_percentage]).not_to be_nil
+    end
+
+    it 'アイテムの計算ができていること' do
+      subject
+
+      json = JSON.parse(response.body, {symbolize_names: true})
+
+      expect(json[:average_count_per_items]).not_to be_nil
+      expect(json[:wasted_item_points]).not_to be_nil
     end
 
     it_behaves_like "returns http success"
