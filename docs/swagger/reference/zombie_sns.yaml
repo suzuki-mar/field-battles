@@ -1,11 +1,12 @@
 openapi: 3.1.0
 info:
-  title: zombie_sns
+  title: filed-battle
   version: '1.0'
+  summary: 荒野行動などのバトルロワイヤルゲームのシュミレーター
 servers:
   - url: 'http://localhost:3000'
 paths:
-  /players:
+  /characters:
     parameters: []
     post:
       summary: Players SignUp
@@ -17,6 +18,11 @@ paths:
             application/json:
               schema:
                 $ref: ../models/Player.yaml
+        '':
+          content:
+            application/json:
+              schema:
+                $ref: ../models/Character.yaml
       requestBody:
         content:
           application/json:
@@ -49,7 +55,7 @@ paths:
                     - name: Fiji Water
                       count: 1
         description: ''
-  '/players/{player_id}/inventory':
+  '/characters/{characters_id}/inventory':
     put:
       summary: ExchangeItems
       operationId: put-players-inventory
@@ -81,7 +87,7 @@ paths:
             application/json:
               schema:
                 $ref: ''
-      description: していした生存者とアイテムを交換する
+      description: 指定した生存者とアイテムを交換する
       requestBody:
         content:
           application/json:
@@ -126,7 +132,7 @@ paths:
     parameters:
       - schema:
           type: string
-        name: player_id
+        name: characters_id
         in: path
         required: true
   /filed/current_location:
