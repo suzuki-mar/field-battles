@@ -2,13 +2,18 @@
 
 class PlayersController < ApplicationController
   def create
-    usecase_params = params.permit(:name, :age)
-    usecase_params[:inventory] = build_item_params(params.required(:inventory))
+    initial_location = Location.build_distance_to_travel
+    player = Player.new(
+      name: params[:name], age: params[:age], current_lat: initial_location.lat, current_lon: initial_location.lon
+    )
 
-    usecase = PlayerContexts::RegisterNewSurvivor.new
-    result = usecase.execute(usecase_params)
-
-    render json: { success: true, player: PlayerSerializer.new(result[:player]).serializable_hash }
+    ActiveRecord::Base.transaction do
+      player.save!
+      Inventory.create_for_newcomers(player.id, params[:inventory])
+      player.update!(status: Player.statuses[:survivor])
+    end
+    
+    render json: { success: true, player: player.serializable_hash }
   end
 
   def update_inventory

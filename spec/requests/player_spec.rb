@@ -16,21 +16,42 @@ RSpec.describe 'Players', type: :request do
       JsonParserSupport.file('spec/parameters/registe_new_survivor.json', :not_symbolize)
     end
 
-    context('パラメーターが正しい場合') do
-      it '新しい生存者を作成していること' do
+    before do
+      SetUpper.prepare_filed
+    end
+
+    context 'パラメーターが正しい場合' do
+      it '生存者が存在すること' do
         subject
 
-        player = Player.first
-        expect(player.status).to eq(Player.statuses[:survivor])
+        filed = Filed.new
+        filed.load_survivors
+
+        expect(filed.survivors.count).to eq(1)
       end
 
-      # 時間がないため手抜きのテストになっている
-      it 'レスポンスデータが正しいこと' do
-        subject        
-        expect(JsonParserSupport.response_body(response)).to have_key(:player)
+      it 'イベントリが作成されていること' do
+        subject
+
+        filed = Filed.new
+        filed.load_survivors
+        new_survivor = filed.survivors.first
+
+        expect(ItemStock.exists?(player_id: new_survivor.id)).to eq(true)
       end
 
-      it_behaves_like "returns http success"
+      it '戻り値が正しいこと' do
+        subject
+        json = JSON.parse(response.body, {symbolize_names: true})
+        expect(json[:success]).to eq(true)
+        expect(json[:player]).not_to be_nil
+      end
+    end
+
+    it_behaves_like "returns http success"
+
+    xcontext('パラメーターが不正な場合') do
+      it('登録するアイテムの情報が間違っているケース')
     end
   end
 
