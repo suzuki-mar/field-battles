@@ -33,29 +33,43 @@ RSpec.describe 'Filed', type: :request do
   describe 'PUT /current_location' do
     subject { put '/filed/current_location', headers: headers }
 
+    let(:survivor_player) { create(:player, :survivor) }
+
     before do
-      create(:player, :survivor, current_lat: 0, current_lon: 0)
+      zombie_player = create(:player, :zombie)
+      survivor_player.update(current_lat: zombie_player.current_lat, current_lon: zombie_player.current_lon)
+      
+      # 乱数での判定なためモックを使用している
+      # TODO: 意味を理解するまで時間がかかるのでヘルパーにしたい
+      allow_any_instance_of(Location).to receive(:can_sight?).and_return(true)
+    end
+
+    it '移動していること' do
+      before_location = survivor_player.current_location
+      subject
+      after_location = survivor_player.reload.current_location
+
+      expect(after_location.equal(before_location)).to eq(false)
+    end
+
+    it 'ゾンビに襲われていること' do
+      subject
+      expect(Player.find(survivor_player.id).status).to eq(Player.statuses[:death])
     end
 
     it_behaves_like "returns http success"
 
-    it 'ユースケースが実行されていること' do
-      subject
-
-      location = Player.first.current_location
-      expect(location.lat).not_to eq(0)
-      expect(location.lon).not_to eq(0)
-    end
   end
 
   describe 'PUT /infectio' do
     subject { put '/filed/infection', headers: headers }
 
     before do
-      create_list(:player, 30, :survivor)
+      # 一人は感染する感染する生存者を発生させたいので多めに作成している
+      create_list(:player, 20, :survivor)
     end
 
-    it 'ユースケースが実行されていること' do
+    it 'ゾンビになった生存者がいること' do
       subject
 
       expect(Player.exists?(status: Player.statuses[:zombie])).to eq(true)
