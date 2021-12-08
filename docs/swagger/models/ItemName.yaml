@@ -1,7 +1,0 @@
-type: string
-title: ItemName
-enum:
-  - Fiji Water
-  - Campbell Soup
-  - First Aid Pouch
-  - AK47

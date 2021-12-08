@@ -1,5 +1,8 @@
 title: Location
 type: object
+description: |-
+  座標 
+  経度と緯度は最大範囲が決まっている
 properties:
   lon:
     type: number
@@ -8,7 +11,9 @@ properties:
       詳細は https://ja.wikipedia.org/wiki/%E7%B5%8C%E5%BA%A6
       を参照
     format: float
-    example: 35.6895014
+    example: 3.3
+    minimum: 0
+    maximum: 10
   lat:
     type: number
     description: |-
@@ -16,4 +21,6 @@ properties:
       詳細は https://ja.wikipedia.org/wiki/%E7%B7%AF%E5%BA%A6
       を参照
     format: float
-    example: -35.6895014
+    example: 3.3
+    minimum: 0
+    maximum: 10

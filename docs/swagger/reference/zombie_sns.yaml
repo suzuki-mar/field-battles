@@ -80,7 +80,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ''
+                $ref: ../models/Error.yaml
+              examples:
+                example(文言は例):
+                  value:
+                    - 存在しないプレイヤーと交換しようとしました
       description: していした生存者とアイテムを交換する
       requestBody:
         content:
