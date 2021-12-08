@@ -24,7 +24,7 @@ RSpec.describe 'Filed', type: :request do
     # 計算自体はサービスクラスに異常している
     it 'プレイ人口の割合が計算できていること' do
       subject
-      json = JSON.parse(response.body, {symbolize_names: true})
+      json = JSON.parse(response.body, { symbolize_names: true })
 
       expect(json[:noninfected_percentage]).not_to be_nil
       expect(json[:infected_percentage]).not_to be_nil
@@ -34,13 +34,13 @@ RSpec.describe 'Filed', type: :request do
     it 'アイテムの計算ができていること' do
       subject
 
-      json = JSON.parse(response.body, {symbolize_names: true})
+      json = JSON.parse(response.body, { symbolize_names: true })
 
       expect(json[:average_count_per_items]).not_to be_nil
       expect(json[:wasted_item_points]).not_to be_nil
     end
 
-    it_behaves_like "returns http success"
+    it_behaves_like 'returns http success'
   end
 
   describe 'PUT /current_location' do
@@ -51,7 +51,7 @@ RSpec.describe 'Filed', type: :request do
     before do
       zombie_player = create(:player, :zombie)
       survivor_player.update(current_lat: zombie_player.current_lat, current_lon: zombie_player.current_lon)
-      
+
       # 乱数での判定なためモックを使用している
       # TODO: 意味を理解するまで時間がかかるのでヘルパーにしたい
       allow_any_instance_of(Location).to receive(:can_sight?).and_return(true)
@@ -70,8 +70,7 @@ RSpec.describe 'Filed', type: :request do
       expect(Player.find(survivor_player.id).status).to eq(Player.statuses[:death])
     end
 
-    it_behaves_like "returns http success"
-
+    it_behaves_like 'returns http success'
   end
 
   describe 'PUT /infectio' do
@@ -88,6 +87,6 @@ RSpec.describe 'Filed', type: :request do
       expect(Player.exists?(status: Player.statuses[:zombie])).to eq(true)
     end
 
-    it_behaves_like "returns http success"
+    it_behaves_like 'returns http success'
   end
 end

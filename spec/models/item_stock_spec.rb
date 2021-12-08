@@ -25,17 +25,17 @@
 RSpec.describe ItemStock, type: :model do
   describe 'validations' do
     describe 'stock_count' do
-      it { should validate_presence_of(:stock_count) }
-      it { should allow_value(0).for(:stock_count) }
-      it { should_not allow_value(-1).for(:stock_count) }
+      it { is_expected.to validate_presence_of(:stock_count) }
+      it { is_expected.to allow_value(0).for(:stock_count) }
+      it { is_expected.not_to allow_value(-1).for(:stock_count) }
     end
 
     describe 'item_id' do
-      it { should validate_presence_of(:item_id) }
+      it { is_expected.to validate_presence_of(:item_id) }
     end
 
     describe 'player_id' do
-      it { should validate_presence_of(:player_id) }
+      it { is_expected.to validate_presence_of(:player_id) }
     end
   end
 end

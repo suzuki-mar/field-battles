@@ -42,13 +42,13 @@ RSpec.describe 'Players', type: :request do
 
       it '戻り値が正しいこと' do
         subject
-        json = JSON.parse(response.body, {symbolize_names: true})
+        json = JSON.parse(response.body, { symbolize_names: true })
         expect(json[:success]).to eq(true)
         expect(json[:player]).not_to be_nil
       end
     end
 
-    it_behaves_like "returns http success"
+    it_behaves_like 'returns http success'
 
     xcontext('パラメーターが不正な場合') do
       it('登録するアイテムの情報が間違っているケース')
@@ -81,7 +81,7 @@ RSpec.describe 'Players', type: :request do
         expect(item_stock.stock_count).to eq(0)
       end
 
-      it_behaves_like "returns http success"
+      it_behaves_like 'returns http success'
     end
 
     context('パラメーターが間違っている場合') do
@@ -90,11 +90,11 @@ RSpec.describe 'Players', type: :request do
       end
 
       it 'エラーキーを返していること' do
-        subject        
+        subject
         expect(JsonParserSupport.response_body(response)).to have_key(:error_keys)
       end
 
-      it_behaves_like "returns http bad request"
+      it_behaves_like 'returns http bad request'
     end
 
     xcontext('idがが間違っている場合')

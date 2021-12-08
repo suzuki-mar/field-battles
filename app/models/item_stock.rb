@@ -27,7 +27,7 @@ class ItemStock < ApplicationRecord
   belongs_to :item
   belongs_to :player
 
-  validates :stock_count, presence: true, numericality: {greater_than_or_equal_to: 0}
+  validates :stock_count, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :item_id, presence: true
   validates :player_id, presence: true
 

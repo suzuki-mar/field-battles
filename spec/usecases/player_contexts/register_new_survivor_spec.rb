@@ -8,7 +8,7 @@ RSpec.describe PlayerContexts::RegisterNewSurvivor do
     end
 
     let(:params) do
-      JsonParserSupport.file('spec/parameters/registe_new_survivor.json')      
+      JsonParserSupport.file('spec/parameters/registe_new_survivor.json')
     end
 
     before do
