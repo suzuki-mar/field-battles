@@ -75,7 +75,7 @@ RSpec.describe Item, type: :model do
         { name: 'AK47', point: 8 }
       ]
 
-      expect(subject).to eq(expected)
+      expect(subject).to match_array(expected)
     end
   end
 end
