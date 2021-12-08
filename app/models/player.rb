@@ -22,10 +22,19 @@ class Player < ApplicationRecord
   has_many :item_stocks, dependent: :destroy
 
   before_validation :assign_default_value_if_new_record
-  validates :age, presence: true, numericality: {greater_than: 17, less_than: 66}
-  validates :counting_to_become_zombie, presence: true, numericality: {greater_than: -1, less_than: 6}
-  validates :current_lat, presence: true, numericality: {greater_than_or_equal_to: Filed::LAT_RANGE.begin, less_than: Filed::LAT_RANGE.end + 1}
-  validates :current_lon, presence: true, numericality: {greater_than_or_equal_to: Filed::LON_RANGE.begin, less_than: Filed::LON_RANGE.end + 1}
+  validates :age, presence: true, numericality: { greater_than: 17, less_than: 66 }
+  validates :counting_to_become_zombie, presence: true, numericality: { greater_than: -1, less_than: 6 }
+  validates :current_lat, presence: true,
+                          numericality: {
+                            greater_than_or_equal_to: Filed::LAT_RANGE.begin,
+                            less_than: Filed::LAT_RANGE.end + 1
+                          }
+
+  validates :current_lon, presence: true,
+                          numericality: {
+                            greater_than_or_equal_to: Filed::LON_RANGE.begin,
+                            less_than: Filed::LON_RANGE.end + 1
+                          }
 
   COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5
   # FIX survivorをnoninfectedに変更する
@@ -44,6 +53,15 @@ class Player < ApplicationRecord
   def self.survivor?(id)
     status = find(id).status
     status == statuses[:survivor] || status == statuses[:infected]
+  end
+
+  class << self
+    def build_at_random_location(params)
+      initial_location = Location.build_distance_to_travel
+      new(
+        name: params[:name], age: params[:age], current_lat: initial_location.lat, current_lon: initial_location.lon
+      )
+    end
   end
 
   private

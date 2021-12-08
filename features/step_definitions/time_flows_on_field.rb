@@ -1,21 +1,21 @@
-Given("フィールドにはたくさんの生存者が存在する") do 
-  Item.create_initial_items
-  
-  100.times do |i|
-    transferring_new_survivor
-  end  
-  
-end 
+# frozen_string_literal: true
 
-When("フィールドの時間がたくさん流れる") do    
-  10.times do |i|
-    put('/filed/current_location')  
-    put('/filed/infection')    
+Given('フィールドにはたくさんの生存者が存在する') do
+  Item.create_initial_items
+
+  100.times do |_i|
+    transferring_new_survivor
   end
-  
 end
 
-Then("フィールドにはゾンビや死亡者が存在する") do  
+When('フィールドの時間がたくさん流れる') do
+  10.times do |_i|
+    put('/filed/current_location')
+    put('/filed/infection')
+  end
+end
+
+Then('フィールドにはゾンビや死亡者が存在する') do
   expect(existence_of_zombies_or_death?).to eq(true)
 end
 
@@ -31,7 +31,7 @@ def transferring_new_survivor
     ]
   }
 
-  post('/players', params)  
+  post('/players', params)
 end
 
 def existence_of_zombies_or_death?

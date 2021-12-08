@@ -16,10 +16,10 @@ RSpec.describe PlayerContexts::ExchangeItems do
       JsonParserSupport.file('spec/parameters/exchange_items.json')
     end
 
-    before do      
+    before do
       SetUpper.prepare_filed
       create_requester_inventory(survivor, params)
-      create_partner_inventory(params)      
+      create_partner_inventory(params)
     end
 
     context('パラメーターが正しい場合') do

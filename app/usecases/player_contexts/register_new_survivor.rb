@@ -13,7 +13,7 @@ module PlayerContexts
         Inventory.create_for_newcomers(player.id, params[:inventory])
         player.update!(status: Player.statuses[:survivor])
       end
-      
+
       { success: true, player: player }
     end
 

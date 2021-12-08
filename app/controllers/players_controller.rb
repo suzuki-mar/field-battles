@@ -2,17 +2,14 @@
 
 class PlayersController < ApplicationController
   def create
-    initial_location = Location.build_distance_to_travel
-    player = Player.new(
-      name: params[:name], age: params[:age], current_lat: initial_location.lat, current_lon: initial_location.lon
-    )
+    player = Player.build_at_random_location(params)
 
     ActiveRecord::Base.transaction do
       player.save!
       Inventory.create_for_newcomers(player.id, params[:inventory])
       player.update!(status: Player.statuses[:survivor])
     end
-    
+
     render json: { success: true, player: player.serializable_hash }
   end
 

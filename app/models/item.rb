@@ -5,7 +5,7 @@
 # Table name: items
 #
 #  id         :integer          not null, primary key
-#  kind       :integer          not null
+#  kind       :integer          default(0)
 #  name       :string           not null
 #  point      :integer          not null
 #  created_at :datetime         not null
@@ -13,7 +13,7 @@
 #
 class Item < ApplicationRecord
   before_validation :assign_attributes_from_name_if_new_record
-  validates :name,  presence: true,  allow_blank: false
+  validates :name,  presence: true, allow_blank: false
   validate :validate_of_name_existant
   validates :point, presence: true, numericality: { only_integer: true, greater_than: 0 }
   has_one :item_stock, dependent: :destroy
@@ -45,42 +45,43 @@ class Item < ApplicationRecord
       names.each do |name|
         attributes = build_attributes_form_name(name)
         attributes[:name] = name
-        create!(attributes)        
+        create!(attributes)
       end
     end
   end
 
   private
+
   def assign_attributes_from_name_if_new_record
     return unless new_record?
-    return if self.name.blank?
+    return if name.blank?
 
-    attributes = self.class.build_attributes_form_name(self.name)    
+    attributes = self.class.build_attributes_form_name(name)
     return if attributes.blank?
+
     self.attributes = attributes
   end
-  
+
   def validate_of_name_existant
-    return if self.name.blank?
+    return if name.blank?
 
     names = self.class.build_all_names
 
-    return if names.include?(self.name)
-    
-    errors.add(:name, "#{self.name} is an unregistered name")
-  end 
+    return if names.include?(name)
 
-  class << self 
+    errors.add(:name, "#{name} is an unregistered name")
+  end
+
+  class << self
     def build_attributes_form_name(name)
-      
       attributes_list = {
-        Name::FIJI_WATER => {point: 14, kind: self.kinds[:drink]},
-        Name::CAMPBELL_SOUP => {point: 12, kind: self.kinds[:drink]},
-        Name::FIRST_AID_POUCH => {point: 10, kind: self.kinds[:first_aid_kit]},
-        Name::AK47 => {point: 8, kind: self.kinds[:weapone]}
+        Name::FIJI_WATER => { point: 14, kind: kinds[:drink] },
+        Name::CAMPBELL_SOUP => { point: 12, kind: kinds[:drink] },
+        Name::FIRST_AID_POUCH => { point: 10, kind: kinds[:first_aid_kit] },
+        Name::AK47 => { point: 8, kind: kinds[:weapone] }
       }
-  
+
       attributes_list[name]
     end
-  end  
+  end
 end
