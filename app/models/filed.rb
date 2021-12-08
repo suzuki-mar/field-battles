@@ -1,18 +1,19 @@
 # frozen_string_literal: true
 
 class Filed
-  attr_reader :survivors, :infected_survivors
+  attr_reader :survivors, :zombies
 
   LON_RANGE = (-100.0..100.0)
   LAT_RANGE = (-100.0..100.0)
 
-  def initialize
-    @infected_survivors = []
+  def load_survivors
+    players = Player.only_survivor
+    @survivors = players.map { |p| Survivor.new(p) }
   end
 
-  def load_survivors
-    players = Player.where(status: [Player.statuses[:survivor], Player.statuses[:infected]])
-    @survivors = players.map { |p| Survivor.new(p) }
+  def load_zombies
+    players = Player.where(status: Player.statuses[:zombie])
+    @zombies = players.map { |p| Zombie.new(p) }
   end
 
   def turning_into_infected

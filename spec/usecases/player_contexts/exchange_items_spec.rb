@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
-
 RSpec.describe PlayerContexts::ExchangeItems do
   describe 'execute' do
     subject do
@@ -15,15 +13,13 @@ RSpec.describe PlayerContexts::ExchangeItems do
     end
 
     let(:params) do
-      path = Rails.root.join('spec/parameters/exchange_items.json')
-      json = File.open(path).read
-      JSON.parse(json)
+      JsonParserSupport.file('spec/parameters/exchange_items.json')
     end
 
-    before do
-      Item.create_initial_items
+    before do      
+      SetUpper.prepare_filed
       create_requester_inventory(survivor, params)
-      create_partner_inventory(params)
+      create_partner_inventory(params)      
     end
 
     context('パラメーターが正しい場合') do
@@ -31,11 +27,11 @@ RSpec.describe PlayerContexts::ExchangeItems do
         subject
 
         requester_inventory = Inventory.fetch_by_player_id(survivor.id)
-        requester_item_name = params['requeser_items'].first['name']
+        requester_item_name = params[:requeser_items].first[:name]
         expect(requester_inventory.stock_count_by_name(requester_item_name)).to eq(0)
 
-        partner_inventory = Inventory.fetch_by_player_id(params['partner_player_id'])
-        partner_item_name = params['partner_items'].first['name']
+        partner_inventory = Inventory.fetch_by_player_id(params[:partner_player_id])
+        partner_item_name = params[:partner_items].first[:name]
         expect(partner_inventory.stock_count_by_name(partner_item_name)).to eq(0)
       end
 
@@ -44,18 +40,37 @@ RSpec.describe PlayerContexts::ExchangeItems do
       end
     end
 
-    xcontext('パラメーターが不正な場合') do
-      context('交換するアイテム分のポイントがパートナーにない場合')
-      context('パートナーが生存していない場合')
-      context('交換しようとしたアイテムが存在しない場合')
+    context('パラメーターが不正な場合') do
+      context('交換するアイテム分のポイントが等しくないない場合') do
+        before do
+          params[:partner_items].first[:count] = 1
+        end
+
+        it 'エラーを返すこと' do
+          expect(subject[:error_keys].first).to eq(Error::Key::NOT_SAME_POINTS_TO_TRADE)
+        end
+      end
+
+      context('パートナーが生存していない場合') do
+        before do
+          player = Player.find(params[:partner_player_id])
+          player.update(status: Player.statuses[:zombie])
+        end
+
+        it 'エラーを返すこと' do
+          expect(subject[:error_keys].first).to eq(Error::Key::EXCHANGE_PARTNER_NOT_SURVIVOR)
+        end
+      end
+
+      xcontext('交換しようとしたアイテムが存在しない場合')
     end
   end
 
   def create_requester_inventory(survivor, params)
     inventory = Inventory.fetch_by_player_id(survivor.id)
 
-    params['requeser_items'].each do |p|
-      inventory.add(p['name'], p['count'])
+    params[:requeser_items].each do |p|
+      inventory.add(p[:name], p[:count])
     end
   end
 
@@ -63,8 +78,8 @@ RSpec.describe PlayerContexts::ExchangeItems do
     player = create(:player, :survivor, id: params[:partner_player_id])
     inventory = Inventory.fetch_by_player_id(player.id)
 
-    params['partner_items'].each do |p|
-      inventory.add(p['name'], p['count'])
+    params[:partner_items].each do |p|
+      inventory.add(p[:name], p[:count])
     end
   end
 end

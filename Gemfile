@@ -30,6 +30,8 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 
+gem 'jsonapi-serializer'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'bullet'
@@ -66,9 +68,11 @@ group :test do
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'database_cleaner'
   gem 'faker'
+  gem 'faker-japanese'
   gem 'rspec-parameterized'
   gem 'webdrivers'
   gem 'shoulda-matchers', '~> 5.0'
+  gem 'cucumber-rails', require: false
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

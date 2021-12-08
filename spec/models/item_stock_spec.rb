@@ -21,8 +21,21 @@
 #  item_id    (item_id => items.id)
 #  player_id  (player_id => players.id)
 #
-require 'rails_helper'
 
 RSpec.describe ItemStock, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    describe 'stock_count' do
+      it { should validate_presence_of(:stock_count) }
+      it { should allow_value(0).for(:stock_count) }
+      it { should_not allow_value(-1).for(:stock_count) }
+    end
+
+    describe 'item_id' do
+      it { should validate_presence_of(:item_id) }
+    end
+
+    describe 'player_id' do
+      it { should validate_presence_of(:player_id) }
+    end
+  end
 end

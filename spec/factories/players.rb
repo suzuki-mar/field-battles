@@ -7,7 +7,6 @@
 #  id                        :integer          not null, primary key
 #  age                       :integer          not null
 #  counting_to_become_zombie :integer          not null
-#  counting_to_starvation    :integer          not null
 #  current_lat               :float            not null
 #  current_lon               :float            not null
 #  name                      :string           not null
@@ -20,7 +19,6 @@ FactoryBot.define do
     name { Faker::Name.unique.name }
     age { Faker::Number.between(from: 18, to: 65) }
     counting_to_become_zombie { Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE }
-    counting_to_starvation { 3 }
     current_lat { Location.build_distance_to_travel.lat }
     current_lon { Location.build_distance_to_travel.lon }
     status { Player.statuses[:newcomer] }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_14_051020) do
+ActiveRecord::Schema.define(version: 2021_10_17_090331) do
 
   create_table "item_stocks", force: :cascade do |t|
     t.integer "stock_count", null: false
@@ -24,18 +24,16 @@ ActiveRecord::Schema.define(version: 2021_08_14_051020) do
 
   create_table "items", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "kind", null: false
-    t.integer "effect_value", null: false
     t.integer "point", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "kind", null: false
   end
 
   create_table "players", force: :cascade do |t|
     t.string "name", null: false
     t.integer "age", null: false
     t.integer "status", null: false
-    t.integer "counting_to_starvation", null: false
     t.integer "counting_to_become_zombie", null: false
     t.float "current_lon", null: false
     t.float "current_lat", null: false

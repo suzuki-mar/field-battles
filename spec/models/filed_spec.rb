@@ -21,6 +21,25 @@ RSpec.describe Filed, type: :model do
     end
   end
 
+  describe('load_zomibe') do
+    subject do
+      filed.load_zombies
+    end
+
+    let!(:player) { create(:player, :zombie) }
+    let(:filed) { FiledForTest.new }
+
+    before do
+      create(:player, :infected)
+    end
+
+    it('ゾンビだけを取得すること') do
+      subject
+      expect(filed.zombies.count).to eq(1)
+      expect(filed.zombies.first.id).to eq(player.id)
+    end
+  end
+
   describe('turning_into_infected') do
     subject do
       filed.turning_into_infected
@@ -175,7 +194,7 @@ RSpec.describe Filed, type: :model do
   end
 
   # テストをかんたんにするため
-  class FiledForTest < Filed
+  class FiledForTest < described_class
     attr_accessor :survivors
   end
 end

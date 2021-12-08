@@ -4,15 +4,18 @@
 #
 # Table name: items
 #
-#  id           :integer          not null, primary key
-#  effect_value :integer          not null
-#  kind         :integer          not null
-#  name         :string           not null
-#  point        :integer          not null
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id         :integer          not null, primary key
+#  kind       :integer          not null
+#  name       :string           not null
+#  point      :integer          not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 class Item < ApplicationRecord
+  before_validation :assign_attributes_from_name_if_new_record
+  validates :name,  presence: true,  allow_blank: false
+  validate :validate_of_name_existant
+  validates :point, presence: true, numericality: { only_integer: true, greater_than: 0 }
   has_one :item_stock, dependent: :destroy
 
   enum kinds: { first_aid_kit: 0, drink: 1, weapone: 2 }
@@ -24,10 +27,60 @@ class Item < ApplicationRecord
     AK47 = 'AK47'
   end
 
-  def self.create_initial_items
-    create(name: Name::FIJI_WATER, effect_value: 3, point: 14, kind: Item.kinds[:drink])
-    create(name: Name::CAMPBELL_SOUP, effect_value: 2, point: 12, kind: Item.kinds[:drink])
-    create(name: Name::FIRST_AID_POUCH, effect_value: 1, point: 10, kind: Item.kinds[:first_aid_kit])
-    create(name: Name::AK47, effect_value: 1, point: 8, kind: Item.kinds[:weapone])
+  class << self
+    def build_all_names
+      Name.constants.map do |c|
+        Name.const_get(c)
+      end
+    end
+
+    def fetch_all_name_and_point
+      all.map do |item|
+        { name: item.name, point: item.point }
+      end
+    end
+
+    def create_initial_items
+      names = build_all_names
+      names.each do |name|
+        attributes = build_attributes_form_name(name)
+        attributes[:name] = name
+        create!(attributes)        
+      end
+    end
   end
+
+  private
+  def assign_attributes_from_name_if_new_record
+    return unless new_record?
+    return if self.name.blank?
+
+    attributes = self.class.build_attributes_form_name(self.name)    
+    return if attributes.blank?
+    self.attributes = attributes
+  end
+  
+  def validate_of_name_existant
+    return if self.name.blank?
+
+    names = self.class.build_all_names
+
+    return if names.include?(self.name)
+    
+    errors.add(:name, "#{self.name} is an unregistered name")
+  end 
+
+  class << self 
+    def build_attributes_form_name(name)
+      
+      attributes_list = {
+        Name::FIJI_WATER => {point: 14, kind: self.kinds[:drink]},
+        Name::CAMPBELL_SOUP => {point: 12, kind: self.kinds[:drink]},
+        Name::FIRST_AID_POUCH => {point: 10, kind: self.kinds[:first_aid_kit]},
+        Name::AK47 => {point: 8, kind: self.kinds[:weapone]}
+      }
+  
+      attributes_list[name]
+    end
+  end  
 end

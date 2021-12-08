@@ -7,7 +7,6 @@
 #  id                        :integer          not null, primary key
 #  age                       :integer          not null
 #  counting_to_become_zombie :integer          not null
-#  counting_to_starvation    :integer          not null
 #  current_lat               :float            not null
 #  current_lon               :float            not null
 #  name                      :string           not null
@@ -26,8 +25,7 @@ RSpec.describe Player, type: :model do
       it { should_not allow_value(66).for(:age) }
     end
 
-    describe 'counting_to_become_zombie' do
-      it { should validate_presence_of(:counting_to_become_zombie) }
+    describe 'counting_to_become_zombie' do      
       it { should allow_value(5).for(:counting_to_become_zombie) }
       it { should allow_value(0).for(:counting_to_become_zombie) }
       it { should_not allow_value(6).for(:counting_to_become_zombie) }

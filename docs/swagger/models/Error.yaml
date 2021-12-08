@@ -1,9 +1,4 @@
 title: Error
-type: object
-properties:
-  code:
-    type: integer
-    description: システムに定義されているエラーID
-  message:
-    type: string
-    description: ユーザーに表示するためのエラーメッセージ
+type: array
+items:
+  type: string

@@ -10,15 +10,6 @@ examples:
 properties:
   id:
     type: integer
-  type:
-    type: string
-    enum:
-      - first_aid_kit
-      - drink
-      - weapon
-  effect_value:
-    type: number
-    description: アイテムを使用したときの効果値
   point:
     type: integer
     minimum: 0
@@ -30,7 +21,5 @@ properties:
     $ref: ./ItemName.yaml
 required:
   - id
-  - type
-  - effect_value
   - point
   - name
