@@ -21,7 +21,6 @@
 class Player < ApplicationRecord
   has_many :item_stocks, dependent: :destroy
 
-
   before_validation :assign_default_value_if_new_record
   validates :age, presence: true, numericality: {greater_than: 17, less_than: 66}
   validates :counting_to_become_zombie, presence: true, numericality: {greater_than: -1, less_than: 6}
