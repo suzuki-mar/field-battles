@@ -1,0 +1,20 @@
+ja:
+  activerecord:
+    models:
+      player: "プレイヤー"
+      item: "アイテム"
+      item_stock: "在庫"
+    attributes:
+      player:
+        age: "年齢"
+        counting_to_become_zombie: "ゾンビになるまでのカウント"
+        current_lat: "緯度"
+        current_lon: "経度"
+        name: "プレイヤー名"
+        status: "状態"    
+      item: 
+        kind: "種類"
+        point: "ポイント"
+        name: "アイテム名"        
+      item_stock: 
+        stock_count: "在庫数"

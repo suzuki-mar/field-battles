@@ -38,4 +38,16 @@ RSpec.describe ItemStock, type: :model do
       it { is_expected.to validate_presence_of(:player_id) }
     end
   end
+
+  describe 'i18nの確認' do  
+
+    it 'モデル名の設定ができていること' do 
+      expect(described_class.model_name.human).to eq("在庫")
+    end
+
+    it "stock_countの設定ができていること" do 
+      expect(described_class.human_attribute_name(:stock_count)).to eq("在庫数")
+    end
+
+  end
 end
