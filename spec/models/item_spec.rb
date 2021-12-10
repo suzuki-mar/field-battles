@@ -27,6 +27,26 @@ RSpec.describe Item, type: :model do
     end
   end
 
+  describe 'i18nの確認' do  
+
+    it 'モデル名の設定ができていること' do 
+      expect(described_class.model_name.human).to eq("アイテム")
+    end
+
+    it "kindの設定ができていること" do 
+      expect(described_class.human_attribute_name(:kind)).to eq("種類")
+    end
+
+    it "pointの設定ができていること" do 
+      expect(described_class.human_attribute_name(:point)).to eq("ポイント")
+    end
+
+    it "nameの設定ができていること" do 
+      expect(described_class.human_attribute_name(:name)).to eq("アイテム名")
+    end
+
+  end
+
   describe 'auto_assign_attributes_from_name' do
     subject do
       item.valid?

@@ -49,6 +49,39 @@ RSpec.describe Player, type: :model do
     end
   end
 
+  describe 'i18nの確認' do  
+
+    it 'モデル名の設定ができていること' do 
+      expect(Player.model_name.human).to eq("プレイヤー")
+    end
+
+    it "ageの設定ができていること" do 
+      expect(Player.human_attribute_name(:age)).to eq("年齢")
+    end
+
+    it "counting_to_become_zombieの設定ができていること" do 
+      expect(Player.human_attribute_name(:counting_to_become_zombie)).to eq("ゾンビになるまでのカウント")
+    end
+
+    it "current_latの設定ができていること" do 
+      expect(Player.human_attribute_name(:current_lat)).to eq("緯度")
+    end
+
+    it "current_lonの設定ができていること" do 
+      expect(Player.human_attribute_name(:current_lon)).to eq("経度")
+    end
+
+    it "nameの設定ができていること" do 
+      expect(Player.human_attribute_name(:name)).to eq("プレイヤー名")
+    end
+
+    it "statusの設定ができていること" do 
+      expect(Player.human_attribute_name(:status)).to eq("状態")
+    end
+
+  end
+
+
   describe 'current_location' do
     let(:player) { create(:player) }
 
