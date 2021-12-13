@@ -30,7 +30,7 @@ RSpec.describe Item, type: :model do
       it { is_expected.to define_enum_for(:kind).with_values(first_aid_kit: 0, drink: 1, weapone: 2) }
     end
   end
-
+  
   describe 'バリデーションのエラーメッセージ' do
     let(:item){described_class.new(params)}
     let(:params){
@@ -46,21 +46,39 @@ RSpec.describe Item, type: :model do
     end
 
     describe 'name' do
-      where(:error_name, :compare_message, :attribute_name, :value) do
-        [ 
-          ["アイテムが存在しない場合", "アイテムは存在しません", :name, "Unknown item"],                    
-          
-        ]
+      before do 
+        params[:name] = name
       end
 
-      before do 
-        params[attribute_name] = value
+      context 'アイテムが存在しない場合' do 
+        let(:name){"Unknown item"}
+
+        it "エラーメッセージが存在すること" do             
+          expect(subject).to include("アイテムは存在しません")
+        end
       end
-    
-      with_them do        
-        it "エラーメッセージが存在すること" do    
-         pp subject
-          expect(subject).to include(compare_message)
+    end
+
+    describe 'point' do
+      before do 
+        # 新規作成時に強制的に値が設定されるのでアップデートをして値を再設定をする
+        item.save
+        item.point = point
+      end
+
+      context '1より小さい場合' do 
+        let(:point){0}
+
+        it "エラーメッセージが存在すること" do             
+          expect(subject).to include("してください")
+        end
+      end
+
+      context '整数ではない場合' do 
+        let(:point){1.1}
+
+        it "エラーメッセージが存在すること" do             
+          expect(subject).to include("整数である必要があります")
         end
       end
     end

@@ -50,4 +50,38 @@ RSpec.describe ItemStock, type: :model do
     end
 
   end
+
+  describe 'バリデーションのエラーメッセージ' do
+    let(:stock){described_class.new(params)}
+    let(:params){
+      {
+        player: create(:player),
+        stock_count: 1,
+        item: create(:item)
+      }
+    }
+
+    subject do 
+      stock.validate          
+      stock.errors.full_messages.first
+    end
+
+    where(:error_name, :compare_message, :attribute_name, :value) do
+      [ 
+        ["ストックが0の場合", "以上の値を設定してください", :stock_count, -1],                    
+        ["プレイヤーが設定されていない場合", "プレイヤーが設定されていません", :player, nil],
+        ["アイテムが設定されていない場合", "アイテムが設定されていません", :item, nil],        
+      ]
+    end
+
+    before do 
+      params[attribute_name] = value
+    end
+  
+    with_them do        
+      it "エラーメッセージが存在すること" do           
+        expect(subject).to include(compare_message)
+      end
+    end    
+  end
 end

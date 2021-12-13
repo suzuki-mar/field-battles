@@ -18,6 +18,8 @@ ja:
         name: "アイテム名"        
       item_stock: 
         stock_count: "在庫数"
+        player: "プレイヤー"
+        item: "アイテム"
   enums:
     player:
       statuses:

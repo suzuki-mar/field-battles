@@ -16,6 +16,18 @@ ja:
             current_lon:
               greater_than_or_equal_to: "の最小値は%{count}です"
               less_than_or_equal_to: "の最大値は%{count}です"
+        item:
+          attributes:
+            point:
+              greater_than: "は%{count}以上の値を設定してください"
+        item_stock:
+          attributes:
+            stock_count:
+              greater_than_or_equal_to: "は%s{count}以上の値を設定してください"              
+            player:
+              required: "が設定されていません"                            
+            item:
+              required: "が設定されていません"                                          
   error_message: 
     item:
       name:
