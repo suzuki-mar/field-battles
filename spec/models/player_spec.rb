@@ -47,7 +47,111 @@ RSpec.describe Player, type: :model do
       it { is_expected.not_to allow_value(Filed::LON_RANGE.end + 1).for(:current_lon) }
       it { is_expected.not_to allow_value(Filed::LON_RANGE.begin - 1).for(:current_lon) }
     end
+
+    xdescribe 'status 誤ってstatusesとしてしまっているのでテストに失敗する' do      
+      it { is_expected.to define_enum_for(:status).with_values(newcomer: 0, survivor: 1, infected: 2, zombie: 3, death: 4 ) }
+    end
+    
   end
+
+  describe 'バリデーションのエラーメッセージ' do
+    let(:player){described_class.new(params)}
+    let(:params){Hash.new}
+
+    subject do 
+      player.validate
+      player.errors.full_messages.first
+    end
+
+    describe 'age' do
+      where(:error_name, :compare_message, :age) do
+        [
+          ["対象未満の場合のエラーメッセージ", "歳以上である必要があります", -1],
+          ["対象以上のエラーメッセージ", "歳以下である必要があります", 1000],
+          ["設定されていない場合", "必須です", nil],
+        ]
+      end
+
+      before do 
+        params[:age] = age
+      end
+    
+      with_them do        
+        it "エラーメッセージが存在すること" do
+          pp subject
+
+          expect(subject).to include(compare_message)
+        end
+      end
+    end
+
+    describe 'counting_to_become_zombie' do
+      where(:error_name, :compare_message, :count) do
+        [
+          ["が0より低い場合", "より低い値には設定できません", -1],
+          ["が大きい場合", "より大きい値には設定できません", 10000],
+        ]
+      end
+
+      before do 
+        params[:counting_to_become_zombie] = count
+        params[:age] = 30
+      end
+    
+      with_them do        
+        it "エラーメッセージが存在すること" do
+          expect(subject).to include(compare_message)
+        end
+      end
+    end
+
+    describe 'current_lat' do
+      where(:error_name, :compare_message, :value) do
+        [
+          ["狭い場合", "の最小値は", -10000],          
+          ["広い場合", "の最大値は", 100000],          
+        ]
+      end
+
+      before do 
+        params[:counting_to_become_zombie] = 3
+        params[:age] = 30        
+        params[:current_lat] = value
+      end
+    
+      with_them do        
+        it "エラーメッセージが存在すること" do          
+          expect(subject).to include(compare_message)
+        end
+      end
+    end
+
+    describe 'current_lon' do
+      where(:error_name, :compare_message, :value) do
+        [
+          ["高い場合", "の最小値は", -10000],          
+          ["低い場合", "の最大値は", 100000],          
+        ]
+      end
+
+      before do 
+        params[:counting_to_become_zombie] = 3
+        params[:age] = 30        
+        params[:current_lat] = 3
+        params[:current_lon] = value
+      end
+    
+      with_them do        
+        it "エラーメッセージが存在すること" do
+          pp subject
+          expect(subject).to include(compare_message)
+        end
+      end
+    end
+
+
+  end
+
 
   describe 'i18nの確認' do  
 
@@ -55,30 +159,43 @@ RSpec.describe Player, type: :model do
       expect(Player.model_name.human).to eq("プレイヤー")
     end
 
-    it "ageの設定ができていること" do 
-      expect(Player.human_attribute_name(:age)).to eq("年齢")
+    describe "属性の確認" do
+      where(:attribute_name, :i18n_name) do
+        [
+          [:age, "年齢"],          
+          [:counting_to_become_zombie, "ゾンビになるまでのカウント"],
+          [:current_lat, "緯度"], 
+          [:current_lon, "経度"],
+          [:name, "プレイヤー名"],
+          [:status, "状態"],
+        ]
+      end
+
+      with_them do        
+        it "設定ができていること" do
+          expect(Player.human_attribute_name(attribute_name)).to eq(i18n_name)
+        end
+      end
     end
 
-    it "counting_to_become_zombieの設定ができていること" do 
-      expect(Player.human_attribute_name(:counting_to_become_zombie)).to eq("ゾンビになるまでのカウント")
-    end
+    describe "statusのenumの確認" do
+      where(:attribute_name, :i18n_name) do
+        [
+          [:newcomer, "新規登録者"],          
+          [:survivor, "非感染者"],
+          [:infected, "感染者"],
+          [:zombie, "ゾンビ"],
+          [:death, "死亡者"],
+          
+        ]
+      end
 
-    it "current_latの設定ができていること" do 
-      expect(Player.human_attribute_name(:current_lat)).to eq("緯度")
+      with_them do        
+        it "設定ができていること" do
+          expect(described_class.statuses_i18n[:newcomer]).to eq("新規登録者")
+        end
+      end
     end
-
-    it "current_lonの設定ができていること" do 
-      expect(Player.human_attribute_name(:current_lon)).to eq("経度")
-    end
-
-    it "nameの設定ができていること" do 
-      expect(Player.human_attribute_name(:name)).to eq("プレイヤー名")
-    end
-
-    it "statusの設定ができていること" do 
-      expect(Player.human_attribute_name(:status)).to eq("状態")
-    end
-
   end
 
 

@@ -31,6 +31,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'bootsnap', '>= 1.4.4', require: false
 
 gem 'jsonapi-serializer'
+gem 'enum_help'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -73,6 +74,7 @@ group :test do
   gem 'rspec-parameterized'
   gem 'shoulda-matchers', '~> 5.0'
   gem 'webdrivers'
+  gem 'rspec-parameterized'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

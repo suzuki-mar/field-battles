@@ -1,0 +1,18 @@
+ja:
+  activerecord:
+    errors: 
+      models:
+        player:
+          attributes:
+            age:           
+              greater_than_or_equal_to: "は%{count}歳以上である必要があります"
+              less_than_or_equal_to: "は%{count}歳以下である必要があります"
+            counting_to_become_zombie:
+              greater_than_or_equal_to: "は%{count}より低い値には設定できません"
+              less_than_or_equal_to: "は%{count}より大きい値には設定できません"
+            current_lat:
+              greater_than_or_equal_to: "の最小値は%{count}です"
+              less_than_or_equal_to: "の最大値は%{count}です"
+            current_lon:
+              greater_than_or_equal_to: "の最小値は%{count}です"
+              less_than_or_equal_to: "の最大値は%{count}です"

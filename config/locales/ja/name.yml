@@ -1,4 +1,4 @@
-ja:
+ja:  
   activerecord:
     models:
       player: "プレイヤー"
@@ -18,3 +18,14 @@ ja:
         name: "アイテム名"        
       item_stock: 
         stock_count: "在庫数"
+  enums:
+    player:
+      statuses:
+        newcomer: "新規登録者"        
+        survivor: "非感染者"
+        infected: "感染者"
+        zombie: "ゾンビ"
+        death: "死亡者"
+
+
+  
