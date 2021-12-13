@@ -25,6 +25,45 @@ RSpec.describe Item, type: :model do
       it { is_expected.to allow_value(described_class::Name::FIRST_AID_POUCH).for(:name) }
       it { is_expected.not_to allow_value('Unknown item').for(:name) }
     end
+
+    xdescribe 'kind 誤ってkindsとしてしまっているのでテストに失敗する' do      
+      it { is_expected.to define_enum_for(:kind).with_values(first_aid_kit: 0, drink: 1, weapone: 2) }
+    end
+  end
+
+  describe 'バリデーションのエラーメッセージ' do
+    let(:item){described_class.new(params)}
+    let(:params){
+      {
+        name: described_class::Name::FIRST_AID_POUCH,
+        point: 1
+      }
+    }
+
+    subject do 
+      item.validate            
+      item.errors.full_messages.first
+    end
+
+    describe 'name' do
+      where(:error_name, :compare_message, :attribute_name, :value) do
+        [ 
+          ["アイテムが存在しない場合", "アイテムは存在しません", :name, "Unknown item"],                    
+          
+        ]
+      end
+
+      before do 
+        params[attribute_name] = value
+      end
+    
+      with_them do        
+        it "エラーメッセージが存在すること" do    
+         pp subject
+          expect(subject).to include(compare_message)
+        end
+      end
+    end
   end
 
   describe 'i18nの確認' do  
@@ -33,16 +72,36 @@ RSpec.describe Item, type: :model do
       expect(described_class.model_name.human).to eq("アイテム")
     end
 
-    it "kindの設定ができていること" do 
-      expect(described_class.human_attribute_name(:kind)).to eq("種類")
+    describe "属性の確認" do
+      where(:attribute_name, :i18n_name) do
+        [
+          [:kind, "種類"],          
+          [:point, "ポイント"],
+          [:name, "アイテム名"],           
+        ]
+      end
+
+      with_them do        
+        it "設定ができていること" do
+          expect(described_class.human_attribute_name(attribute_name)).to eq(i18n_name)          
+        end
+      end
     end
 
-    it "pointの設定ができていること" do 
-      expect(described_class.human_attribute_name(:point)).to eq("ポイント")
-    end
+    describe "kindのenumの確認" do
+      where(:key, :i18n_name) do
+        [
+          [:first_aid_kit, "救急箱"],          
+          [:drink, "飲み物"],
+          [:weapone, "武器"],
+        ]
+      end
 
-    it "nameの設定ができていること" do 
-      expect(described_class.human_attribute_name(:name)).to eq("アイテム名")
+      with_them do        
+        it "設定ができていること" do
+          expect(described_class.kinds_i18n[key]).to eq(i18n_name)
+        end
+      end
     end
 
   end

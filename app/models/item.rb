@@ -68,8 +68,7 @@ class Item < ApplicationRecord
     names = self.class.build_all_names
 
     return if names.include?(name)
-
-    errors.add(:name, "#{name} is an unregistered name")
+    errors.add(:name, I18n.t("error_message.item.name.nonexistent_name", :name => name))
   end
 
   class << self

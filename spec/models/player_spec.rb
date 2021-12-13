@@ -78,8 +78,6 @@ RSpec.describe Player, type: :model do
     
       with_them do        
         it "エラーメッセージが存在すること" do
-          pp subject
-
           expect(subject).to include(compare_message)
         end
       end
@@ -142,8 +140,7 @@ RSpec.describe Player, type: :model do
       end
     
       with_them do        
-        it "エラーメッセージが存在すること" do
-          pp subject
+        it "エラーメッセージが存在すること" do          
           expect(subject).to include(compare_message)
         end
       end
@@ -179,7 +176,7 @@ RSpec.describe Player, type: :model do
     end
 
     describe "statusのenumの確認" do
-      where(:attribute_name, :i18n_name) do
+      where(:key, :i18n_name) do
         [
           [:newcomer, "新規登録者"],          
           [:survivor, "非感染者"],
@@ -192,7 +189,7 @@ RSpec.describe Player, type: :model do
 
       with_them do        
         it "設定ができていること" do
-          expect(described_class.statuses_i18n[:newcomer]).to eq("新規登録者")
+          expect(described_class.statuses_i18n[key]).to eq(i18n_name)
         end
       end
     end

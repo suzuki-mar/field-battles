@@ -16,3 +16,9 @@ ja:
             current_lon:
               greater_than_or_equal_to: "の最小値は%{count}です"
               less_than_or_equal_to: "の最大値は%{count}です"
+  error_message: 
+    item:
+      name:
+         nonexistent_name: "に%{name}という名前のアイテムは存在しません"
+
+    

@@ -26,6 +26,8 @@ ja:
         infected: "感染者"
         zombie: "ゾンビ"
         death: "死亡者"
-
-
-  
+    item:
+      kinds:
+        first_aid_kit: "救急箱"        
+        drink: "飲み物"
+        weapone: "武器"  
