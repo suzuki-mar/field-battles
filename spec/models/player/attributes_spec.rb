@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 # player_specが肥大化したのと記述内容の多くが属性に関連するものになっていたので、属性に関するところを切り出した
-#
-# 実装の関係上 describeはPlayerにしてある これをしないとshoulda matchersが使えない
 RSpec.describe Player, type: :model do
   describe 'validations' do
     describe 'age' do

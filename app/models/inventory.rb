@@ -1,25 +1,29 @@
 # frozen_string_literal: true
 
 class Inventory
-  attr_reader :player_id, :stocks
+  attr_reader :player_id, :stocks, :errors
 
   def add(name, count)
-    if has_name_item?(name)
-      item = Item.where(name: name).first
-      stock = stocks.where(item: item).first
-      stock.add_stock!(count)
-      return
+    result = InventoryPicking.new.add(self, name, count)
+    
+    if result.instance_of?(Error) 
+      @errors = [result]
+      raise ActiveRecord::Rollback
     end
 
-    item = Item.find_by(name: name)
-    ItemStock.create(player_id: player_id, item: item, stock_count: count)
+    result
   end
 
   def take_out(name, count)
-    item = Item.where(name: name).first
-    stock = stocks.where(item: item).first
-    stock.reduce_stock!(count)
-    { name: name, count: count }
+    result = InventoryPicking.new.take_out(self, name, count)
+
+    if result.instance_of?(Error) 
+      @errors = [result]
+      raise ActiveRecord::Rollback
+    end
+
+    result    
+
   end
 
   def reload
@@ -85,17 +89,8 @@ class Inventory
 
   def initialize(player_id, stocks)
     @player_id = player_id
-    @stocks = stocks
-  end
-
-  private
-
-  def has_name_item?(name)
-    return false if stocks.blank?
-
-    stocks.includes(:item).any? do |stock|
-      stock.item.name == name
-    end
+    @stocks = stocks   
+    @errors = []
   end
 
   class << self

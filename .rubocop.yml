@@ -77,3 +77,7 @@ RSpec/NestedGroups:
 # メソッドを短くすぎると逆に見づらくなるケースもあるためある程度緩和  
 Metrics/MethodLength:
   Max: 15
+
+# デフォルト値だと厳しすぎるため
+Metrics/AbcSize:
+  Max: 20

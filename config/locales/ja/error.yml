@@ -23,14 +23,16 @@ ja:
         item_stock:
           attributes:
             stock_count:
-              greater_than_or_equal_to: "は%s{count}以上の値を設定してください"              
+              greater_than_or_equal_to: "は%{count}以上の値を設定してください"              
             player:
               required: "が設定されていません"                            
             item:
               required: "が設定されていません"                                          
   error_message: 
     item:
-      name:
-         nonexistent_name: "に%{name}という名前のアイテムは存在しません"
-
+      nonexistent_name: "%{name}という名前のアイテムは存在しません"
+    inventory:
+      take_out:
+        unregistered_item: "%{name}は登録されていません"
+        many_more_than_registered_quantity: "在庫の個数は%{count}個です"
     
