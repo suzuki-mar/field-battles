@@ -24,3 +24,5 @@ suzuki_marのポートフォリオとして作成している
 * [RESTfulではないエンドポイントの修正](https://github.com/suzuki-mar/field-battles/issues/20)
 * [全プレイヤーのインベントリを管理しているトレードセンターを導入したい](https://github.com/suzuki-mar/field-battles/issues/21)
 
+# ドキュメント
+ダイアグラム https://drive.google.com/file/d/1vWJYIZMcOJJwP2MiUeGbWAiYFoZYkyAM/view?usp=sharing
