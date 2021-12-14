@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class InventoryPicking
-  def add(inventory, name, count)
+  def add!(inventory, name, count)
     @inventory = inventory
     errors = []
 
@@ -22,7 +22,7 @@ class InventoryPicking
     stock
   end
 
-  def take_out(inventory, name, count)
+  def take_out!(inventory, name, count)
     @inventory = inventory
 
     item = Item.where(name: name).first
@@ -44,12 +44,4 @@ class InventoryPicking
   private
 
   attr_accessor :inventory
-
-  def has_item?(item)
-    return false if inventory.stocks.blank?
-
-    inventory.stocks.includes(:item).any? do |stock|
-      stock.item.id == item.id
-    end
-  end
 end

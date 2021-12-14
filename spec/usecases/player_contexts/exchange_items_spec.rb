@@ -70,7 +70,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
     inventory = Inventory.fetch_by_player_id(survivor.id)
 
     params[:requeser_items].each do |p|
-      inventory.add(p[:name], p[:count])
+      inventory.add!(p[:name], p[:count])
     end
   end
 
@@ -79,7 +79,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
     inventory = Inventory.fetch_by_player_id(player.id)
 
     params[:partner_items].each do |p|
-      inventory.add(p[:name], p[:count])
+      inventory.add!(p[:name], p[:count])
     end
   end
 end

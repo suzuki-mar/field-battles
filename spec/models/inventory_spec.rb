@@ -109,7 +109,7 @@ RSpec.describe Inventory, type: :model do
       end
 
       first_player_inventory = described_class.fetch_by_player_id(players.first.id)
-      first_player_inventory.add(Item::Name::AK47, 2)
+      first_player_inventory.add!(Item::Name::AK47, 2)
     end
 
     it 'すべての生存者のインベントリを取得する' do

@@ -3,8 +3,8 @@
 class Inventory
   attr_reader :player_id, :stocks, :errors
 
-  def add(name, count)
-    result = InventoryPicking.new.add(self, name, count)
+  def add!(name, count)
+    result = InventoryPicking.new.add!(self, name, count)
     
     if result.instance_of?(Error) 
       @errors = [result]
@@ -14,8 +14,8 @@ class Inventory
     result
   end
 
-  def take_out(name, count)
-    result = InventoryPicking.new.take_out(self, name, count)
+  def take_out!(name, count)
+    result = InventoryPicking.new.take_out!(self, name, count)
 
     if result.instance_of?(Error) 
       @errors = [result]
@@ -56,7 +56,7 @@ class Inventory
     def create_for_newcomers(player_id, stock_params)
       inventory = new(player_id, [])
       stock_params.each do |param|
-        inventory.add(param[:name], param[:count])
+        inventory.add!(param[:name], param[:count])
       end
       inventory.reload
       inventory

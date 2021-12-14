@@ -16,7 +16,7 @@ RSpec.describe Inventory, type: :model do
 
   describe('add 正常系') do
     subject do 
-      inventory.add(item_name, 1)
+      inventory.add!(item_name, 1)
       inventory.reload
       inventory
     end
@@ -46,7 +46,7 @@ RSpec.describe Inventory, type: :model do
 
   describe "add ロールバック" do
     subject do         
-      inventory.add("Unknown Item", 3)              
+      inventory.add!("Unknown Item", 3)              
     end
 
     it '例外が発生していること' do
@@ -68,7 +68,7 @@ RSpec.describe Inventory, type: :model do
     
     subject do   
       ActiveRecord::Base.transaction do
-        inventory.add(params[:item_name], params[:count])              
+        inventory.add!(params[:item_name], params[:count])              
       end
       
       error = inventory.errors.first
@@ -99,7 +99,7 @@ RSpec.describe Inventory, type: :model do
   end
 
   describe('take_out 正常系') do
-    subject { inventory.take_out(item_name, stock_count) }
+    subject { inventory.take_out!(item_name, stock_count) }
 
     before do
       item = Item.where(name: item_name).first
@@ -114,7 +114,7 @@ RSpec.describe Inventory, type: :model do
 
   describe "take_out ロールバック" do
     subject do         
-      inventory.take_out(item_name, 3)
+      inventory.take_out!(item_name, 3)
     end
 
     it '例外が発生していること' do
@@ -135,7 +135,7 @@ RSpec.describe Inventory, type: :model do
     
     subject do 
       ActiveRecord::Base.transaction do
-        inventory.take_out(params[:item_name], params[:count])
+        inventory.take_out!(params[:item_name], params[:count])
       end
       
       error = inventory.errors.first

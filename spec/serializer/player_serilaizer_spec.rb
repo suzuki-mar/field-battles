@@ -6,7 +6,7 @@ RSpec.describe PlayerSerializer, type: :serializer do
   before do
     SetUpper.prepare_items
     inventory = Inventory.fetch_by_player_id(player.id)
-    inventory.add(Item::Name::FIJI_WATER, 2)
+    inventory.add!(Item::Name::FIJI_WATER, 2)
   end
 
   # 時間がないためテストができていない
