@@ -1,24 +1,25 @@
-# README
+# このシステムはなに?
+荒野行動のようなバトルロワイヤルゲームをシミュレーションできるシステム
+suzuki_marのポートフォリオとして作成している
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+キャラクター同士が自動で動き以下のようなアクションをする
+* 場所の移動
+* ウィルスに感染しきってゾンビになる
+* ゾンビになってキャラクターを襲う
 
-Things you may want to cover:
+その他にもキャラクターができることを増やしていく
 
-* Ruby version
 
-* System dependencies
+# 今後の機能追加予定
+* アイテムを使用できるようにする
+* フィールドにターンの概念の導入をしたい
+* 行動を記録したい
+* コンソールで操作できるようにしたい
+* フィールドをリセットできるようにしたい
 
-* Configuration
+# 修正(リファクタリング)したいこと
+* Playerという名前のモデルをCharacterに変更したい
+* Usecaseを使用しているところを削除したい
+* RESTfulではないエンドポイントの修正
+* 全プレイヤーのインベントリを管理しているトレードセンターを作成したい
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
