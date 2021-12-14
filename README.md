@@ -15,8 +15,8 @@ suzuki_marのポートフォリオとして作成している
 * [キャラクターがアイテムを使用できるようにしたい](https://github.com/suzuki-mar/field-battles/issues/14)
 * [フィールドにターンの概念の導入をしたい](https://github.com/suzuki-mar/field-battles/issues/15)
 * [キャラクターの行動を記録したい](https://github.com/suzuki-mar/field-battles/issues/16)
-* [観測者がフィールドを操作できるようにしたい] (https://github.com/suzuki-mar/field-battles/issues/17)
-* [観測者がフィールドをリセットできるようにしたい] (https://github.com/suzuki-mar/field-battles/issues/18)
+* [観測者がフィールドを操作できるようにしたい](https://github.com/suzuki-mar/field-battles/issues/17)
+* [観測者がフィールドをリセットできるようにしたい](https://github.com/suzuki-mar/field-battles/issues/18)
 
 # 修正(リファクタリング)したいこと
 * [Playerという名前のモデルをCharacterに変更したい](https://github.com/suzuki-mar/field-battles/issues/2)
