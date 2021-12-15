@@ -22,4 +22,4 @@ properties:
 required:
   - player_id
   - item_stocks
-description: ''
+description: プレイヤーが所持している各アイテムのリスト

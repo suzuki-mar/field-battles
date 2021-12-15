@@ -1,6 +1,10 @@
 title: Item
 type: object
-description: ''
+description: |
+  プレイヤーが使用するアイテム
+  pointが同じ値のものと交換ができる
+  交換する場合は、組み合わせができる 
+  例 プレイヤーAは、1pointのアイテムを3個あげて、プレイヤーBから3ポイントのアイテムを1個もらう 
 examples:
   - id: 0
     type: first_aid_kit
@@ -18,8 +22,20 @@ properties:
       アイテムの価値
       この値を基準にトレードをする
   name:
-    $ref: ./ItemName.yaml
+    type: string
+    enum:
+      - Fiji Water
+      - Campbell Soup
+      - First Aid Pouch
+      - AK47
+  kind:
+    type: string
+    enum:
+      - first_aid_kit
+      - drink
+      - weapone
 required:
   - id
   - point
   - name
+  - kind

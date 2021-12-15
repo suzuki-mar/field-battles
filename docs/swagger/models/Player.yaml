@@ -1,6 +1,9 @@
 title: Player
 type: object
-description: ''
+description: |-
+  操作されるキャラクター
+  以下の状態を持っている
+  新規参加者 生存者 ゾンビ 死亡者
 examples:
   - id: '1'
     name: 鈴木 健
@@ -62,3 +65,4 @@ required:
   - age
   - status
   - counting_to_become_zombie
+  - current_location
