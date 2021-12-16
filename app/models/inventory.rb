@@ -4,7 +4,7 @@ class Inventory
   attr_reader :player_id, :stocks, :errors
 
   def add!(name, count)
-    result = InventoryControl.new.add!(self, name, count)
+    result = InventoryControl.new.add(self, name, count)
     
     if result.instance_of?(Error) 
       @errors = [result]
@@ -15,7 +15,7 @@ class Inventory
   end
 
   def take_out!(name, count)
-    result = InventoryControl.new.take_out!(self, name, count)
+    result = InventoryControl.new.take_out(self, name, count)
 
     if result.instance_of?(Error) 
       @errors = [result]

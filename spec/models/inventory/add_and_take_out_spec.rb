@@ -2,7 +2,7 @@
 # inventory_specのinventoryの主要な責務であるアイテムの追加と取り出しのテストが肥大化したためテストが見づらくなってしまったので切り出した
 
 RSpec.describe Inventory, type: :model do
-  let(:player) { create(:player) }
+  let(:player) { create(:player, :survivor) }
   let(:item_name) { Item::Name::FIRST_AID_POUCH }
   let(:stock_count) {3}
 
@@ -58,7 +58,7 @@ RSpec.describe Inventory, type: :model do
   end
   
 
-  describe('add 異常系') do
+  describe('add パラメーターの異常系') do
     let(:params){
       {
         item_name: item_name,
@@ -94,6 +94,29 @@ RSpec.describe Inventory, type: :model do
       it 'エラーが返されていること' do
         # stock_countのバリデーションンを実行するため最小限のチェックでいい
         expect(subject.present?).to eq(true)
+      end
+    end    
+  end
+
+  describe('add プレイヤーのバリデーション') do
+    context('生存者ではないものが実行しようとした場合') do 
+      subject do 
+        ActiveRecord::Base.transaction do
+          zombie_inventory.add!(item_name, 1)        
+        end
+  
+        error = zombie_inventory.errors.first
+        error.messages.first
+      end
+
+      let(:zombie_inventory) do
+        zombie = create(:player, :zombie)
+        described_class.fetch_by_player_id(zombie.id)
+      end
+  
+      it 'エラーが返されていること' do
+        i18n_key = "error_message.inventory.inventory_control.executed_by_nonsurvivors"
+        expect(subject).to eq(I18n.t(i18n_key))
       end
     end
   end
@@ -169,6 +192,47 @@ RSpec.describe Inventory, type: :model do
       end
     end
 
-  end  
+  end
+
+  subject do 
+    ActiveRecord::Base.transaction do
+      inventory.take_out!(params[:item_name], params[:count])
+    end
+    
+    error = inventory.errors.first
+    error.messages.first
+
+  end
+
+  describe('take_out プレイヤーのバリデーション') do
+    context('生存者ではないものが実行しようとした場合') do 
+      let(:zombie) do 
+        create(:player, :zombie)
+      end
+      
+      let(:zombie_inventory) do        
+        described_class.fetch_by_player_id(zombie.id)
+      end
+      
+      before do
+        item = Item.where(name: item_name).first
+        create(:item_stock, player: zombie, item: item, stock_count: stock_count)
+      end
+  
+      subject do 
+        ActiveRecord::Base.transaction do
+          zombie_inventory.take_out!(item_name, stock_count)
+        end
+  
+        error = zombie_inventory.errors.first
+        error.messages.first
+      end
+        
+      it 'エラーが返されていること' do
+        i18n_key = "error_message.inventory.inventory_control.executed_by_nonsurvivors"
+        expect(subject).to eq(I18n.t(i18n_key))
+      end
+    end
+  end
 
 end

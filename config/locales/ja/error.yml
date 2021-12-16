@@ -32,6 +32,8 @@ ja:
     item:
       nonexistent_name: "%{name}という名前のアイテムは存在しません"
     inventory:
+      inventory_control:
+          executed_by_nonsurvivors: "生存者以外が在庫管理を実行しようとしました"
       take_out:
         unregistered_item: "%{name}は登録されていません"
         many_more_than_registered_quantity: "在庫の個数は%{count}個です"
