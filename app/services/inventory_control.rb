@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class InventoryPicking
+class InventoryControl  
   def add!(inventory, name, count)
     @inventory = inventory
     errors = []
