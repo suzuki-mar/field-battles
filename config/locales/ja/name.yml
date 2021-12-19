@@ -39,5 +39,10 @@ ja:
   domain_model:
     model_names:
       inventory: "インベントリ"
+      trade_center: "トレードセンター"
+      register_for_newcomer: "新規登録者のインベントリの登録	"
     inventory:
       inventory_control: "在庫管理"
+    trade_center:        
+      
+

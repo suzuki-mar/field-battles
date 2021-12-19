@@ -46,42 +46,29 @@ class Inventory
     end
   end
 
-  class << self
+  class << self        
     def fetch_by_player_id(player_id)
       stocks = ItemStock.where(player_id: player_id)
 
       new(player_id, stocks)
     end
-
+    
     def create_for_newcomers(player_id, stock_params)
-      inventory = new(player_id, [])
+      inventory = Inventory.new(player_id, [])
       stock_params.each do |param|
         inventory.add!(param[:name], param[:count])
       end
-      inventory.reload
+      inventory.reload  
       inventory
     end
 
+    # クライアントへのインターフェースを変えないが肥大化の対策をするため移譲する
     def fetch_all_survivor_inventories
-      players = Player.only_survivor
-      stocks = ItemStock.where(player: players)
-
-      grouped_stocks = build_grouped_stocks(players, stocks)
-
-      grouped_stocks.map do |player_id, ss|
-        new(player_id, ss)
-      end
+      TradeCenter.new.fetch_survivor_inventories
     end
 
     def fetch_all_not_survivor_inventories
-      players = Player.where(status: [Player.statuses[:zombie], Player.statuses[:death]])
-      stocks = ItemStock.where(player: players)
-
-      grouped_stocks = build_grouped_stocks(players, stocks)
-
-      grouped_stocks.map do |player_id, ss|
-        new(player_id, ss)
-      end
+      TradeCenter.new.fetch_not_survivor_inventories
     end
   end
 
@@ -93,18 +80,4 @@ class Inventory
     @errors = []
   end
 
-  class << self
-    def build_grouped_stocks(players, stocks)
-      grouped_stocks = {}
-      players.map do |p|
-        grouped_stocks[p.id] = []
-      end
-
-      stocks.each do |stock|
-        grouped_stocks[stock.player_id].push(stock)
-      end
-
-      grouped_stocks
-    end
-  end
 end
