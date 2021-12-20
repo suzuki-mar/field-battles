@@ -27,7 +27,7 @@ ja:
     player:
       status:
         newcomer: "新規登録者"        
-        survivor: "非感染者"
+        noninfected: "非感染者"
         infected: "感染者"
         zombie: "ゾンビ"
         death: "死亡者"

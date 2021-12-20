@@ -13,7 +13,7 @@ RSpec.describe ItemCalculator do
       Item.create_initial_items
 
       create_inventory_from_status_trait_and_item_params(
-        :survivor,
+        :noninfected,
         [
           { name: Item::Name::FIJI_WATER, count: 2 },
           { name: Item::Name::FIRST_AID_POUCH, count: 3 }
@@ -21,7 +21,7 @@ RSpec.describe ItemCalculator do
       )
 
       create_inventory_from_status_trait_and_item_params(
-        :survivor,
+        :noninfected,
         [
           { name: Item::Name::FIJI_WATER, count: 5 },
           { name: Item::Name::CAMPBELL_SOUP, count: 6 }

@@ -152,7 +152,7 @@ RSpec.describe Survivor, type: :model do
     end
 
     context('感染していない場合') do
-      let(:player) { create(:player, :survivor) }
+      let(:player) { create(:player, :noninfected) }
 
       it '例外が発生すること' do
         expect { subject }.to raise_error(ActiveRecord::Rollback)

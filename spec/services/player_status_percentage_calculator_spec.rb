@@ -12,7 +12,7 @@ RSpec.describe PlayerStatusPercentageCalculator do
 
     context 'すべての状態のプレイヤーが存在する場合' do
       before do
-        create_list(:player, 6, :survivor)
+        create_list(:player, 6, :noninfected)
         create_list(:player, 5, :infected)
         create_list(:player, 3, :zombie)
       end

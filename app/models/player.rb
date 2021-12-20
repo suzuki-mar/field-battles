@@ -38,10 +38,9 @@ class Player < ApplicationRecord
                           }
 
   COUNT_OF_BEFORE_BECOMING_ZOMBIE = 5
-  # FIX survivorをnoninfectedに変更する
-  enum status: { newcomer: 0, survivor: 1, infected: 2, zombie: 3, death: 4 }
+  enum status: { newcomer: 0, noninfected: 1, infected: 2, zombie: 3, death: 4 }
 
-  scope :only_survivor, -> { where(status: [Player.statuses[:survivor], Player.statuses[:infected]]) }
+  scope :only_survivor, -> { where(status: [Player.statuses[:noninfected], Player.statuses[:infected]]) }
 
   def current_location
     Location.build_current_location(self)
@@ -53,7 +52,7 @@ class Player < ApplicationRecord
 
   def self.survivor?(id)
     player = find(id)
-    player.survivor? || player.infected?
+    player.noninfected? || player.infected?
   end
 
   def self.newcomer?(id)

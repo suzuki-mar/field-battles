@@ -36,7 +36,7 @@ RSpec.describe Player, type: :model do
 
     describe 'status 誤ってstatusesとしてしまっているのでテストに失敗する' do
       it {
-        expect(subject).to define_enum_for(:status).with_values(newcomer: 0, survivor: 1, infected: 2, zombie: 3,
+        expect(subject).to define_enum_for(:status).with_values(newcomer: 0, noninfected: 1, infected: 2, zombie: 3,
                                                                 death: 4)
       }
     end
@@ -163,11 +163,11 @@ RSpec.describe Player, type: :model do
     describe 'statusのenumの確認' do
       where(:key, :i18n_name) do
         [
-          [:newcomer, '新規登録者']
-          # [:survivor, '非感染者'],
-          # [:infected, '感染者'],
-          # [:zombie, 'ゾンビ'],
-          # [:death, '死亡者']
+          [:newcomer, '新規登録者'],
+          [:noninfected, '非感染者'],
+          [:infected, '感染者'],
+          [:zombie, 'ゾンビ'],
+          [:death, '死亡者']
 
         ]
       end
