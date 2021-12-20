@@ -15,72 +15,13 @@
 #  updated_at                :datetime         not null
 #
 
+# validationなどの属性に関するところは肥大化したためplayer/attributes_specに記述してある
 RSpec.describe Player, type: :model do
-  describe 'validations' do
-    describe 'age' do
-      it { is_expected.to validate_presence_of(:age) }
-      it { is_expected.to allow_value(18).for(:age) }
-      it { is_expected.to allow_value(65).for(:age) }
-      it { is_expected.not_to allow_value(17).for(:age) }
-      it { is_expected.not_to allow_value(66).for(:age) }
-    end
-
-    describe 'counting_to_become_zombie' do
-      it { is_expected.to allow_value(5).for(:counting_to_become_zombie) }
-      it { is_expected.to allow_value(0).for(:counting_to_become_zombie) }
-      it { is_expected.not_to allow_value(6).for(:counting_to_become_zombie) }
-      it { is_expected.not_to allow_value(-1).for(:counting_to_become_zombie) }
-    end
-
-    describe 'current_lat' do
-      it { is_expected.to validate_presence_of(:current_lat) }
-      it { is_expected.to allow_value(Filed::LAT_RANGE.end).for(:current_lat) }
-      it { is_expected.to allow_value(Filed::LAT_RANGE.begin).for(:current_lat) }
-      it { is_expected.not_to allow_value(Filed::LAT_RANGE.end + 1).for(:current_lat) }
-      it { is_expected.not_to allow_value(Filed::LAT_RANGE.begin - 1).for(:current_lat) }
-    end
-
-    describe 'current_lon' do
-      it { is_expected.to validate_presence_of(:current_lon) }
-      it { is_expected.to allow_value(Filed::LON_RANGE.end).for(:current_lon) }
-      it { is_expected.to allow_value(Filed::LON_RANGE.begin).for(:current_lon) }
-      it { is_expected.not_to allow_value(Filed::LON_RANGE.end + 1).for(:current_lon) }
-      it { is_expected.not_to allow_value(Filed::LON_RANGE.begin - 1).for(:current_lon) }
+  describe 'i18nの確認' do
+    it 'モデル名の設定ができていること' do
+      expect(described_class.model_name.human).to eq('プレイヤー')
     end
   end
-
-  describe 'i18nの確認' do  
-
-    it 'モデル名の設定ができていること' do 
-      expect(Player.model_name.human).to eq("プレイヤー")
-    end
-
-    it "ageの設定ができていること" do 
-      expect(Player.human_attribute_name(:age)).to eq("年齢")
-    end
-
-    it "counting_to_become_zombieの設定ができていること" do 
-      expect(Player.human_attribute_name(:counting_to_become_zombie)).to eq("ゾンビになるまでのカウント")
-    end
-
-    it "current_latの設定ができていること" do 
-      expect(Player.human_attribute_name(:current_lat)).to eq("緯度")
-    end
-
-    it "current_lonの設定ができていること" do 
-      expect(Player.human_attribute_name(:current_lon)).to eq("経度")
-    end
-
-    it "nameの設定ができていること" do 
-      expect(Player.human_attribute_name(:name)).to eq("プレイヤー名")
-    end
-
-    it "statusの設定ができていること" do 
-      expect(Player.human_attribute_name(:status)).to eq("状態")
-    end
-
-  end
-
 
   describe 'current_location' do
     let(:player) { create(:player) }

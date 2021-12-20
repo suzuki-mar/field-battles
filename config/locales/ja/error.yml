@@ -1,0 +1,41 @@
+ja:
+  activerecord:
+    errors: 
+      models:
+        player:
+          attributes:
+            age:           
+              greater_than_or_equal_to: "は%{count}歳以上である必要があります"
+              less_than_or_equal_to: "は%{count}歳以下である必要があります"
+            counting_to_become_zombie:
+              greater_than_or_equal_to: "は%{count}より低い値には設定できません"
+              less_than_or_equal_to: "は%{count}より大きい値には設定できません"
+            current_lat:
+              greater_than_or_equal_to: "の最小値は%{count}です"
+              less_than_or_equal_to: "の最大値は%{count}です"
+            current_lon:
+              greater_than_or_equal_to: "の最小値は%{count}です"
+              less_than_or_equal_to: "の最大値は%{count}です"
+        item:
+          attributes:
+            point:
+              greater_than: "は%{count}以上の値を設定してください"
+        item_stock:
+          attributes:            
+            player:
+              required: "が設定されていません"                            
+            item:
+              required: "が設定されていません"                                          
+  error_message: 
+    item:
+      nonexistent_name: "%{name}という名前のアイテムは存在しません"
+    item_stock:
+      stock_count: "在庫数は0以上の整数である必要があります"      
+    inventory:
+      register_inventory_for_non-newcomer: "新規登録者以外にインベントリを登録しようとしました"
+      inventory_control:
+          executed_by_nonsurvivors: "生存者以外が在庫管理を実行しようとしました"          
+      take_out:
+        unregistered_item: "%{name}は登録されていません"
+        many_more_than_registered_quantity: "在庫の個数は%{count}個です"
+    

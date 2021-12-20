@@ -25,26 +25,101 @@ RSpec.describe Item, type: :model do
       it { is_expected.to allow_value(described_class::Name::FIRST_AID_POUCH).for(:name) }
       it { is_expected.not_to allow_value('Unknown item').for(:name) }
     end
+
+    xdescribe 'kind 誤ってkindsとしてしまっているのでテストに失敗する' do
+      it { is_expected.to define_enum_for(:kind).with_values(first_aid_kit: 0, drink: 1, weapone: 2) }
+    end
   end
 
-  describe 'i18nの確認' do  
-
-    it 'モデル名の設定ができていること' do 
-      expect(described_class.model_name.human).to eq("アイテム")
+  describe 'バリデーションのエラーメッセージ' do
+    subject do
+      item.validate
+      item.errors.full_messages.first
     end
 
-    it "kindの設定ができていること" do 
-      expect(described_class.human_attribute_name(:kind)).to eq("種類")
+    let(:item) { described_class.new(params) }
+    let(:params) do
+      {
+        name: described_class::Name::FIRST_AID_POUCH,
+        point: 1
+      }
     end
 
-    it "pointの設定ができていること" do 
-      expect(described_class.human_attribute_name(:point)).to eq("ポイント")
+    describe 'name' do
+      before do
+        params[:name] = name
+      end
+
+      context 'アイテムが存在しない場合' do
+        let(:name) { 'Unknown item' }
+
+        it 'エラーメッセージが存在すること' do
+          expect(subject).to include('アイテムは存在しません')
+        end
+      end
     end
 
-    it "nameの設定ができていること" do 
-      expect(described_class.human_attribute_name(:name)).to eq("アイテム名")
+    describe 'point' do
+      before do
+        # 新規作成時に強制的に値が設定されるのでアップデートをして値を再設定をする
+        item.save
+        item.point = point
+      end
+
+      context '1より小さい場合' do
+        let(:point) { 0 }
+
+        it 'エラーメッセージが存在すること' do
+          expect(subject).to include('してください')
+        end
+      end
+
+      context '整数ではない場合' do
+        let(:point) { 1.1 }
+
+        it 'エラーメッセージが存在すること' do
+          expect(subject).to include('整数である必要があります')
+        end
+      end
+    end
+  end
+
+  describe 'i18nの確認' do
+    it 'モデル名の設定ができていること' do
+      expect(described_class.model_name.human).to eq('アイテム')
     end
 
+    describe '属性の確認' do
+      where(:attribute_name, :i18n_name) do
+        [
+          [:kind, '種類'],
+          [:point, 'ポイント'],
+          [:name, 'アイテム名']
+        ]
+      end
+
+      with_them do
+        it '設定ができていること' do
+          expect(described_class.human_attribute_name(attribute_name)).to eq(i18n_name)
+        end
+      end
+    end
+
+    describe 'kindのenumの確認' do
+      where(:key, :i18n_name) do
+        [
+          [:first_aid_kit, '救急箱'],
+          [:drink, '飲み物'],
+          [:weapone, '武器']
+        ]
+      end
+
+      with_them do
+        it '設定ができていること' do
+          expect(described_class.kinds_i18n[key]).to eq(i18n_name)
+        end
+      end
+    end
   end
 
   describe 'auto_assign_attributes_from_name' do

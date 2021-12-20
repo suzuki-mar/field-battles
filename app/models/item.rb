@@ -15,7 +15,7 @@ class Item < ApplicationRecord
   before_validation :assign_attributes_from_name_if_new_record
   validates :name,  presence: true, allow_blank: false
   validate :validate_of_name_existant
-  validates :point, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :point, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   has_one :item_stock, dependent: :destroy
 
   enum kinds: { first_aid_kit: 0, drink: 1, weapone: 2 }
@@ -69,7 +69,7 @@ class Item < ApplicationRecord
 
     return if names.include?(name)
 
-    errors.add(:name, "#{name} is an unregistered name")
+    errors.add(:name, I18n.t('error_message.item.nonexistent_name', name: name))
   end
 
   class << self

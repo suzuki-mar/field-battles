@@ -1,4 +1,7 @@
-ja:
+# ユビキタス言語の説明 
+# https://github.com/suzuki-mar/field-battles/wiki/%E3%83%A6%E3%83%93%E3%82%AD%E3%82%BF%E3%82%B9%E8%A8%80%E8%AA%9E
+
+ja:  
   activerecord:
     models:
       player: "プレイヤー"
@@ -18,3 +21,27 @@ ja:
         name: "アイテム名"        
       item_stock: 
         stock_count: "在庫数"
+        player: "プレイヤー"
+        item: "アイテム"
+  enums:
+    player:
+      statuses:
+        newcomer: "新規登録者"        
+        survivor: "非感染者"
+        infected: "感染者"
+        zombie: "ゾンビ"
+        death: "死亡者"
+    item:
+      kinds:
+        first_aid_kit: "救急箱"        
+        drink: "飲み物"
+        weapone: "武器"  
+  domain_model:
+    model_names:
+      inventory: "インベントリ"
+      trade_center: "トレードセンター"
+      register_for_newcomer: "新規登録者のインベントリの登録	"
+    inventory:
+      inventory_control: "在庫管理"
+      
+

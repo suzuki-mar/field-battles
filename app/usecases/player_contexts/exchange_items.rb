@@ -25,15 +25,15 @@ module PlayerContexts
 
     def requestor_presents_items
       params[:requeser_items].each do |item|
-        partener_inventory.add(item[:name], item[:count])
-        requester_inventory.take_out(item[:name], item[:count])
+        partener_inventory.add!(item[:name], item[:count])
+        requester_inventory.take_out!(item[:name], item[:count])
       end
     end
 
     def partener_presents_items
       params[:partner_items].each do |item|
-        requester_inventory.add(item[:name], item[:count])
-        partener_inventory.take_out(item[:name], item[:count])
+        requester_inventory.add!(item[:name], item[:count])
+        partener_inventory.take_out!(item[:name], item[:count])
       end
     end
   end

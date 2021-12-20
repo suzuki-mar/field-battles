@@ -61,8 +61,10 @@ RSpec.describe ItemCalculator do
     end
   end
 
-  def create_inventory_from_status_trait_and_item_params(status_trait, item_params)
-    player = create(:player, status_trait)
-    Inventory.create_for_newcomers(player.id, item_params)
+  def create_inventory_from_status_trait_and_item_params(status, item_params)
+    player = create(:player, :newcomer)
+    Inventory.register_for_newcomer!(player.id, item_params)
+
+    player.update(status: Player.statuses[status])
   end
 end
