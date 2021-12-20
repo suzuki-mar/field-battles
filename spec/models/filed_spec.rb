@@ -47,7 +47,7 @@ RSpec.describe Filed, type: :model do
 
     let(:filed) { FiledForTest.new }
     let(:survivors) do
-      players = create_list(:player, 2, :survivor)
+      players = create_list(:player, 2, :noninfected)
       players.map { |p| Survivor.new(p) }
     end
 

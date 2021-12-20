@@ -28,7 +28,7 @@ class PlayerStatusPercentageCalculator
         next
       end
 
-      if s.non_infected?
+      if s.noninfected?
         count_group[:noninfected] = count_group[:noninfected] + 1
         next
       end

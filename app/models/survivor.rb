@@ -3,21 +3,15 @@
 class Survivor
   attr_reader :errors
 
-  delegate :id, :age, :counting_to_become_zombie, :can_see?, :save, to: :player
+  delegate :id, :age, :counting_to_become_zombie, :can_see?, :save, :noninfected?, :infected?, to: :player
 
   def initialize(player)
     @player = player
     @errors = []
   end
 
-  delegate :infected?, to: :player
-
-  def non_infected?
-    player.survivor?
-  end
-
   def alive?
-    non_infected? || infected?
+    noninfected? || infected?
   end
 
   def turn_into_infected?
@@ -45,7 +39,7 @@ class Survivor
   end
 
   def progress_of_zombie!
-    if non_infected?
+    if noninfected?
       errors << Error.build_with_message(I18n.t('error_message.survivor.turn_into_zombie_when_not_infected'))
 
       raise ActiveRecord::Rollback

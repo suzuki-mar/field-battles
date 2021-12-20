@@ -23,17 +23,24 @@ FactoryBot.define do
     current_lon { Location.build_distance_to_travel.lon }
     status { Player.statuses[:newcomer] }
 
+    trait :noninfected do
+      status { Player.statuses[:noninfected] }
+    end
+
+    trait :infected do
+      status { Player.statuses[:infected] }
+    end
+
     trait :survivor do
-      status { Player.statuses[:survivor] }
+      status do
+        status = %i[noninfected infected].sample
+        Player.statuses[status]
+      end
     end
 
     trait :zombie do
       status { Player.statuses[:zombie] }
       counting_to_become_zombie { 0 }
-    end
-
-    trait :infected do
-      status { Player.statuses[:infected] }
     end
 
     trait :death do
