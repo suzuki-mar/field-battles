@@ -1,13 +1,21 @@
 # frozen_string_literal: true
 
 class PlayersController < ApplicationController
+  include RenderError
+
   def create
-    player = Player.build_at_random_location(params)
+    @errors = []
+    @player = Player.build_at_random_location(params)
+
+    errors << Error.build_with_active_record(player) unless player.validate
 
     ActiveRecord::Base.transaction do
-      player.save!
-      Inventory.register_for_newcomer!(player.id, params[:inventory])
-      player.update!(status: Player.statuses[:survivor])
+      register_for_newcomer!
+    end
+
+    if errors.present?
+      render_error(errors)
+      return
     end
 
     render json: { success: true, player: player.serializable_hash }
@@ -25,6 +33,20 @@ class PlayersController < ApplicationController
   end
 
   private
+
+  attr_reader :player, :errors
+
+  def register_for_newcomer!
+    player.save
+
+    inventory_errors = Inventory.validate_for_newcomer(player.id, params[:inventory])
+    errors << Error.merge(inventory_errors) if inventory_errors.present?
+
+    Inventory.register_for_newcomer!(player.id, params[:inventory])
+    player.update!(status: Player.statuses[:survivor])
+
+    raise ActiveRecord::Rollback if errors.present?
+  end
 
   def build_params_of_update_inventory
     usecase_params = {}

@@ -13,7 +13,7 @@ RSpec.describe 'Players', type: :request do
     end
 
     let(:params) do
-      JsonParserSupport.file('spec/parameters/registe_new_survivor.json', :not_symbolize)
+      JsonParserSupport.file('spec/parameters/registe_newcomer.json', :not_symbolize)
     end
 
     before do
@@ -46,12 +46,42 @@ RSpec.describe 'Players', type: :request do
         expect(json[:success]).to eq(true)
         expect(json[:player]).not_to be_nil
       end
+
+      it_behaves_like 'returns http success'
     end
 
-    it_behaves_like 'returns http success'
+    context('パラメーターが不正な場合') do
+      context('プレイヤーのパラメーターが不正な場合') do
+        before do
+          params['age'] = -1
+        end
 
-    xcontext('パラメーターが不正な場合') do
-      it('登録するアイテムの情報が間違っているケース')
+        it('エラーが返されること') do
+          subject
+          json = JSON.parse(response.body, { symbolize_names: true })
+          expect(json[:success]).to eq(false)
+        end
+
+        it_behaves_like 'returns http bad request'
+      end
+
+      context('インベントリのパラメーターが不正な場合') do
+        before do
+          params['inventory'].first['count'] = -1
+        end
+
+        it('エラーが返されること') do
+          subject
+          json = JSON.parse(response.body, { symbolize_names: true })
+          expect(json[:success]).to eq(false)
+        end
+
+        it('プレイヤーが作成されていないこと') do
+          expect { subject }.not_to change(Player.all, :count)
+        end
+
+        it_behaves_like 'returns http bad request'
+      end
     end
   end
 

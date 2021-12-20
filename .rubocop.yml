@@ -80,4 +80,4 @@ Metrics/MethodLength:
 
 # デフォルト値だと厳しすぎるため
 Metrics/AbcSize:
-  Max: 20
+  Max: 25

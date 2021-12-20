@@ -39,10 +39,17 @@ class InventoryControl
   end
 
   def add_error_unless_invalid_player
+    key = 'error_message.inventory.inventory_control.executed_by_nonsurvivors'
+    message = I18n.t(key)
+
+    if inventory.player_id.nil?
+      errors << Error.build_with_message(message)
+      return
+    end
+
     return if Player.survivor?(inventory.player_id) || Player.newcomer?(inventory.player_id)
 
-    error_key = 'error_message.inventory.inventory_control.executed_by_nonsurvivors'
-    errors << Error.build_with_message(I18n.t(error_key))
+    errors << Error.build_with_message(message)
   end
 
   def register_new_item(stock, count)
