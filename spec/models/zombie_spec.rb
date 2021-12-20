@@ -24,7 +24,7 @@ RSpec.describe Zombie, type: :model do
 
       it '死亡していまうこと' do
         subject
-        expect(Player.find(target.id).status).to eq(Player.statuses[:death])
+        expect(Player.find(target.id).death?).to eq(true)
       end
     end
 
@@ -33,7 +33,7 @@ RSpec.describe Zombie, type: :model do
 
       it 'おそえないこと' do
         subject
-        expect(Player.find(target.id).status).not_to eq(Player.statuses[:death])
+        expect(Player.find(target.id).death?).to eq(false)
       end
     end
 

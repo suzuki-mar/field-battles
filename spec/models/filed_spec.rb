@@ -104,7 +104,7 @@ RSpec.describe Filed, type: :model do
 
     it '感染完了者がゾンビになっていること' do
       subject
-      expect(Player.find(infected.id).status).to eq(Player.statuses[:zombie])
+      expect(Player.find(infected.id).zombie?).to eq(true)
     end
   end
 
@@ -189,7 +189,7 @@ RSpec.describe Filed, type: :model do
 
     it 'ゾンビが襲撃していること' do
       subject
-      expect(Player.find(survivor.id).status).to eq(Player.statuses[:death])
+      expect(Player.find(survivor.id).death?).to eq(true)
     end
   end
 
