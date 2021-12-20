@@ -23,8 +23,7 @@ class Filed
   end
 
   def progress_of_infection
-    survivors.each { |s| s.report_infected_players(survivors) }
-    select_infected_survivors.each(&:save)
+    survivors.each { |s| s.report_infected_players!(survivors) }
   end
 
   def select_infected_survivors

@@ -40,6 +40,14 @@ FactoryBot.define do
       status { Player.statuses[:death] }
     end
 
+    trait :with_inventory do
+      after(:create) do |player|
+        inventory = Inventory.build_with_empty_item_stocks(player.id)
+        item = create(:item)
+        inventory.add!(item.name, 1)
+      end
+    end
+
     trait :infection_complete do
       status { Player.statuses[:infected] }
       counting_to_become_zombie { 0 }

@@ -27,7 +27,18 @@ class InventoryControl
     return Error.merge(errors) if errors.present?
 
     stock.reduce_stock!(count)
-    { name: name, count: count }
+    stock
+  end
+
+  def has_item?(inventory, name)
+    setup(inventory, name)
+
+    add_error_unless_invalid_player
+
+    stock = inventory.stocks.where(item: target_item).first
+    return false if stock.nil? || stock.stock_count.zero?
+
+    true
   end
 
   private

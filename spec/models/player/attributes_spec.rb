@@ -11,14 +11,14 @@ RSpec.describe Player, type: :model do
       it { is_expected.not_to allow_value(66).for(:age) }
     end
 
-    xdescribe 'counting_to_become_zombie' do
+    describe 'counting_to_become_zombie' do
       it { is_expected.to allow_value(5).for(:counting_to_become_zombie) }
       it { is_expected.to allow_value(0).for(:counting_to_become_zombie) }
       it { is_expected.not_to allow_value(6).for(:counting_to_become_zombie) }
       it { is_expected.not_to allow_value(-1).for(:counting_to_become_zombie) }
     end
 
-    xdescribe 'current_lat' do
+    describe 'current_lat' do
       it { is_expected.to validate_presence_of(:current_lat) }
       it { is_expected.to allow_value(Filed::LAT_RANGE.end).for(:current_lat) }
       it { is_expected.to allow_value(Filed::LAT_RANGE.begin).for(:current_lat) }
@@ -26,7 +26,7 @@ RSpec.describe Player, type: :model do
       it { is_expected.not_to allow_value(Filed::LAT_RANGE.begin - 1).for(:current_lat) }
     end
 
-    xdescribe 'current_lon' do
+    describe 'current_lon' do
       it { is_expected.to validate_presence_of(:current_lon) }
       it { is_expected.to allow_value(Filed::LON_RANGE.end).for(:current_lon) }
       it { is_expected.to allow_value(Filed::LON_RANGE.begin).for(:current_lon) }

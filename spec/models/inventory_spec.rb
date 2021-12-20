@@ -39,18 +39,30 @@ RSpec.describe Inventory, type: :model do
 
   describe('fetch_by_player') do
     subject do
-      described_class.fetch_by_player_id(player.id)
+      described_class.fetch_by_player_id(player_id)
     end
 
     let(:item) { create(:item) }
     let!(:item_stock) { create(:item_stock, player: player, item: item) }
 
-    it('playerのアイテムリストを取得する') do
-      expect(subject.player_id).to eq(player.id)
-      expect(subject.stocks.first.stock_count).to eq(item_stock.stock_count)
+    context 'インベントリをもっているプレイヤーの場合' do
+      let(:player_id) { player.id }
+
+      it('playerのアイテムリストを取得する') do
+        expect(subject.player_id).to eq(player.id)
+        expect(subject.stocks.first.stock_count).to eq(item_stock.stock_count)
+      end
     end
 
-    xit '存在しないidの場合に例外を発生させる'
+    context '存在しないプレイヤーの場合' do
+      let(:player_id) { 99_999_999_999_999 }
+
+      it('例外が発生する') do
+        expect do
+          subject
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 
   describe('register_for_newcomer!') do
@@ -79,6 +91,45 @@ RSpec.describe Inventory, type: :model do
 
       it '例外が発生すること' do
         expect { subject }.to raise_error(ActiveRecord::Rollback)
+      end
+    end
+  end
+
+  describe('has_item?') do
+    subject { inventory.has_item?(item_name) }
+
+    let(:inventory) do
+      stock_params = [
+        { name: Item::Name::FIJI_WATER, count: 1 }
+      ]
+
+      player = create(:player, :newcomer)
+      described_class.register_for_newcomer!(player.id, stock_params)
+    end
+
+    let(:item_name) { Item::Name::FIJI_WATER }
+
+    context 'アイテムが存在する場合' do
+      it 'trueが返ること' do
+        expect(subject).to eq(true)
+      end
+    end
+
+    context 'アイテムの在庫数が0の場合' do
+      before do
+        inventory.use!(item_name)
+      end
+
+      it 'falseが返ること' do
+        expect(subject).to eq(false)
+      end
+    end
+
+    context 'アイテムが存在しない場合' do
+      let(:item_name) { 'Unknow Item' }
+
+      it 'falseが返ること' do
+        expect(subject).to eq(false)
       end
     end
   end

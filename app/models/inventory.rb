@@ -4,25 +4,43 @@ class Inventory
   attr_reader :player_id, :stocks, :errors
 
   def add!(name, count)
-    result = InventoryControl.new.add(self, name, count)
+    result = inventory_control.add(self, name, count)
 
     if result.instance_of?(Error)
       @errors = [result]
       raise ActiveRecord::Rollback
     end
 
+    reload
     result
   end
 
   def take_out!(name, count)
-    result = InventoryControl.new.take_out(self, name, count)
+    result = inventory_control.take_out(self, name, count)
 
     if result.instance_of?(Error)
       @errors = [result]
       raise ActiveRecord::Rollback
     end
 
+    reload
     result
+  end
+
+  def use!(name)
+    result = inventory_control.take_out(self, name, 1)
+
+    if result.instance_of?(Error)
+      @errors = [result]
+      raise ActiveRecord::Rollback
+    end
+
+    reload
+    result
+  end
+
+  def has_item?(name)
+    inventory_control.has_item?(self, name)
   end
 
   def reload
@@ -53,8 +71,13 @@ class Inventory
 
     def fetch_by_player_id(player_id)
       stocks = ItemStock.where(player_id: player_id)
+      raise ActiveRecord::RecordNotFound  if stocks.blank?
 
       new(player_id, stocks)
+    end
+
+    def build_with_empty_item_stocks(player_id)
+      Inventory.new(player_id, [])
     end
 
     def register_for_newcomer!(player_id, stock_params)
@@ -76,11 +99,16 @@ class Inventory
     end
   end
 
+  private
+
+  attr_reader :inventory_control
+
   protected
 
   def initialize(player_id, stocks)
     @player_id = player_id
     @stocks = stocks
     @errors = []
+    @inventory_control = InventoryControl.new
   end
 end

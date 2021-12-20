@@ -84,7 +84,7 @@ RSpec.describe 'Filed', type: :request do
 
     before do
       # 一人は感染する感染する生存者を発生させたいので多めに作成している
-      create_list(:player, 20, :survivor)
+      create_list(:player, 20, :survivor, :with_inventory)
     end
 
     it 'ゾンビになった生存者がいること' do
