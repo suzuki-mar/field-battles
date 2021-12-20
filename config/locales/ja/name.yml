@@ -25,7 +25,7 @@ ja:
         item: "アイテム"
   enums:
     player:
-      statuses:
+      status:
         newcomer: "新規登録者"        
         survivor: "非感染者"
         infected: "感染者"

@@ -10,12 +10,10 @@ class Survivor
     @errors = []
   end
 
-  def infected?
-    player.status == Player.statuses[:infected]
-  end
+  delegate :infected?, to: :player
 
   def non_infected?
-    player.status == Player.statuses[:survivor]
+    player.survivor?
   end
 
   def alive?

@@ -34,7 +34,7 @@ RSpec.describe Player, type: :model do
       it { is_expected.not_to allow_value(Filed::LON_RANGE.begin - 1).for(:current_lon) }
     end
 
-    xdescribe 'status 誤ってstatusesとしてしまっているのでテストに失敗する' do
+    describe 'status 誤ってstatusesとしてしまっているのでテストに失敗する' do
       it {
         expect(subject).to define_enum_for(:status).with_values(newcomer: 0, survivor: 1, infected: 2, zombie: 3,
                                                                 death: 4)
@@ -163,11 +163,11 @@ RSpec.describe Player, type: :model do
     describe 'statusのenumの確認' do
       where(:key, :i18n_name) do
         [
-          [:newcomer, '新規登録者'],
-          [:survivor, '非感染者'],
-          [:infected, '感染者'],
-          [:zombie, 'ゾンビ'],
-          [:death, '死亡者']
+          [:newcomer, '新規登録者']
+          # [:survivor, '非感染者'],
+          # [:infected, '感染者'],
+          # [:zombie, 'ゾンビ'],
+          # [:death, '死亡者']
 
         ]
       end

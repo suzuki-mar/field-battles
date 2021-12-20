@@ -73,7 +73,7 @@ RSpec.describe 'Filed', type: :request do
 
     it 'ゾンビに襲われていること' do
       subject
-      expect(Player.find(survivor_player.id).status).to eq(Player.statuses[:death])
+      expect(Player.find(survivor_player.id).death?).to eq(true)
     end
 
     it_behaves_like 'returns http success'

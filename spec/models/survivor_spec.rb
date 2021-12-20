@@ -222,7 +222,7 @@ RSpec.describe Survivor, type: :model do
 
       it 'ゾンビになっていること' do
         subject
-        expect(Player.find(survivor.id).status).to eq(Player.statuses[:zombie])
+        expect(Player.find(survivor.id).zombie?).to eq(true)
       end
     end
 
