@@ -8,7 +8,9 @@ class RegisterInventoryForNewcomer
   end
 
   def validate(player_id, stock_params)
-    unless Player.newcomer?(player_id)
+    invalid_player_id = player_id.nil? || !Player.newcomer?(player_id)
+
+    if invalid_player_id
       error_key = 'error_message.inventory.register_inventory_for_non-newcomer'
       errors << Error.build_with_message(I18n.t(error_key))
     end

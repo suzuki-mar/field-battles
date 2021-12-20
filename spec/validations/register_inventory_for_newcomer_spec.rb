@@ -34,6 +34,17 @@ RSpec.describe RegisterInventoryForNewcomer, type: :validation do
         end
       end
 
+      context 'プレイヤーIDがnilの場合' do
+        let(:player_id) do
+          nil
+        end
+
+        it 'エラーメッセージが存在すること' do
+          message = subject.first.messages.first
+          expect(message).to include('新規登録者以外に')
+        end
+      end
+
       context 'アイテム名が不正な場合' do
         let(:stock_params)  do
           [
