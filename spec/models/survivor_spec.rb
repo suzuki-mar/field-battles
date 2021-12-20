@@ -17,32 +17,57 @@ RSpec.describe Survivor, type: :model do
     end
   end
 
-  describe('rturn_into_infected?') do
+  describe('turn_into_infected?') do    
+    let(:survivor) do
+      player = create(:player, :survivor)
+      described_class.new(player)
+    end
+
+    let(:inventory) do 
+      Inventory.build_with_empty_item_stocks(survivor.id)
+    end
+
+    before do 
+      SetUpper.prepare_items  
+      inventory.add!(Item::Name::AK47, 1)
+    end
+
     subject { survivor.turn_into_infected? }
 
-    # 最初に0が返るのに乱数を設定する
-    let!(:rand_seed) { srand }
-
-    before do
-      srand(123)
-    end
-
-    after do
-      srand(rand_seed)
-    end
-
-    context('アイテムがある場合') do
-      xit('falseが返りアイテムを使用していること')
-    end
-
-    context('アイテムがない場合で確率があたってしまった場合') do
-      let(:survivor) do
-        player = create(:player, :survivor)
-        described_class.new(player)
+    context "確率にあたってしまった場合" do 
+      before do 
+        allow(survivor).to receive(:random).and_return(0)
       end
 
-      it('trueが返ること') do
-        srand(rand_seed)
+      context('アイテムがない場合') do
+        it('trueが返ること') do
+          is_expected.to eq(true)
+        end
+      end
+      
+      context('アイテムがある場合') do
+        before do 
+          inventory.add!(Item::Name::FIRST_AID_POUCH, 1)
+        end
+        
+        it('falseが返る') do 
+          is_expected.to eq(false)
+        end
+
+        it('アイテムを消費していること') do 
+          subject
+          expect(inventory.has_item?(Item::Name::FIRST_AID_POUCH)).to eq(false)
+        end
+      end
+    end
+
+    context "確率にあたっていない場合" do 
+      before do 
+        allow(survivor).to receive(:random).and_return(1)
+      end
+
+      it('falseが返ること') do
+        is_expected.to eq(false)
       end
     end
   end

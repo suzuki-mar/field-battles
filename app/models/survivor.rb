@@ -4,7 +4,7 @@ class Survivor
   delegate :id, :age, :counting_to_become_zombie, :can_see?, :save, to: :player
 
   def initialize(player)
-    @player = player
+    @player = player    
   end
 
   def infected?
@@ -20,7 +20,17 @@ class Survivor
   end
 
   def turn_into_infected?
-    rand(2).zero?
+    infection_will_progress = random.zero?
+    
+    return false unless infection_will_progress
+
+    inventory = fetch_inventory 
+    if inventory.has_item?(Item::Name::FIRST_AID_POUCH)
+      inventory.use!(Item::Name::FIRST_AID_POUCH)
+      return false
+    end
+    
+    true
   end
 
   def become_infected
@@ -69,5 +79,18 @@ class Survivor
 
   private
 
-  attr_reader :player
+  attr_reader :player, :inventory
+
+  def fetch_inventory 
+    return inventory if inventory.present?
+    
+    @inventory = Inventory.fetch_by_player_id(id)
+    inventory
+  end
+
+  # テスト時に値を挿入できるようにするためにメソッドを作成している
+  def random 
+    rand(2)
+  end
+
 end
