@@ -17,62 +17,62 @@ RSpec.describe Survivor, type: :model do
     end
   end
 
-  describe('turn_into_infected?') do    
+  describe('turn_into_infected?') do
+    subject { survivor.turn_into_infected? }
+
     let(:survivor) do
       player = create(:player, :survivor)
       described_class.new(player)
     end
 
-    let(:inventory) do 
+    let(:inventory) do
       Inventory.build_with_empty_item_stocks(survivor.id)
     end
 
-    before do 
-      SetUpper.prepare_items  
+    before do
+      SetUpper.prepare_items
       inventory.add!(Item::Name::AK47, 1)
     end
 
-    subject { survivor.turn_into_infected? }
-
-    context "確率にあたってしまった場合" do 
-      before do 
+    context '確率にあたってしまった場合' do
+      before do
         allow(survivor).to receive(:random).and_return(0)
       end
 
       context('アイテムがない場合') do
         it('trueが返ること') do
-          is_expected.to eq(true)
+          expect(subject).to eq(true)
         end
       end
-      
+
       context('アイテムがある場合') do
-        before do 
+        before do
           inventory.add!(Item::Name::FIRST_AID_POUCH, 1)
         end
-        
-        it('falseが返る') do 
-          is_expected.to eq(false)
+
+        it('falseが返る') do
+          expect(subject).to eq(false)
         end
 
-        it('アイテムを消費していること') do 
+        it('アイテムを消費していること') do
           subject
           expect(inventory.has_item?(Item::Name::FIRST_AID_POUCH)).to eq(false)
         end
       end
     end
 
-    context "確率にあたっていない場合" do 
-      before do 
+    context '確率にあたっていない場合' do
+      before do
         allow(survivor).to receive(:random).and_return(1)
       end
 
       it('falseが返ること') do
-        is_expected.to eq(false)
+        expect(subject).to eq(false)
       end
     end
   end
 
-  describe('report_infected_players') do
+  describe('report_infected_players!') do
     let(:survivor) do
       player = create(:player, :survivor)
       described_class.new(player)
@@ -85,7 +85,7 @@ RSpec.describe Survivor, type: :model do
 
     context '別の人に実行する場合' do
       subject do
-        survivor.report_infected_players([infected_survivor])
+        survivor.report_infected_players!([infected_survivor])
       end
 
       context '見える距離の場合' do
@@ -113,7 +113,7 @@ RSpec.describe Survivor, type: :model do
 
     context '自分が報告対象になっている場合' do
       subject do
-        infected_survivor.report_infected_players([infected_survivor])
+        infected_survivor.report_infected_players!([infected_survivor])
       end
 
       it '感染状態はすすまないこと' do
@@ -123,23 +123,22 @@ RSpec.describe Survivor, type: :model do
     end
   end
 
-  describe('progress_of_zombie') do
-    xit '感染していない生存者に実行した場合にエラーを発生する'
-
+  describe('progress_of_zombie!') do
     subject do
-      survivor.progress_of_zombie
+      survivor.progress_of_zombie!
     end
 
     let(:survivor) do
       described_class.new(player)
     end
 
-    context('まだゾンビ化していない場合') do
+    context('感染者の場合') do
       let(:player) { create(:player, :infected) }
 
       it 'ゾンビ化が近づく' do
         subject
-        expect(survivor.counting_to_become_zombie).to eq(Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE - 1)
+        player = Player.find(survivor.id)
+        expect(player.counting_to_become_zombie).to eq(Player::COUNT_OF_BEFORE_BECOMING_ZOMBIE - 1)
       end
     end
 
@@ -149,6 +148,22 @@ RSpec.describe Survivor, type: :model do
       it 'カウントは減少しない' do
         subject
         expect(survivor.counting_to_become_zombie).to eq(0)
+      end
+    end
+
+    context('感染していない場合') do
+      let(:player) { create(:player, :survivor) }
+
+      it '例外が発生すること' do
+        expect { subject }.to raise_error(ActiveRecord::Rollback)
+      end
+
+      it 'エラーがセットされること' do
+        ActiveRecord::Base.transaction do
+          subject
+        end
+
+        expect(survivor.errors.present?).to eq(true)
       end
     end
   end
@@ -164,7 +179,7 @@ RSpec.describe Survivor, type: :model do
     context '進行が完了してしまっている場合' do
       before do
         survivor.counting_to_become_zombie.times do |_i|
-          survivor.progress_of_zombie
+          survivor.progress_of_zombie!
         end
       end
 
@@ -175,7 +190,7 @@ RSpec.describe Survivor, type: :model do
 
     context '進行が完了してしいない場合' do
       before do
-        survivor.progress_of_zombie
+        survivor.progress_of_zombie!
       end
 
       it 'falseが返ること' do
@@ -197,7 +212,7 @@ RSpec.describe Survivor, type: :model do
 
       before do
         survivor.counting_to_become_zombie.times do |_i|
-          survivor.progress_of_zombie
+          survivor.progress_of_zombie!
         end
       end
 

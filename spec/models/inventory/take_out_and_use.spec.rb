@@ -32,35 +32,22 @@ RSpec.describe Inventory, type: :model do
       create(:item_stock, player: player, item: item, stock_count: stock_count)
     end
 
-    context '正常系' do 
-      let(:name){item_name}
+    context '正常系' do
+      let(:name) { item_name }
 
       it '在庫数が１減っていること' do
-        expect(subject.stock_count).to eq(stock_count - 1)        
+        expect(subject.stock_count).to eq(stock_count - 1)
       end
     end
 
-    context "不正な場合" do 
-      let(:name){"Unknow Item"}
+    context '不正な場合' do
+      let(:name) { 'Unknow Item' }
 
       it '例外が発生すること' do
         expect do
           subject
         end.to raise_error(ActiveRecord::Rollback)
       end
-    end
-    
-  end
-
-  describe 'take_out ロールバック' do
-    subject do
-      inventory.take_out!(item_name, 3)
-    end
-
-    it '例外が発生していること' do
-      expect do
-        subject
-      end.to raise_error(ActiveRecord::Rollback)
     end
   end
 

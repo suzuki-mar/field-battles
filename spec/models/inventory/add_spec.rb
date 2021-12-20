@@ -110,8 +110,8 @@ RSpec.describe Inventory, type: :model do
         player = create(:player, :newcomer)
         inventory = described_class.register_for_newcomer!(player.id, [])
         player.update(status: Player.statuses[:zombie])
-        
-        inventory 
+
+        inventory
       end
 
       it 'エラーが返されていること' do

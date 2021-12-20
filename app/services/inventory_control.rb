@@ -36,7 +36,7 @@ class InventoryControl
     add_error_unless_invalid_player
 
     stock = inventory.stocks.where(item: target_item).first
-    return false if stock.nil? || stock.stock_count == 0
+    return false if stock.nil? || stock.stock_count.zero?
 
     true
   end

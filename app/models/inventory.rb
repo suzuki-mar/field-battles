@@ -12,7 +12,7 @@ class Inventory
     end
 
     reload
-    result    
+    result
   end
 
   def take_out!(name, count)
@@ -76,7 +76,6 @@ class Inventory
       new(player_id, stocks)
     end
 
-    
     def build_with_empty_item_stocks(player_id)
       Inventory.new(player_id, [])
     end
@@ -100,7 +99,8 @@ class Inventory
     end
   end
 
-  private 
+  private
+
   attr_reader :inventory_control
 
   protected

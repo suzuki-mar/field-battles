@@ -38,4 +38,6 @@ ja:
       take_out:
         unregistered_item: "%{name}は登録されていません"
         many_more_than_registered_quantity: "在庫の個数は%{count}個です"
+    survivor:
+        turn_into_zombie_when_not_infected: "完成していないのにゾンビになろうとしました"
     
