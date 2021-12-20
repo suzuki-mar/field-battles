@@ -47,13 +47,18 @@ class Inventory
   end
 
   class << self        
+    def validate_for_newcomer(player_id, stock_params)
+      validation = RegisterInventoryForNewcomer.new
+      validation.validate(player_id, stock_params)
+    end
+
     def fetch_by_player_id(player_id)
       stocks = ItemStock.where(player_id: player_id)
 
       new(player_id, stocks)
     end
     
-    def create_for_newcomers(player_id, stock_params)
+    def register_for_newcomer!(player_id, stock_params)
       inventory = Inventory.new(player_id, [])
       stock_params.each do |param|
         inventory.add!(param[:name], param[:count])

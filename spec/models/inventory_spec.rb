@@ -10,6 +10,33 @@ RSpec.describe Inventory, type: :model do
 
   # add take_outはテストが肥大化したためinventory内のディレクトリに切り出してある
 
+  describe('validate_for_newcomer') do    
+    let(:stock_params){[{ name: item_name, count: 1 }]}
+    
+    subject do      
+      described_class.validate_for_newcomer(player_id, stock_params)
+    end
+
+    context "パラメーターがエラーではない場合" do
+      let(:player_id){create(:player, :newcomer).id}
+
+      it '空配列が返ること' do
+        is_expected.to be_blank
+      end      
+    end
+
+    context "パラメーターがエラーの場合" do
+      let(:player_id) do 
+        create(:player, :zombie).id
+      end
+
+      it "エラーメッセージが存在すること" do           
+        message = subject.first.messages.first
+        expect(message).to include("新規登録者以外に")
+      end
+    end
+  end
+
   describe('fetch_by_player') do
     subject do
       described_class.fetch_by_player_id(player.id)
@@ -26,20 +53,35 @@ RSpec.describe Inventory, type: :model do
     xit '存在しないidの場合に例外を発生させる'
   end
 
-  describe('create_for_newcomers') do
+  describe('register_for_newcomer!') do
     subject do
       stock_params = [{ name: item_name, count: 1 }]
-      described_class.create_for_newcomers(player.id, stock_params)
+      described_class.register_for_newcomer!(player_id, stock_params)
     end
 
-    it 'イベントリが作成されていること' do
-      subject
-      inventory = described_class.fetch_by_player_id(player.id)
-      stock = inventory.stocks.first
+    context 'パラメータが正しい場合' do 
+      let(:player_id){player.id}
 
-      expect(stock.name).to eq(item_name)
-      expect(stock.stock_count).to eq(1)
+      it 'イベントリが作成されていること' do
+        subject
+        inventory = described_class.fetch_by_player_id(player.id)
+        stock = inventory.stocks.first
+  
+        expect(stock.name).to eq(item_name)
+        expect(stock.stock_count).to eq(1)
+      end
     end
+
+    context 'パラメータが正しくない場合' do 
+      let(:player_id) do 
+        create(:player, :zombie).id
+      end
+
+      it '例外が発生すること' do
+        expect{subject}.to raise_error(ActiveRecord::Rollback)
+      end
+    end
+
   end
 
   describe('all_stock_name_and_count') do
@@ -55,7 +97,7 @@ RSpec.describe Inventory, type: :model do
 
     let!(:inventory) do
       player = create(:player, :survivor)
-      described_class.create_for_newcomers(player.id, stock_params)
+      described_class.register_for_newcomer!(player.id, stock_params)
     end
 
     it 'イベントリにあるすべての在庫情報を取得する' do
@@ -74,7 +116,7 @@ RSpec.describe Inventory, type: :model do
 
     let!(:inventory) do
       player = create(:player, :survivor)
-      described_class.create_for_newcomers(player.id, [stock_param])
+      described_class.register_for_newcomer!(player.id, [stock_param])
     end
 
     context 'アイテムが存在する場合' do
@@ -106,7 +148,7 @@ RSpec.describe Inventory, type: :model do
         { name: item_name, count: 1 }
       ]
       players.each do |p|
-        described_class.create_for_newcomers(p.id, stock_params)
+        described_class.register_for_newcomer!(p.id, stock_params)
       end
 
       first_player_inventory = described_class.fetch_by_player_id(players.first.id)
@@ -134,7 +176,7 @@ RSpec.describe Inventory, type: :model do
         { name: item_name, count: 1 }
       ]
       players.each do |p|
-        described_class.create_for_newcomers(p.id, stock_params)
+        described_class.register_for_newcomer!(p.id, stock_params)
       end
 
       players[0].update(status: Player.statuses[:zombie])

@@ -55,6 +55,11 @@ class Player < ApplicationRecord
     status == statuses[:survivor] || status == statuses[:infected]
   end
 
+  def self.newcomer?(id)
+    status = find(id).status
+    status == statuses[:newcomer]
+  end
+
   class << self
     def build_at_random_location(params)
       initial_location = Location.build_distance_to_travel

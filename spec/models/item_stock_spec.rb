@@ -27,7 +27,7 @@ RSpec.describe ItemStock, type: :model do
     describe 'stock_count' do
       it { is_expected.to validate_presence_of(:stock_count) }
       it { is_expected.to allow_value(0).for(:stock_count) }
-      it { is_expected.not_to allow_value(-1).for(:stock_count) }
+      it { is_expected.not_to allow_value(-1).for(:stock_count) }      
     end
 
     describe 'item_id' do
@@ -67,10 +67,9 @@ RSpec.describe ItemStock, type: :model do
     end
 
     where(:error_name, :compare_message, :attribute_name, :value) do
-      [ 
-        ["ストックが0の場合", "以上の値を設定してください", :stock_count, -1],                    
+      [         
         ["プレイヤーが設定されていない場合", "プレイヤーが設定されていません", :player, nil],
-        ["アイテムが設定されていない場合", "アイテムが設定されていません", :item, nil],        
+        ["アイテムが設定されていない場合", "アイテムが設定されていません", :item, nil]       
       ]
     end
 
@@ -81,6 +80,24 @@ RSpec.describe ItemStock, type: :model do
     with_them do        
       it "エラーメッセージが存在すること" do           
         expect(subject).to include(compare_message)
+      end
+    end    
+  end
+
+  describe 'バリデーションのエラーメッセージ' do
+    where(:context_name, :value, :expected) do
+      [         
+        ["正の数である場合", 1, true],
+        ["負の数である場合", -1, false],
+        ["文字列である場合", "aaa", false],
+      ]
+    end
+
+    subject{described_class.valid_stock_count?(value)}
+  
+    with_them do              
+      it  do 
+        is_expected.to eq(expected)
       end
     end    
   end
