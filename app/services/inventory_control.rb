@@ -4,7 +4,7 @@ class InventoryControl
   def add(inventory, name, count)
     setup(inventory, name)
 
-    add_error_unless_survivor
+    add_error_unless_invalid_player
 
     errors << Error.build_with_message(I18n.t('error_message.item.nonexistent_name', name: name)) if target_item.nil?
     stock = ItemStock.find_or_initialize_by(player_id: inventory.player_id, item: target_item)
@@ -19,7 +19,7 @@ class InventoryControl
   def take_out(inventory, name, count)
     setup(inventory, name)
 
-    add_error_unless_survivor
+    add_error_unless_invalid_player
 
     stock = inventory.stocks.where(item: target_item).first
     add_error_if_cannot_take_out(name, stock, count)
@@ -38,8 +38,8 @@ class InventoryControl
     @target_item = Item.find_by(name: name)
   end
 
-  def add_error_unless_survivor
-    return if Player.survivor?(inventory.player_id)
+  def add_error_unless_invalid_player
+    return if Player.survivor?(inventory.player_id) || Player.newcomer?(inventory.player_id)
 
     error_key = 'error_message.inventory.inventory_control.executed_by_nonsurvivors'
     errors << Error.build_with_message(I18n.t(error_key))

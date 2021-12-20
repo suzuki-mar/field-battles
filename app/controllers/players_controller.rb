@@ -6,7 +6,7 @@ class PlayersController < ApplicationController
 
     ActiveRecord::Base.transaction do
       player.save!
-      Inventory.create_for_newcomers(player.id, params[:inventory])
+      Inventory.register_for_newcomer!(player.id, params[:inventory])
       player.update!(status: Player.statuses[:survivor])
     end
 
