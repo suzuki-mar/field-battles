@@ -54,6 +54,8 @@ class Inventory
     def fetch_by_player_id(player_id)
       stocks = ItemStock.where(player_id: player_id)
 
+      raise ActiveRecord::RecordNotFound  if stocks.blank?
+
       new(player_id, stocks)
     end
 

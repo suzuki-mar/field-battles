@@ -39,18 +39,29 @@ RSpec.describe Inventory, type: :model do
 
   describe('fetch_by_player') do
     subject do
-      described_class.fetch_by_player_id(player.id)
+      described_class.fetch_by_player_id(player_id)
     end
 
     let(:item) { create(:item) }
     let!(:item_stock) { create(:item_stock, player: player, item: item) }
 
-    it('playerのアイテムリストを取得する') do
-      expect(subject.player_id).to eq(player.id)
-      expect(subject.stocks.first.stock_count).to eq(item_stock.stock_count)
+    context 'インベントリをもっているプレイヤーの場合' do 
+      let(:player_id){player.id}
+      it('playerのアイテムリストを取得する') do
+        expect(subject.player_id).to eq(player.id)
+        expect(subject.stocks.first.stock_count).to eq(item_stock.stock_count)
+      end
+    end
+    
+    context '存在しないプレイヤーの場合' do 
+      let(:player_id){99999999999999}
+      it('例外が発生する') do
+        expect do
+          subject
+        end.to raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
-    xit '存在しないidの場合に例外を発生させる'
   end
 
   describe('register_for_newcomer!') do
