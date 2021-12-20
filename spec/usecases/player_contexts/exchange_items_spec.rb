@@ -67,7 +67,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
   end
 
   def create_requester_inventory(survivor, params)
-    inventory = Inventory.fetch_by_player_id(survivor.id)
+    inventory = Inventory.build_with_empty_item_stocks(survivor.id)
 
     params[:requeser_items].each do |p|
       inventory.add!(p[:name], p[:count])
@@ -76,7 +76,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
 
   def create_partner_inventory(params)
     player = create(:player, :survivor, id: params[:partner_player_id])
-    inventory = Inventory.fetch_by_player_id(player.id)
+    inventory = Inventory.build_with_empty_item_stocks(player.id)
 
     params[:partner_items].each do |p|
       inventory.add!(p[:name], p[:count])

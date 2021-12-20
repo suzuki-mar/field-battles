@@ -130,7 +130,7 @@ RSpec.describe 'Players', type: :request do
     xcontext('idがが間違っている場合')
 
     def create_requester_inventory(params)
-      inventory = Inventory.fetch_by_player_id(player.id)
+      inventory = Inventory.build_with_empty_item_stocks(player.id)
 
       params['requeser_items'].each do |p|
         inventory.add!(p['name'], p['count'])
@@ -139,7 +139,7 @@ RSpec.describe 'Players', type: :request do
 
     def create_partner_inventory(params)
       player = create(:player, :survivor, id: params['partner_player_id'])
-      inventory = Inventory.fetch_by_player_id(player.id)
+      inventory = Inventory.build_with_empty_item_stocks(player.id)
 
       params['partner_items'].each do |p|
         inventory.add!(p['name'], p['count'])

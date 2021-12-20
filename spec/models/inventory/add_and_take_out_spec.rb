@@ -12,9 +12,9 @@ RSpec.describe Inventory, type: :model do
     error.messages.first
   end
 
-  let(:player) { create(:player, :survivor) }
+  let(:player) { create(:player, :newcomer) }
   let!(:inventory) do
-    described_class.fetch_by_player_id(player.id)
+    described_class.register_for_newcomer!(player.id, [])
   end
   let(:item_name) { Item::Name::FIRST_AID_POUCH }
   let(:stock_count) { 3 }
@@ -116,8 +116,11 @@ RSpec.describe Inventory, type: :model do
       end
 
       let(:zombie_inventory) do
-        zombie = create(:player, :zombie)
-        described_class.fetch_by_player_id(zombie.id)
+        player = create(:player, :newcomer)
+        inventory = described_class.register_for_newcomer!(player.id, [])
+        player.update(status: Player.statuses[:zombie])
+        
+        inventory 
       end
 
       it 'エラーが返されていること' do

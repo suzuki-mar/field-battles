@@ -53,10 +53,14 @@ class Inventory
 
     def fetch_by_player_id(player_id)
       stocks = ItemStock.where(player_id: player_id)
-
       raise ActiveRecord::RecordNotFound  if stocks.blank?
 
       new(player_id, stocks)
+    end
+
+    
+    def build_with_empty_item_stocks(player_id)
+      Inventory.new(player_id, [])
     end
 
     def register_for_newcomer!(player_id, stock_params)
