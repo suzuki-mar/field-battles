@@ -19,7 +19,7 @@ RSpec.describe Zombie, type: :model do
       Survivor.new(player)
     end
 
-    xcontext('近くにいる生存者の場合') do
+    context('近くにいる生存者の場合') do
       let(:target_lon) { zombie.current_location.lon }
 
       it '死亡していまうこと' do
@@ -28,7 +28,7 @@ RSpec.describe Zombie, type: :model do
       end
     end
 
-    xcontext('遠くにいる生存者の場合') do
+    context('遠くにいる生存者の場合') do
       let(:target_lon) { 10_000 }
 
       it 'おそえないこと' do
