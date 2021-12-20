@@ -10,29 +10,29 @@ RSpec.describe Inventory, type: :model do
 
   # add take_outはテストが肥大化したためinventory内のディレクトリに切り出してある
 
-  describe('validate_for_newcomer') do    
-    let(:stock_params){[{ name: item_name, count: 1 }]}
-    
-    subject do      
+  describe('validate_for_newcomer') do
+    subject do
       described_class.validate_for_newcomer(player_id, stock_params)
     end
 
-    context "パラメーターがエラーではない場合" do
-      let(:player_id){create(:player, :newcomer).id}
+    let(:stock_params) { [{ name: item_name, count: 1 }] }
+
+    context 'パラメーターがエラーではない場合' do
+      let(:player_id) { create(:player, :newcomer).id }
 
       it '空配列が返ること' do
-        is_expected.to be_blank
-      end      
+        expect(subject).to be_blank
+      end
     end
 
-    context "パラメーターがエラーの場合" do
-      let(:player_id) do 
+    context 'パラメーターがエラーの場合' do
+      let(:player_id) do
         create(:player, :zombie).id
       end
 
-      it "エラーメッセージが存在すること" do           
+      it 'エラーメッセージが存在すること' do
         message = subject.first.messages.first
-        expect(message).to include("新規登録者以外に")
+        expect(message).to include('新規登録者以外に')
       end
     end
   end
@@ -59,29 +59,28 @@ RSpec.describe Inventory, type: :model do
       described_class.register_for_newcomer!(player_id, stock_params)
     end
 
-    context 'パラメータが正しい場合' do 
-      let(:player_id){player.id}
+    context 'パラメータが正しい場合' do
+      let(:player_id) { player.id }
 
       it 'イベントリが作成されていること' do
         subject
         inventory = described_class.fetch_by_player_id(player.id)
         stock = inventory.stocks.first
-  
+
         expect(stock.name).to eq(item_name)
         expect(stock.stock_count).to eq(1)
       end
     end
 
-    context 'パラメータが正しくない場合' do 
-      let(:player_id) do 
+    context 'パラメータが正しくない場合' do
+      let(:player_id) do
         create(:player, :zombie).id
       end
 
       it '例外が発生すること' do
-        expect{subject}.to raise_error(ActiveRecord::Rollback)
+        expect { subject }.to raise_error(ActiveRecord::Rollback)
       end
     end
-
   end
 
   describe('all_stock_name_and_count') do

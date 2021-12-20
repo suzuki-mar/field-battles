@@ -23,14 +23,15 @@ class Player < ApplicationRecord
 
   before_validation :assign_default_value_if_new_record
   validates :age, presence: true, numericality: { greater_than_or_equal_to: 18, less_than_or_equal_to: 65 }
-  validates :counting_to_become_zombie, presence: true, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 5 }
+  validates :counting_to_become_zombie, presence: true,
+                                        numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 5 }
   validates :current_lat, presence: true,
                           numericality: {
                             greater_than_or_equal_to: Filed::LAT_RANGE.begin,
                             less_than_or_equal_to: Filed::LAT_RANGE.end
                           }
 
-  validates :current_lon, presence: true, 
+  validates :current_lon, presence: true,
                           numericality: {
                             greater_than_or_equal_to: Filed::LON_RANGE.begin,
                             less_than_or_equal_to: Filed::LON_RANGE.end

@@ -27,7 +27,7 @@ RSpec.describe ItemStock, type: :model do
     describe 'stock_count' do
       it { is_expected.to validate_presence_of(:stock_count) }
       it { is_expected.to allow_value(0).for(:stock_count) }
-      it { is_expected.not_to allow_value(-1).for(:stock_count) }      
+      it { is_expected.not_to allow_value(-1).for(:stock_count) }
     end
 
     describe 'item_id' do
@@ -39,66 +39,64 @@ RSpec.describe ItemStock, type: :model do
     end
   end
 
-  describe 'i18nの確認' do  
-
-    it 'モデル名の設定ができていること' do 
-      expect(described_class.model_name.human).to eq("在庫")
+  describe 'i18nの確認' do
+    it 'モデル名の設定ができていること' do
+      expect(described_class.model_name.human).to eq('在庫')
     end
 
-    it "stock_countの設定ができていること" do 
-      expect(described_class.human_attribute_name(:stock_count)).to eq("在庫数")
+    it 'stock_countの設定ができていること' do
+      expect(described_class.human_attribute_name(:stock_count)).to eq('在庫数')
     end
-
   end
 
   describe 'バリデーションのエラーメッセージ' do
-    let(:stock){described_class.new(params)}
-    let(:params){
+    subject do
+      stock.validate
+      stock.errors.full_messages.first
+    end
+
+    let(:stock) { described_class.new(params) }
+    let(:params)  do
       {
         player: create(:player),
         stock_count: 1,
         item: create(:item)
       }
-    }
-
-    subject do 
-      stock.validate          
-      stock.errors.full_messages.first
     end
 
     where(:error_name, :compare_message, :attribute_name, :value) do
-      [         
-        ["プレイヤーが設定されていない場合", "プレイヤーが設定されていません", :player, nil],
-        ["アイテムが設定されていない場合", "アイテムが設定されていません", :item, nil]       
+      [
+        ['プレイヤーが設定されていない場合', 'プレイヤーが設定されていません', :player, nil],
+        ['アイテムが設定されていない場合', 'アイテムが設定されていません', :item, nil]
       ]
     end
 
-    before do 
+    before do
       params[attribute_name] = value
     end
-  
-    with_them do        
-      it "エラーメッセージが存在すること" do           
+
+    with_them do
+      it 'エラーメッセージが存在すること' do
         expect(subject).to include(compare_message)
       end
-    end    
+    end
   end
 
-  describe 'バリデーションのエラーメッセージ' do
+  describe 'valid_stock_count?' do
     where(:context_name, :value, :expected) do
-      [         
-        ["正の数である場合", 1, true],
-        ["負の数である場合", -1, false],
-        ["文字列である場合", "aaa", false],
+      [
+        ['正の数である場合', 1, true],
+        ['負の数である場合', -1, false],
+        ['文字列である場合', 'aaa', false]
       ]
     end
 
-    subject{described_class.valid_stock_count?(value)}
-  
-    with_them do              
-      it  do 
-        is_expected.to eq(expected)
+    subject { described_class.valid_stock_count?(value) }
+
+    with_them do
+      it do
+        expect(subject).to eq(expected)
       end
-    end    
+    end
   end
 end

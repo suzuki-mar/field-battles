@@ -8,23 +8,23 @@ RSpec.describe 'Filed', type: :request do
 
     before do
       SetUpper.prepare_items
-      
+
       create_list(:player, 9, :newcomer)
 
       item_params = [
         { name: Item::Name::FIJI_WATER, count: 2 },
         { name: Item::Name::FIRST_AID_POUCH, count: 3 }
       ]
-      
+
       Inventory.register_for_newcomer!(Player.first.id, item_params)
       Player.all[0..5].each do |survivor|
         survivor.update(status: Player.statuses[:survivor])
       end
-            
+
       Inventory.register_for_newcomer!(Player.last.id, item_params)
-      Player.all[6..-1].each do |zombie|
+      Player.all[6..].each do |zombie|
         zombie.update(status: Player.statuses[:zombie])
-      end      
+      end
     end
 
     # 計算自体はサービスクラスに異常している
@@ -95,5 +95,4 @@ RSpec.describe 'Filed', type: :request do
 
     it_behaves_like 'returns http success'
   end
-
 end

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
 class Error
-  attr_reader :messages
+  attr_accessor :messages
 
   def initialize(messages)
     @messages = messages
   end
 
-  class << self 
+  class << self
     def build_with_message(message)
       new([message])
     end
@@ -19,19 +19,15 @@ class Error
     def merge(errors)
       messages = []
       errors.each do |error|
-        messages.concat(error.messages) 
+        messages.concat(error.messages)
       end
-      
+
       new(messages)
     end
   end
-
 
   module Key
     NOT_SAME_POINTS_TO_TRADE = 'NOT_SAME_POINTS_TO_TRADE'
     EXCHANGE_PARTNER_NOT_SURVIVOR = 'EXCHANGE_PARTNER_NOT_SURVIVOR'
   end
-
-  attr_writer :messages  
-  
 end

@@ -5,8 +5,8 @@ class Inventory
 
   def add!(name, count)
     result = InventoryControl.new.add(self, name, count)
-    
-    if result.instance_of?(Error) 
+
+    if result.instance_of?(Error)
       @errors = [result]
       raise ActiveRecord::Rollback
     end
@@ -17,13 +17,12 @@ class Inventory
   def take_out!(name, count)
     result = InventoryControl.new.take_out(self, name, count)
 
-    if result.instance_of?(Error) 
+    if result.instance_of?(Error)
       @errors = [result]
       raise ActiveRecord::Rollback
     end
 
-    result    
-
+    result
   end
 
   def reload
@@ -46,7 +45,7 @@ class Inventory
     end
   end
 
-  class << self        
+  class << self
     def validate_for_newcomer(player_id, stock_params)
       validation = RegisterInventoryForNewcomer.new
       validation.validate(player_id, stock_params)
@@ -57,13 +56,13 @@ class Inventory
 
       new(player_id, stocks)
     end
-    
+
     def register_for_newcomer!(player_id, stock_params)
       inventory = Inventory.new(player_id, [])
       stock_params.each do |param|
         inventory.add!(param[:name], param[:count])
       end
-      inventory.reload  
+      inventory.reload
       inventory
     end
 
@@ -81,8 +80,7 @@ class Inventory
 
   def initialize(player_id, stocks)
     @player_id = player_id
-    @stocks = stocks   
+    @stocks = stocks
     @errors = []
   end
-
 end

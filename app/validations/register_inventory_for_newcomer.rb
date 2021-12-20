@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class RegisterInventoryForNewcomer
   attr_reader :errors
-  
+
   def initialize
     @errors = []
   end
@@ -8,9 +10,9 @@ class RegisterInventoryForNewcomer
   def validate(player_id, stock_params)
     unless Player.newcomer?(player_id)
       error_key = 'error_message.inventory.register_inventory_for_non-newcomer'
-      errors << Error.build_with_message(I18n.t(error_key))    
+      errors << Error.build_with_message(I18n.t(error_key))
     end
-          
+
     existent_names = Item.fetch_all_name_and_point.pluck(:name)
 
     stock_params.each do |param|
@@ -21,19 +23,20 @@ class RegisterInventoryForNewcomer
     errors
   end
 
-  private 
+  private
+
   def validate_stock_param(param, existent_names)
     param_errors = []
 
     unless existent_names.include?(param[:name])
-      error_message = I18n.t("error_message.item.nonexistent_name", name: param[:name])
-      param_errors << Error.build_with_message(error_message)            
+      error_message = I18n.t('error_message.item.nonexistent_name', name: param[:name])
+      param_errors << Error.build_with_message(error_message)
     end
-    
+
     unless ItemStock.valid_stock_count?(param[:count])
-      error_message = I18n.t("error_message.item_stock.stock_count")
-      param_errors << Error.build_with_message(error_message)            
-    end        
+      error_message = I18n.t('error_message.item_stock.stock_count')
+      param_errors << Error.build_with_message(error_message)
+    end
 
     return if param_errors.blank?
 

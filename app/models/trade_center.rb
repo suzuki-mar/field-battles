@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 
-# TODO 現在はinventoryから呼び出されているのでinventory内にテストを書いてある
+# TODO: 現在はinventoryから呼び出されているのでinventory内にテストを書いてある
 class TradeCenter
   def fetch_survivor_inventories
     players = Player.only_survivor
@@ -20,6 +21,7 @@ class TradeCenter
   end
 
   private
+
   def grouping_items_by_player(players, stocks)
     grouped_stocks = {}
     players.map do |p|
@@ -32,5 +34,4 @@ class TradeCenter
 
     grouped_stocks
   end
-
 end

@@ -17,10 +17,9 @@
 
 # validationなどの属性に関するところは肥大化したためplayer/attributes_specに記述してある
 RSpec.describe Player, type: :model do
-  describe 'i18nの確認' do  
-
-    it 'モデル名の設定ができていること' do 
-      expect(Player.model_name.human).to eq("プレイヤー")
+  describe 'i18nの確認' do
+    it 'モデル名の設定ができていること' do
+      expect(described_class.model_name.human).to eq('プレイヤー')
     end
   end
 

@@ -44,23 +44,23 @@ class ItemStock < ApplicationRecord
     item.point * stock_count
   end
 
-  class << self 
+  class << self
     def valid_stock_count?(count)
-      pattern = "^[0-9]+$"      
-      if /#{pattern}/.match(count.to_s)      
+      pattern = '^[0-9]+$'
+      if /#{pattern}/.match(count.to_s)
         true
-      else  
+      else
         false
       end
     end
   end
 
   private
+
   def validate_of_stock_count_number
     return if stock_count.blank?
     return if self.class.valid_stock_count?(stock_count)
-    
-    errors.add(:stock_count, I18n.t("error_message.item_stock.stock_count"))
+
+    errors.add(:stock_count, I18n.t('error_message.item_stock.stock_count'))
   end
-  
 end
