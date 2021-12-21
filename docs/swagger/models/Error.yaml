@@ -1,5 +1,0 @@
-title: Error
-type: array
-items:
-  type: string
-description: バリデーションエラーの文言がリスト形式で書かれている
