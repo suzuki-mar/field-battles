@@ -1,14 +1,13 @@
 # frozen_string_literal: true
 
-# inventory_specのinventoryの主要な責務であるアイテムの追加と取り出しのテストが肥大化したためテストが見づらくなってしまったので切り出した
-
-RSpec.describe Inventory, type: :model do
-  let(:player) { create(:player, :newcomer) }
+RSpec.describe InventoryControl, type: :service do  
   let!(:inventory) do
-    described_class.register_for_newcomer!(player.id, [])
+    player = create(:player, :newcomer)
+    Inventory.register_for_newcomer!(player.id, [])
   end
   let(:item_name) { Item::Name::FIRST_AID_POUCH }
   let(:stock_count) { 3 }
+  let(:inventory_control){described_class.new}
 
   before do
     SetUpper.prepare_items
@@ -16,43 +15,30 @@ RSpec.describe Inventory, type: :model do
 
   describe('正常系') do
     subject do
-      inventory.add!(item_name, 1)
-      inventory.reload
-      inventory
+      inventory_control.add(inventory, item_name, stock_count)      
     end
 
     context('存在しないアイテムを追加する場合') do
       it '在庫を新規登録していること' do
         subject
-        item_stock = inventory.stocks.first
-        expect(item_stock.item.name).to eq(item_name)
-        expect(item_stock.stock_count).to eq(1)
+
+        item_stock = ItemStock.all.first
+        expect(item_stock.stock_count).to eq(stock_count)
       end
     end
 
     context('同じアイテムがすでに存在する場合') do
       before do
         item = Item.where(name: item_name).first
-        create(:item_stock, player: player, item: item, stock_count: 1)
+        create(:item_stock, player_id: inventory.player_id, item: item, stock_count: 1)
       end
 
       it '在庫のカウントが増えていること' do
         subject
-        item_stock = inventory.stocks.first
-        expect(item_stock.stock_count).to eq(2)
+        
+        item_stock = ItemStock.all.first
+        expect(item_stock.stock_count).to eq(stock_count + 1)
       end
-    end
-  end
-
-  describe 'ロールバック' do
-    subject do
-      inventory.add!('Unknown Item', 3)
-    end
-
-    it '例外が発生していること' do
-      expect do
-        subject
-      end.to raise_error(ActiveRecord::Rollback)
     end
   end
 
@@ -79,7 +65,7 @@ RSpec.describe Inventory, type: :model do
       end
 
       it 'エラーが返されていること' do
-        expect(subject).to eq(I18n.t('error_message.item.nonexistent_name', name: params[:item_name]))
+        is_expected.to eq(I18n.t('error_message.item.nonexistent_name', name: params[:item_name]))
       end
     end
 
@@ -97,18 +83,14 @@ RSpec.describe Inventory, type: :model do
 
   describe('プレイヤーのバリデーション') do
     context('生存者ではないものが実行しようとした場合') do
-      subject do
-        ActiveRecord::Base.transaction do
-          zombie_inventory.add!(item_name, 1)
-        end
-
-        error = zombie_inventory.errors.first
+      subject do        
+        error = inventory_control.add(zombie_inventory, item_name, stock_count)              
         error.messages.first
       end
 
       let(:zombie_inventory) do
         player = create(:player, :newcomer)
-        inventory = described_class.register_for_newcomer!(player.id, [])
+        inventory = Inventory.register_for_newcomer!(player.id, [])
         player.update(status: Player.statuses[:zombie])
 
         inventory
