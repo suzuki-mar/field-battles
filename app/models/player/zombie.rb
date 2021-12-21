@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Zombie
+class Player::Zombie
   delegate :id, :current_location, :can_see?, to: :player
 
   def initialize(player)

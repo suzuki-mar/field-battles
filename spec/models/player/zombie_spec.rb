@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Zombie, type: :model do
+RSpec.describe Player::Zombie, type: :model do
   describe('raid') do
     subject do
       zombie.raid(target)

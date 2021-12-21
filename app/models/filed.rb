@@ -13,7 +13,7 @@ class Filed
 
   def load_zombies
     players = Player.where(status: Player.statuses[:zombie])
-    @zombies = players.map { |p| Zombie.new(p) }
+    @zombies = players.map { |p| Player::Zombie.new(p) }
   end
 
   def turning_into_infected
@@ -54,7 +54,7 @@ class Filed
 
   def attack_of_zombies
     zombie_players = Player.where(status: Player.statuses[:zombie])
-    zombies = zombie_players.map { |p| Zombie.new(p) }
+    zombies = zombie_players.map { |p| Player::Zombie.new(p) }
     zombies.each do |zombie|
       survivors.each { |s| zombie.raid(s) }
     end
