@@ -18,7 +18,7 @@ class Item < ApplicationRecord
   validates :point, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   has_one :item_stock, dependent: :destroy
 
-  enum kinds: { first_aid_kit: 0, drink: 1, weapone: 2 }
+  enum kind: { first_aid_kit: 0, drink: 1, weapone: 2 }
 
   module Name
     FIJI_WATER = 'Fiji Water'

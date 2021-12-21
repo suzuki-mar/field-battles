@@ -26,13 +26,13 @@ RSpec.describe Item, type: :model do
       it { is_expected.not_to allow_value('Unknown item').for(:name) }
     end
 
-    xdescribe 'kind 誤ってkindsとしてしまっているのでテストに失敗する' do
+    describe 'kind' do
       it { is_expected.to define_enum_for(:kind).with_values(first_aid_kit: 0, drink: 1, weapone: 2) }
     end
   end
 
   describe 'バリデーションのエラーメッセージ' do
-    subject do
+    subject do  
       item.validate
       item.errors.full_messages.first
     end

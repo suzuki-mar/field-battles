@@ -32,7 +32,7 @@ ja:
         zombie: "ゾンビ"
         death: "死亡者"
     item:
-      kinds:
+      kind:
         first_aid_kit: "救急箱"        
         drink: "飲み物"
         weapone: "武器"  
