@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Survivor
+class Player::Survivor
   attr_reader :errors
 
   delegate :id, :age, :counting_to_become_zombie, :can_see?, :save, :noninfected?, :infected?, to: :player

@@ -9,7 +9,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
 
     let(:survivor) do
       player = create(:player, :survivor)
-      Survivor.new(player)
+      Player::Survivor.new(player)
     end
 
     let(:params) do

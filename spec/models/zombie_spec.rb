@@ -16,7 +16,7 @@ RSpec.describe Zombie, type: :model do
       player.current_lat = zombie.current_location.lat
       player.current_lon = target_lon
 
-      Survivor.new(player)
+      Player::Survivor.new(player)
     end
 
     context('近くにいる生存者の場合') do
@@ -52,7 +52,7 @@ RSpec.describe Zombie, type: :model do
     end
   end
 
-  class SurvivorForTest < Survivor
+  class SurvivorForTest < Player::Survivor
     attr_reader :player
   end
 end

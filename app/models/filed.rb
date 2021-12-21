@@ -8,7 +8,7 @@ class Filed
 
   def load_survivors
     players = Player.only_survivor
-    @survivors = players.map { |p| Survivor.new(p) }
+    @survivors = players.map { |p| Player::Survivor.new(p) }
   end
 
   def load_zombies

@@ -48,7 +48,7 @@ RSpec.describe Filed, type: :model do
     let(:filed) { FiledForTest.new }
     let(:survivors) do
       players = create_list(:player, 2, :noninfected)
-      players.map { |p| Survivor.new(p) }
+      players.map { |p| Player::Survivor.new(p) }
     end
 
     before do
@@ -71,10 +71,10 @@ RSpec.describe Filed, type: :model do
     end
 
     let(:filed) { FiledForTest.new }
-    let(:infected) { Survivor.new(create(:player, :infected)) }
+    let(:infected) { Player::Survivor.new(create(:player, :infected)) }
 
     before do
-      noninfected = Survivor.new(create(:player, :survivor))
+      noninfected = Player::Survivor.new(create(:player, :survivor))
       filed.survivors = [noninfected, infected]
     end
 
@@ -92,7 +92,7 @@ RSpec.describe Filed, type: :model do
     end
 
     let(:filed) { FiledForTest.new }
-    let(:infected) { Survivor.new(create(:player, :infection_complete)) }
+    let(:infected) { Player::Survivor.new(create(:player, :infection_complete)) }
 
     before do
       infected.counting_to_become_zombie.times do |_i|
@@ -119,7 +119,7 @@ RSpec.describe Filed, type: :model do
       player.current_lon = Filed::LON_RANGE.first
       player
     end
-    let(:survivor) { Survivor.new(player) }
+    let(:survivor) { Player::Survivor.new(player) }
 
     before do
       filed.survivors = [survivor]
@@ -133,7 +133,7 @@ RSpec.describe Filed, type: :model do
 
   describe('can_move?') do
     subject do
-      survivor = Survivor.new(player)
+      survivor = Player::Survivor.new(player)
       filed.can_move?(survivor)
     end
 
@@ -143,7 +143,7 @@ RSpec.describe Filed, type: :model do
       player.current_lon = lon
       player
     end
-    let(:survivor) { Survivor.new(create(:player, :survivor)) }
+    let(:survivor) { Player::Survivor.new(create(:player, :survivor)) }
 
     before do
       filed.survivors = [survivor]
@@ -181,7 +181,7 @@ RSpec.describe Filed, type: :model do
       player.save
       player
     end
-    let(:survivor) { Survivor.new(player) }
+    let(:survivor) { Player::Survivor.new(player) }
 
     before do
       filed.survivors = [survivor]
