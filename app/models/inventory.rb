@@ -88,15 +88,6 @@ class Inventory
       inventory.reload
       inventory
     end
-
-    # クライアントへのインターフェースを変えないが肥大化の対策をするため移譲する
-    def fetch_all_survivor_inventories
-      TradeCenter.new.fetch_survivor_inventories
-    end
-
-    def fetch_all_not_survivor_inventories
-      TradeCenter.new.fetch_not_survivor_inventories
-    end
   end
 
   private

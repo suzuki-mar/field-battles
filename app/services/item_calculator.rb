@@ -3,16 +3,19 @@
 class ItemCalculator
   def execute(filed)
     @filed = filed
+    @trade_center = TradeCenter.new
 
     {
       average_count_per: calc_average_count_per_item,
       wasted_points: calc_of_wasted_points
     }
+
+    
   end
 
   private
 
-  attr_reader :filed
+  attr_reader :filed, :trade_center
 
   def calc_average_count_per_item
     count_totals = count_totals_per_items
@@ -30,7 +33,7 @@ class ItemCalculator
   end
 
   def count_totals_per_items
-    survivor_inventories = Inventory.fetch_all_survivor_inventories
+    survivor_inventories = trade_center.fetch_survivor_inventories
     item_name_and_points = Item.fetch_all_name_and_point
 
     counts = {}
@@ -49,7 +52,7 @@ class ItemCalculator
   end
 
   def calc_of_wasted_points
-    not_survivor_inventories = Inventory.fetch_all_not_survivor_inventories
+    not_survivor_inventories = trade_center.fetch_not_survivor_inventories
 
     # inventorごとに計算をするとN+1になってしまうため、一度IDをまとめる
     item_stock_ids = []

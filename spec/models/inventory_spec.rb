@@ -184,58 +184,5 @@ RSpec.describe Inventory, type: :model do
         expect(subject).to eq(0)
       end
     end
-  end
-
-  # TODO: TradeCenterのテスト内に記述する
-  describe('fetch_all_survivor_inventories') do
-    subject { described_class.fetch_all_survivor_inventories }
-
-    before do
-      # create時はsurvivorである必要がある
-      players = create_list(:player, 3, :survivor)
-
-      stock_params = [
-        { name: item_name, count: 1 }
-      ]
-      players.each do |p|
-        described_class.register_for_newcomer!(p.id, stock_params)
-      end
-
-      first_player_inventory = described_class.fetch_by_player_id(players.first.id)
-      first_player_inventory.add!(Item::Name::AK47, 2)
-
-      players.last.update(status: Player.statuses[:death])
-    end
-
-    it 'すべての生存者のインベントリを取得する' do
-      expect(subject.count).to eq(2)
-      expect(subject.first.stocks.count).to eq(2)
-    end
-  end
-
-  describe('fetch_all_not_survivor_inventories') do
-    subject { described_class.fetch_all_not_survivor_inventories }
-
-    before do
-      # create時はsurvivorである必要がある
-      players = create_list(:player, 4, :survivor)
-      # players.push(create(:player, :death))
-      # players.push(create(:player, :survivor))
-
-      stock_params = [
-        { name: item_name, count: 1 }
-      ]
-      players.each do |p|
-        described_class.register_for_newcomer!(p.id, stock_params)
-      end
-
-      players[0].update(status: Player.statuses[:zombie])
-      players[1].update(status: Player.statuses[:zombie])
-      players[2].update(status: Player.statuses[:death])
-    end
-
-    it 'すべての非生存者のインベントリを取得する' do
-      expect(subject.count).to eq(3)
-    end
-  end
+  end  
 end
