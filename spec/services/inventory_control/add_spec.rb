@@ -42,18 +42,6 @@ RSpec.describe InventoryControl, type: :service do
     end
   end
 
-  xdescribe 'ロールバック' do
-    subject do
-      inventory.add!('Unknown Item', 3)
-    end
-
-    it '例外が発生していること' do
-      expect do
-        subject
-      end.to raise_error(ActiveRecord::Rollback)
-    end
-  end
-
   describe('パラメーターの異常系') do
     subject do
       ActiveRecord::Base.transaction do
