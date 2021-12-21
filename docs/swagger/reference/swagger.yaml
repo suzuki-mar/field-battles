@@ -40,8 +40,8 @@ paths:
                   name: 鈴木太郎
                   age: 18
                   inventory:
-                    - name: Fiji Water
-                      count: 1
+                    - name: fiji_water
+                      count: 0
         description: ''
   '/players/{player_id}/inventory':
     put:
@@ -74,7 +74,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../models/Error.yaml
+                $ref: '#/components/schemas/Error'
               examples:
                 example(文言は例):
                   value:
@@ -99,15 +99,15 @@ paths:
                   items:
                     $ref: '#/components/schemas/ItemStockParam'
             examples:
-              example-1:
+              example:
                 value:
                   partner_player_id: 2
                   requeser_items:
-                    - name: Fiji Water
-                      count: 1
+                    - name: fiji_water
+                      count: 0
                   partner_items:
-                    - name: Fiji Water
-                      count: 2
+                    - name: fiji_water
+                      count: 0
       parameters: []
     parameters:
       - schema:
@@ -151,22 +151,12 @@ paths:
                     type: number
                   counting_to_become_zombie:
                     type: number
-        '':
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  zombie_player_ids:
-                    type: array
-                    items:
-                      type: number
       description: 全プレイヤーが感染していないかを確認する
       requestBody:
         content:
           application/json:
             schema:
-              type: object
+              type: 'null'
   /filed:
     get:
       summary: Creating Report
@@ -223,6 +213,7 @@ components:
                 effect_value: 5
                 point: 10
               current_stock_count: 3
+      description: プレイヤーが所持している各アイテムのリスト
       properties:
         player_id:
           type: integer
@@ -230,11 +221,10 @@ components:
         item_stocks:
           type: array
           items:
-            $ref: ./ItemStock.yaml
+            $ref: '#/components/schemas/ItemStock'
       required:
         - player_id
         - item_stocks
-      description: プレイヤーが所持している各アイテムのリスト
     Item:
       title: Item
       type: object
@@ -293,7 +283,7 @@ components:
           type: number
           example: 2
         item:
-          $ref: ./Item.yaml
+          $ref: '#/components/schemas/Item'
         stock_count:
           type: integer
           description: アイテムの残り所持数
@@ -357,7 +347,7 @@ components:
             lat: -35.6895014
       properties:
         id:
-          example: '1'
+          example: 1
           type: integer
         name:
           type: string
@@ -397,16 +387,14 @@ components:
         - counting_to_become_zombie
         - current_location
     ItemName:
+      type: string
       title: ItemName
-      type: object
-      properties:
-        name:
-          type: string
-          enum:
-            - Fiji Water
-            - Campbell Soup
-            - First Aid Pouch
-            - AK47
+      enum:
+        - fiji_water
+        - campbel_soup
+        - first_aid_pouch
+        - ak47
+      description: ''
     ItemStockParam:
       title: ItemStockParam
       type: object
@@ -417,3 +405,6 @@ components:
         count:
           type: integer
           minimum: 0
+      examples:
+        - name: fiji_water
+          count: 0
