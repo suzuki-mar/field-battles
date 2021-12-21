@@ -29,13 +29,13 @@ class Player::Survivor
   end
 
   def become_infected
-    player.update!(status: Player.statuses[:infected])
+    player.update_status!(:infected)
   end
 
   def become_zombie
     return false unless fully_infected?
 
-    player.update!(status: Player.statuses[:zombie])
+    player.update_status!(:zombie)    
   end
 
   def progress_of_zombie!

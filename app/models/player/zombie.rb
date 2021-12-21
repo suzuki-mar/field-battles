@@ -12,7 +12,7 @@ class Player::Zombie
     return unless can_see?(target)
 
     player = Player.find(target.id)
-    player.update(status: Player.statuses[:death])
+    player.update_status!(:death)
   end
 
   private

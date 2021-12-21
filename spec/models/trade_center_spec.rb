@@ -24,7 +24,7 @@ RSpec.describe TradeCenter, type: :model do
       first_player_inventory = Inventory.fetch_by_player_id(players.first.id)
       first_player_inventory.add!(Item::Name::AK47, 2)
 
-      players.last.update(status: Player.statuses[:death])
+      players.last.update_status!(:death)
     end
 
     it 'すべての生存者のインベントリを取得する' do
@@ -46,9 +46,9 @@ RSpec.describe TradeCenter, type: :model do
         Inventory.register_for_newcomer!(p.id, stock_params)
       end
 
-      players[0].update(status: Player.statuses[:zombie])
-      players[1].update(status: Player.statuses[:zombie])
-      players[2].update(status: Player.statuses[:death])
+      players[0].update_status!(:zombie)
+      players[1].update_status!(:zombie)
+      players[2].update_status!(:death)
     end
 
     it 'すべての非生存者のインベントリを取得する' do

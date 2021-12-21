@@ -91,7 +91,7 @@ RSpec.describe InventoryControl, type: :service do
       let(:zombie_inventory) do
         player = create(:player, :newcomer)
         inventory = Inventory.register_for_newcomer!(player.id, [])
-        player.update(status: Player.statuses[:zombie])
+        player.update_status!(:zombie)
 
         inventory
       end
