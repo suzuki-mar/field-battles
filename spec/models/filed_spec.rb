@@ -41,42 +41,41 @@ RSpec.describe Filed, type: :model do
   end
 
   xdescribe('turning_into_infected') do
-    
   end
 
-  describe 'infection_progresses!' do 
-    let(:filed) { FiledForTest.new }
-
+  describe 'infection_progresses!' do
     subject do
       filed.infection_progresses!
     end
 
-    before do 
+    let(:filed) { FiledForTest.new }
+
+    before do
       SetUpper.prepare_items
 
       player_ids.each do |id|
         inventory = Inventory.build_with_empty_item_stocks(id)
         inventory.add!(Item::Name::AK47, 1)
-      end        
+      end
     end
 
-    context '感染していまう感染者が存在する場合' do 
+    context '感染していまう感染者が存在する場合' do
       let(:noninfecteds) do
         players = create_list(:player, 2, :noninfected)
         players.map { |p| Player::Survivor.new(p) }
       end
 
-      let(:player_ids) do 
-        noninfecteds.map{|noninfected| noninfected.id}
+      let(:player_ids) do
+        noninfecteds.map(&:id)
       end
 
       before do
         allow(noninfecteds.first).to receive(:turn_into_infected?).and_return(false)
         allow(noninfecteds.second).to receive(:turn_into_infected?).and_return(true)
-  
+
         filed.survivors = noninfecteds
       end
-  
+
       it '感染者になること' do
         subject
         expect(noninfecteds.first.infected?).to eq(false)
@@ -86,17 +85,17 @@ RSpec.describe Filed, type: :model do
 
     context '感染者が存在する場合' do
       let(:infected) { Player::Survivor.new(create(:player, :infected)) }
-      let(:noninfected) do 
+      let(:noninfected) do
         Player::Survivor.new(create(:player, :noninfected))
       end
-      let(:player_ids) do 
+      let(:player_ids) do
         [noninfected.id, infected.id]
       end
 
-      before do        
+      before do
         filed.survivors = [noninfected, infected]
       end
-  
+
       it '感染状態が進展すること' do
         before_count = infected.counting_to_become_zombie
         subject
@@ -105,11 +104,11 @@ RSpec.describe Filed, type: :model do
       end
     end
 
-    context 'ゾンビになる感染者が存在する場合' do  
+    context 'ゾンビになる感染者が存在する場合' do
       let(:filed) { FiledForTest.new }
       let(:infected) { Player::Survivor.new(create(:player, :infection_complete)) }
-  
-      let(:player_ids) do 
+
+      let(:player_ids) do
         [infected.id]
       end
 
@@ -117,16 +116,15 @@ RSpec.describe Filed, type: :model do
         infected.counting_to_become_zombie.times do |_i|
           infected.progress_of_zombie
         end
-  
+
         filed.survivors = [infected]
       end
-  
+
       it '感染完了者がゾンビになっていること' do
         subject
         expect(Player.find(infected.id).zombie?).to eq(true)
       end
     end
-    
   end
 
   describe('move_the_survivor') do

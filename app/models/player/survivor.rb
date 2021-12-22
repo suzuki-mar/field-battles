@@ -21,9 +21,9 @@ class Player::Survivor
   def become_infected!
     inventory = fetch_inventory
     if inventory.has_item?(Item::Name::FIRST_AID_POUCH)
-      inventory.use!(Item::Name::FIRST_AID_POUCH)   
-      
-      return 
+      inventory.use!(Item::Name::FIRST_AID_POUCH)
+
+      return
     end
 
     player.update_status!(:infected)

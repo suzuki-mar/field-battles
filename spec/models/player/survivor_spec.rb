@@ -2,14 +2,14 @@
 
 RSpec.describe Player::Survivor, type: :model do
   describe('infected?') do
+    subject do
+      survivor.become_infected!
+    end
+
     before do
       SetUpper.prepare_items
       inventory = Inventory.build_with_empty_item_stocks(survivor.id)
       inventory.add!(Item::Name::AK47, 1)
-    end
-    
-    subject do
-      survivor.become_infected!
     end
 
     let(:survivor) do
@@ -24,12 +24,12 @@ RSpec.describe Player::Survivor, type: :model do
   end
 
   describe('turn_into_infected?') do
+    subject { survivor.turn_into_infected? }
+
     let(:survivor) do
       player = create(:player, :survivor)
       described_class.new(player)
     end
-
-    subject { survivor.turn_into_infected? }
 
     context '確率にあたってしまった場合' do
       before do
@@ -53,6 +53,8 @@ RSpec.describe Player::Survivor, type: :model do
   end
 
   describe('become_infected!') do
+    subject { noninfected.become_infected! }
+
     let(:noninfected) do
       player = create(:player, :noninfected)
       described_class.new(player)
@@ -61,21 +63,19 @@ RSpec.describe Player::Survivor, type: :model do
     let(:inventory) do
       Inventory.build_with_empty_item_stocks(noninfected.id)
     end
-    
+
     before do
       SetUpper.prepare_items
       inventory.add!(Item::Name::AK47, 1)
     end
 
-    subject { noninfected .become_infected! }
-
     context('回復用アイテムがある場合') do
-      before do       
+      before do
         inventory.add!(Item::Name::FIRST_AID_POUCH, 1)
       end
 
       it('非感染者のままであること') do
-        subject        
+        subject
         expect(noninfected.noninfected?).to eq(true)
       end
 
