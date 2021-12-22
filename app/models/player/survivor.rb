@@ -15,24 +15,21 @@ class Player::Survivor
   end
 
   def turn_into_infected?
-    infection_will_progress = random.zero?
-
-    return false unless infection_will_progress
-
-    inventory = fetch_inventory
-    if inventory.has_item?(Item::Name::FIRST_AID_POUCH)
-      inventory.use!(Item::Name::FIRST_AID_POUCH)
-      return false
-    end
-
-    true
+    random.zero?
   end
 
-  def become_infected
+  def become_infected!
+    inventory = fetch_inventory
+    if inventory.has_item?(Item::Name::FIRST_AID_POUCH)
+      inventory.use!(Item::Name::FIRST_AID_POUCH)   
+      
+      return 
+    end
+
     player.update_status!(:infected)
   end
 
-  def become_zombie
+  def become_zombie!
     return false unless fully_infected?
 
     player.update_status!(:zombie)

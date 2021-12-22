@@ -51,31 +51,49 @@ RSpec.describe Filed, type: :model do
       filed.infection_progresses!
     end
 
+    before do 
+      SetUpper.prepare_items
+
+      player_ids.each do |id|
+        inventory = Inventory.build_with_empty_item_stocks(id)
+        inventory.add!(Item::Name::AK47, 1)
+      end        
+    end
+
     context '感染していまう感染者が存在する場合' do 
-      let(:survivors) do
+      let(:noninfecteds) do
         players = create_list(:player, 2, :noninfected)
         players.map { |p| Player::Survivor.new(p) }
       end
 
+      let(:player_ids) do 
+        noninfecteds.map{|noninfected| noninfected.id}
+      end
+
       before do
-        allow(survivors.first).to receive(:turn_into_infected?).and_return(false)
-        allow(survivors.second).to receive(:turn_into_infected?).and_return(true)
+        allow(noninfecteds.first).to receive(:turn_into_infected?).and_return(false)
+        allow(noninfecteds.second).to receive(:turn_into_infected?).and_return(true)
   
-        filed.survivors = survivors
+        filed.survivors = noninfecteds
       end
   
       it '感染者になること' do
         subject
-        expect(survivors.first.infected?).to eq(false)
-        expect(survivors.second.infected?).to eq(true)
+        expect(noninfecteds.first.infected?).to eq(false)
+        expect(noninfecteds.second.infected?).to eq(true)
       end
     end
 
     context '感染者が存在する場合' do
       let(:infected) { Player::Survivor.new(create(:player, :infected)) }
-  
-      before do
-        noninfected = Player::Survivor.new(create(:player, :survivor))
+      let(:noninfected) do 
+        Player::Survivor.new(create(:player, :noninfected))
+      end
+      let(:player_ids) do 
+        [noninfected.id, infected.id]
+      end
+
+      before do        
         filed.survivors = [noninfected, infected]
       end
   
@@ -91,6 +109,10 @@ RSpec.describe Filed, type: :model do
       let(:filed) { FiledForTest.new }
       let(:infected) { Player::Survivor.new(create(:player, :infection_complete)) }
   
+      let(:player_ids) do 
+        [infected.id]
+      end
+
       before do
         infected.counting_to_become_zombie.times do |_i|
           infected.progress_of_zombie
