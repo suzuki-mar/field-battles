@@ -16,20 +16,8 @@ class Filed
     @zombies = players.map { |p| Player::Zombie.new(p) }
   end
 
-  def progress_of_infection
-    survivors.each { |s| s.report_infected_players!(survivors) }
-  end
-
   def select_infected_survivors
     survivors.select { |s| s.infected? || s.fully_infected? }
-  end
-
-  def progress_of_zombification
-    select_infected_survivors.each do |s|
-      next unless s.fully_infected?
-
-      s.become_zombie
-    end
   end
 
   def infection_progresses!
@@ -37,8 +25,13 @@ class Filed
       survivor.become_infected if !survivor.infected? && survivor.turn_into_infected?
     end
 
-    progress_of_infection
-    progress_of_zombification
+    survivors.each { |s| s.report_infected_players!(survivors) }
+    
+    select_infected_survivors.each do |s|
+      next unless s.fully_infected?
+
+      s.become_zombie
+    end
   end
 
   def move_the_survivors
