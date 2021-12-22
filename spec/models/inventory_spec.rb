@@ -184,5 +184,5 @@ RSpec.describe Inventory, type: :model do
         expect(subject).to eq(0)
       end
     end
-  end  
+  end
 end

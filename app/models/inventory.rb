@@ -5,7 +5,7 @@ class Inventory
 
   def add!(name, count)
     result = inventory_control.add(self, name, count)
-    processing_after_inventory_control!(result)    
+    processing_after_inventory_control!(result)
   end
 
   def take_out!(name, count)
@@ -15,7 +15,7 @@ class Inventory
 
   def use!(name)
     result = inventory_control.take_out(self, name, 1)
-    processing_after_inventory_control!(result)        
+    processing_after_inventory_control!(result)
   end
 
   def has_item?(name)

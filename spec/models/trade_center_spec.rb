@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 RSpec.describe TradeCenter, type: :model do
-  let(:trade_center){described_class.new}
+  let(:trade_center) { described_class.new }
 
   before do
     SetUpper.prepare_items
@@ -36,8 +36,8 @@ RSpec.describe TradeCenter, type: :model do
   describe('fetch_all_not_survivor_inventories') do
     subject { trade_center.fetch_not_survivor_inventories }
 
-    before do      
-      players = create_list(:player, 4, :survivor)      
+    before do
+      players = create_list(:player, 4, :survivor)
 
       stock_params = [
         { name: Item::Name::FIRST_AID_POUCH, count: 1 }

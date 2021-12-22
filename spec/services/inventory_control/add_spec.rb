@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-RSpec.describe InventoryControl, type: :service do  
+RSpec.describe InventoryControl, type: :service do
   let!(:inventory) do
     player = create(:player, :newcomer)
     Inventory.register_for_newcomer!(player.id, [])
   end
   let(:item_name) { Item::Name::FIRST_AID_POUCH }
   let(:stock_count) { 3 }
-  let(:inventory_control){described_class.new}
+  let(:inventory_control) { described_class.new }
 
   before do
     SetUpper.prepare_items
@@ -15,7 +15,7 @@ RSpec.describe InventoryControl, type: :service do
 
   describe('正常系') do
     subject do
-      inventory_control.add(inventory, item_name, stock_count)      
+      inventory_control.add(inventory, item_name, stock_count)
     end
 
     context('存在しないアイテムを追加する場合') do
@@ -35,7 +35,7 @@ RSpec.describe InventoryControl, type: :service do
 
       it '在庫のカウントが増えていること' do
         subject
-        
+
         item_stock = ItemStock.all.first
         expect(item_stock.stock_count).to eq(stock_count + 1)
       end
@@ -65,7 +65,7 @@ RSpec.describe InventoryControl, type: :service do
       end
 
       it 'エラーが返されていること' do
-        is_expected.to eq(I18n.t('error_message.item.nonexistent_name', name: params[:item_name]))
+        expect(subject).to eq(I18n.t('error_message.item.nonexistent_name', name: params[:item_name]))
       end
     end
 
@@ -83,8 +83,8 @@ RSpec.describe InventoryControl, type: :service do
 
   describe('プレイヤーのバリデーション') do
     context('生存者ではないものが実行しようとした場合') do
-      subject do        
-        error = inventory_control.add(zombie_inventory, item_name, stock_count)              
+      subject do
+        error = inventory_control.add(zombie_inventory, item_name, stock_count)
         error.messages.first
       end
 

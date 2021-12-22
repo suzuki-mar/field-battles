@@ -9,8 +9,6 @@ class ItemCalculator
       average_count_per: calc_average_count_per_item,
       wasted_points: calc_of_wasted_points
     }
-
-    
   end
 
   private

@@ -54,7 +54,7 @@ class Player < ApplicationRecord
     player = find(id)
     player.noninfected? || player.infected?
   end
-  
+
   def update_status!(status)
     update!(status: Player.statuses[status])
   end
