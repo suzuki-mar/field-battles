@@ -40,29 +40,38 @@ RSpec.describe Filed, type: :model do
     end
   end
 
-  describe('turning_into_infected') do
-    subject do
-      filed.turning_into_infected
-    end
+  xdescribe('turning_into_infected') do
+    
+  end
 
+  describe 'infection_progresses!' do 
     let(:filed) { FiledForTest.new }
-    let(:survivors) do
-      players = create_list(:player, 2, :noninfected)
-      players.map { |p| Player::Survivor.new(p) }
+
+    subject do
+      filed.infection_progresses!
     end
 
-    before do
-      allow(survivors.first).to receive(:turn_into_infected?).and_return(false)
-      allow(survivors.second).to receive(:turn_into_infected?).and_return(true)
+    context '感染者が存在する場合' do 
+      let(:survivors) do
+        players = create_list(:player, 2, :noninfected)
+        players.map { |p| Player::Survivor.new(p) }
+      end
 
-      filed.survivors = survivors
+      before do
+        allow(survivors.first).to receive(:turn_into_infected?).and_return(false)
+        allow(survivors.second).to receive(:turn_into_infected?).and_return(true)
+  
+        filed.survivors = survivors
+      end
+  
+      it '感染してしまう生存者が存在すること' do
+        subject
+        expect(survivors.first.infected?).to eq(false)
+        expect(survivors.second.infected?).to eq(true)
+      end
     end
 
-    it '感染してしまう生存者が存在すること' do
-      subject
-      expect(survivors.first.infected?).to eq(false)
-      expect(survivors.second.infected?).to eq(true)
-    end
+    
   end
 
   describe('progress_of_infection') do
