@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe Survivor, type: :model do
+RSpec.describe Player::Survivor, type: :model do
   describe('infected?') do
     subject do
       survivor.become_infected
@@ -257,7 +257,7 @@ RSpec.describe Survivor, type: :model do
     end
   end
 
-  class SurvivorForTest < Survivor
+  class SurvivorForTest < described_class
     attr_reader :player
   end
 end

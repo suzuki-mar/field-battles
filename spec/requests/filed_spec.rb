@@ -18,12 +18,12 @@ RSpec.describe 'Filed', type: :request do
 
       Inventory.register_for_newcomer!(Player.first.id, item_params)
       Player.all[0..5].each do |survivor|
-        survivor.update(status: Player.statuses[:noninfected])
+        survivor.update_status!(:noninfected)
       end
 
       Inventory.register_for_newcomer!(Player.last.id, item_params)
       Player.all[6..].each do |zombie|
-        zombie.update(status: Player.statuses[:zombie])
+        zombie.update_status!(:zombie)
       end
     end
 

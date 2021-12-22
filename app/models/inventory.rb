@@ -5,38 +5,17 @@ class Inventory
 
   def add!(name, count)
     result = inventory_control.add(self, name, count)
-
-    if result.instance_of?(Error)
-      @errors = [result]
-      raise ActiveRecord::Rollback
-    end
-
-    reload
-    result
+    processing_after_inventory_control!(result)
   end
 
   def take_out!(name, count)
     result = inventory_control.take_out(self, name, count)
-
-    if result.instance_of?(Error)
-      @errors = [result]
-      raise ActiveRecord::Rollback
-    end
-
-    reload
-    result
+    processing_after_inventory_control!(result)
   end
 
   def use!(name)
     result = inventory_control.take_out(self, name, 1)
-
-    if result.instance_of?(Error)
-      @errors = [result]
-      raise ActiveRecord::Rollback
-    end
-
-    reload
-    result
+    processing_after_inventory_control!(result)
   end
 
   def has_item?(name)
@@ -88,20 +67,21 @@ class Inventory
       inventory.reload
       inventory
     end
-
-    # クライアントへのインターフェースを変えないが肥大化の対策をするため移譲する
-    def fetch_all_survivor_inventories
-      TradeCenter.new.fetch_survivor_inventories
-    end
-
-    def fetch_all_not_survivor_inventories
-      TradeCenter.new.fetch_not_survivor_inventories
-    end
   end
 
   private
 
   attr_reader :inventory_control
+
+  def processing_after_inventory_control!(result)
+    if result.instance_of?(Error)
+      @errors = [result]
+      raise ActiveRecord::Rollback
+    end
+
+    reload
+    result
+  end
 
   protected
 

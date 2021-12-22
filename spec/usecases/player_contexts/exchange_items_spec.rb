@@ -9,7 +9,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
 
     let(:survivor) do
       player = create(:player, :survivor)
-      Survivor.new(player)
+      Player::Survivor.new(player)
     end
 
     let(:params) do
@@ -54,7 +54,7 @@ RSpec.describe PlayerContexts::ExchangeItems do
       context('パートナーが生存していない場合') do
         before do
           player = Player.find(params[:partner_player_id])
-          player.update(status: Player.statuses[:zombie])
+          player.update_status!(:zombie)
         end
 
         it 'エラーを返すこと' do

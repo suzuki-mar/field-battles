@@ -32,7 +32,7 @@ RSpec.describe Item, type: :model do
   end
 
   describe 'バリデーションのエラーメッセージ' do
-    subject do  
+    subject do
       item.validate
       item.errors.full_messages.first
     end

@@ -43,7 +43,7 @@ class PlayersController < ApplicationController
     errors << Error.merge(inventory_errors) if inventory_errors.present?
 
     Inventory.register_for_newcomer!(player.id, params[:inventory])
-    player.update!(status: Player.statuses[:noninfected])
+    player.update_status!(:noninfected)
 
     raise ActiveRecord::Rollback if errors.present?
   end
