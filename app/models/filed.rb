@@ -38,6 +38,12 @@ class Filed
     end
   end
 
+  def infection_progresses!
+    turning_into_infected
+    progress_of_infection
+    progress_of_zombification
+  end
+
   def move_the_survivors
     survivors.each do |s|
       s.assign_next_locations
