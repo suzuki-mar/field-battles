@@ -16,26 +16,14 @@ class Filed
     @zombies = players.map { |p| Player::Zombie.new(p) }
   end
 
-  def turning_into_infected
-    survivors.each do |survivor|
-      survivor.become_infected if !survivor.infected? && survivor.turn_into_infected?
+  def infection_progresses!
+    survivors.each do |s|
+      s.become_infected! if !s.infected? && s.turn_into_infected?
     end
-  end
 
-  def progress_of_infection
-    survivors.each { |s| s.report_infected_players!(survivors) }
-  end
+    report_of_infection_by_survivors!
 
-  def select_infected_survivors
-    survivors.select { |s| s.infected? || s.fully_infected? }
-  end
-
-  def progress_of_zombification
-    select_infected_survivors.each do |s|
-      next unless s.fully_infected?
-
-      s.become_zombie
-    end
+    zombification_of_fully_infected!
   end
 
   def move_the_survivors
@@ -62,5 +50,23 @@ class Filed
 
   def can_move?(survivor)
     LON_RANGE.cover?(survivor.current_location.lon) && LAT_RANGE.cover?(survivor.current_location.lat)
+  end
+
+  private
+
+  def zombification_of_fully_infected!
+    fully_infected_survivors = survivors.select(&:fully_infected?)
+    fully_infected_survivors.each do |s|
+      next unless s.fully_infected?
+
+      s.become_zombie!
+    end
+  end
+
+  def report_of_infection_by_survivors!
+    survivors.each do |s|
+      another_survivors = survivors - [s]
+      s.report_infected_players!(another_survivors)
+    end
   end
 end

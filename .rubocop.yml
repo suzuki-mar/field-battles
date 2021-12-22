@@ -81,3 +81,7 @@ Metrics/MethodLength:
 # デフォルト値だと厳しすぎるため
 Metrics/AbcSize:
   Max: 25
+
+# 使えたほうがよけいないインデントがなくなるため
+Style/ClassAndModuleChildren:  
+  Enabled: false  

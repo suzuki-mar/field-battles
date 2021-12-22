@@ -34,9 +34,7 @@ class FiledController < ApplicationController
   # TODO: Filed:infectionのコントローラーを作成する
   def infection
     ActiveRecord::Base.transaction do
-      filed.turning_into_infected
-      filed.progress_of_infection
-      filed.progress_of_zombification
+      filed.infection_progresses!
     end
 
     render json: { success: true }
